@@ -1,0 +1,251 @@
+:root {
+  --primary: #1a5276;
+  --primary-light: #2e86ab;
+  --secondary: #117864;
+  --accent: #d4ac0d;
+  --bg: #f8f9fa;
+  --card: #ffffff;
+  --text: #2c3e50;
+  --text-light: #5d6d7e;
+  --border: #dfe6e9;
+  --caveat: #922b21;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+header .subtitle {
+  font-size: 1rem;
+  opacity: 0.95;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+nav {
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+nav li {
+  margin: 0;
+}
+
+nav a {
+  display: block;
+  padding: 0.9rem 1.1rem;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+nav a:hover,
+nav a.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary-light);
+}
+
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+section {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+h2 {
+  color: var(--primary);
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-top: 0;
+}
+
+h3 {
+  color: var(--primary-light);
+  margin-top: 1.5rem;
+}
+
+h4 {
+  color: var(--text);
+  margin-top: 1.2rem;
+}
+
+p {
+  margin: 0.8rem 0;
+}
+
+a {
+  color: var(--primary-light);
+}
+
+.caveat {
+  background: #fdebd0;
+  border-left: 4px solid var(--caveat);
+  padding: 1rem 1.2rem;
+  margin: 1.2rem 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.caveat strong {
+  color: var(--caveat);
+}
+
+.evidence {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  margin-left: 0.3rem;
+  font-weight: 600;
+}
+
+.evidence-a { background: #d5f5e3; color: #1e8449; }
+.evidence-b { background: #d6eaf8; color: #2471a3; }
+.evidence-c { background: #fdebd0; color: #b9770e; }
+.evidence-d { background: #fadbd8; color: #c0392b; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.7rem;
+  text-align: left;
+}
+
+th {
+  background: #eaf2f8;
+  color: var(--primary);
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background: #f8f9f9;
+}
+
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+li {
+  margin: 0.4rem 0;
+}
+
+.code-block {
+  background: #f4f6f7;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  font-size: 0.9rem;
+  overflow-x: auto;
+}
+
+.tag-dimension {
+  display: inline-block;
+  background: #e8f6f3;
+  color: var(--secondary);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  margin: 0.15rem;
+  font-weight: 500;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.hero-card {
+  background: var(--card);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border-top: 4px solid var(--primary-light);
+}
+
+.hero-card h3 {
+  margin-top: 0;
+  color: var(--primary);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--primary);
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 0.5rem;
+  transition: background 0.2s;
+}
+
+.btn:hover {
+  background: var(--primary-light);
+}
+
+@media (max-width: 600px) {
+  header h1 { font-size: 1.5rem; }
+  nav a { padding: 0.7rem 0.8rem; font-size: 0.9rem; }
+  main { padding: 1rem; }
+  section { padding: 1.2rem; }
+}

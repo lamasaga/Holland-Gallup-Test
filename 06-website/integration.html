@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>盖洛普与霍兰德报告整合思路</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>盖洛普-霍兰德职业测评整合研究</h1>
+    <p class="subtitle">Gallup CliftonStrengths × Holland RIASEC：信效度、TAG 标注与学生学业职业发展评价体系</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="gallup.html">盖洛普信效度</a></li>
+      <li><a href="holland.html">霍兰德信效度</a></li>
+      <li><a href="tag.html">TAG 系统</a></li>
+      <li><a href="integration.html" class="active">整合思路</a></li>
+      <li><a href="system.html">评价体系</a></li>
+      <li><a href="about.html">关于</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section>
+      <h2>整合思路设计 / Integration Design</h2>
+      <p>
+        基于文献综述与 TAG 标注数据，本研究设计了六种将 Gallup CliftonStrengths 与 Holland RIASEC 报告进行结合的思路。
+        所有思路均定位为<strong>职业对话工具（career conversation tool）</strong>，而非预测模型。
+      </p>
+
+      <div class="caveat">
+        <strong>重要声明</strong><br>
+        以下整合思路未经实证验证。它们的价值在于结构化地呈现兴趣与优势之间的复杂关系，帮助学生进行自我探索。
+      </div>
+    </section>
+
+    <section>
+      <h2>六种整合思路 / Six Integration Approaches</h2>
+
+      <h3>1. 剖面对比法（Profile Juxtaposition）</h3>
+      <p>
+        将学生的 RIASEC 六维度得分剖面与 CliftonStrengths 四大领域分布并置，引导学生观察两者之间的一致、补充与张力。
+        适合作为初次整合解读的入口。
+      </p>
+
+      <h3>2. 可能性-张力分析法（Affordance-Tension Analysis）</h3>
+      <p>
+        基于 TAG 数据，将学生的 RIASEC 代码与 Top 5/10 优势主题输入，识别兴趣与优势共同指向的职业集群（可能性），
+        以及可能产生冲突的情境（张力）。可生成候选集群清单。
+      </p>
+
+      <h3>3. 优势-兴趣交互矩阵（Strengths–Interest Interaction Matrix）</h3>
+      <p>
+        构建 6（RIASEC）× 34（CliftonStrengths 主题）的交互矩阵，每个单元格描述该优势主题在该兴趣类型中可能的表达、贡献与挑战。
+        强调“表达方式”而非“适合度”。
+      </p>
+
+      <h3>4. 职业对话卡片（Career Conversation Cards）</h3>
+      <p>
+        将整合结果转化为结构化问题卡片，供学生、家长或咨询师使用。每张卡片基于一个 TAG 维度或张力主题，
+        促进深度反思。
+      </p>
+
+      <h3>5. 双维度雷达图（Dual-Dimension Radar）</h3>
+      <p>
+        在同一可视化中呈现“兴趣维度”（RIASEC 六类型）与“优势维度”（CliftonStrengths 主题按 RIASEC 映射聚合），
+        识别重合区域与空白区域。
+      </p>
+
+      <h3>6. 发展路径映射（Development Pathway Mapping）</h3>
+      <p>
+        基于学生的 RIASEC 代码与 CliftonStrengths 主题，构建从“当前状态”到“可能职业角色”的发展路径，
+        标注学习阶段、早期角色、进阶方向与关键张力。
+      </p>
+    </section>
+
+    <section>
+      <h2>TAG 验证结果 / TAG Validation Results</h2>
+      <p>
+        通过脚本 <code>scripts/analyze_tag_consistency.py</code> 对 20 个职业集群进行内部一致性分析，结果如下：
+      </p>
+
+      <table>
+        <tr><th>RIASEC 类型</th><th>集群数量</th><th>平均强匹配率</th><th>平均中+强匹配率</th></tr>
+        <tr><td>I（研究型）</td><td>6</td><td>54%</td><td>100%</td></tr>
+        <tr><td>S（社会型）</td><td>4</td><td>58%</td><td>75%</td></tr>
+        <tr><td>E（企业型）</td><td>4</td><td>52%</td><td>80%</td></tr>
+        <tr><td>A（艺术型）</td><td>3</td><td>18%</td><td>80%</td></tr>
+        <tr><td>R（现实型）</td><td>2</td><td>18%</td><td>100%</td></tr>
+        <tr><td>C（常规型）</td><td>1</td><td>83%</td><td>100%</td></tr>
+        <tr><td><strong>总体</strong></td><td><strong>20</strong></td><td><strong>47%</strong></td><td><strong>88%</strong></td></tr>
+      </table>
+
+      <div class="caveat">
+        <strong>解读说明</strong>：<br>
+        “强匹配”指优势主题的主 RIASEC 类型与集群主类型一致；“中+强匹配”包含主/次类型匹配。
+        A 与 R 类型的强匹配率较低，反映现代艺术职业与操作型职业的高度混合性，而非标注错误。
+      </div>
+    </section>
+
+    <section>
+      <h2>信效度推算 / Estimated Reliability and Validity</h2>
+      <ul>
+        <li><strong>收敛效度</strong>：I、S、E、C 类型较高；A 类型中等；R 类型较低。</li>
+        <li><strong>区分效度</strong>：相对类型（I-E、A-C、R-S）之间区分良好；相邻类型存在合理重叠。</li>
+        <li><strong>信度</strong>：受 CliftonStrengths 自身信度限制，整体适合职业对话，不适合高利害决策。</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 盖洛普-霍兰德职业测评整合研究项目 | 内容仅供学术研究参考</p>
+  </footer>
+</body>
+</html>

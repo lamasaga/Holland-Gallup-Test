@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAG 标注系统</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>盖洛普-霍兰德职业测评整合研究</h1>
+    <p class="subtitle">Gallup CliftonStrengths × Holland RIASEC：信效度、TAG 标注与学生学业职业发展评价体系</p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">首页</a></li>
+      <li><a href="gallup.html">盖洛普信效度</a></li>
+      <li><a href="holland.html">霍兰德信效度</a></li>
+      <li><a href="tag.html" class="active">TAG 系统</a></li>
+      <li><a href="integration.html">整合思路</a></li>
+      <li><a href="system.html">评价体系</a></li>
+      <li><a href="about.html">关于</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section>
+      <h2>TAG 标注系统 / TAG Annotation System</h2>
+      <p>
+        TAG 标注系统是本研究的核心桥接工具。它通过对职业集群进行多维度编码，
+        使 Holland RIASEC 的兴趣分类能够与 Gallup CliftonStrengths 的优势主题产生关联，
+        从而支持整合性的职业对话。
+      </p>
+
+      <div class="caveat">
+        <strong>非决定性声明 / Non-Determinism</strong><br>
+        TAG 仅描述“关联性”或“亲和性”，不用于对个体下“适合/不适合”的绝对结论。
+      </div>
+    </section>
+
+    <section>
+      <h2>TAG 维度 / TAG Dimensions</h2>
+      <table>
+        <tr><th>维度</th><th>前缀</th><th>说明</th></tr>
+        <tr><td>RIASEC 主类型</td><td><span class="tag-dimension">RIASEC-</span></td><td>Holland 三码或主类型</td></tr>
+        <tr><td>能力倾向</td><td><span class="tag-dimension">ABIL-</span></td><td>该集群通常需要的能力倾向</td></tr>
+        <tr><td>工作活动</td><td><span class="tag-dimension">ACT-</span></td><td>典型工作任务或活动类型</td></tr>
+        <tr><td>工作情境</td><td><span class="tag-dimension">CTX-</span></td><td>工作环境、节奏、组织形态</td></tr>
+        <tr><td>价值取向</td><td><span class="tag-dimension">VAL-</span></td><td>该集群可能满足的核心价值</td></tr>
+        <tr><td>发展路径</td><td><span class="tag-dimension">PATH-</span></td><td>典型职业发展轨迹</td></tr>
+        <tr><td>教育准备</td><td><span class="tag-dimension">EDU-</span></td><td>典型教育程度与专业背景</td></tr>
+        <tr><td>优势亲和</td><td><span class="tag-dimension">STR-</span></td><td>与 CliftonStrengths 主题的可能亲和</td></tr>
+        <tr><td>潜在张力</td><td><span class="tag-dimension">TENS-</span></td><td>该集群可能与其他类型/优势产生冲突的情境</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h2>标注示例 / Annotation Example</h2>
+      <h3>临床心理学家 / Clinical Psychologist</h3>
+      <ul>
+        <li><span class="tag-dimension">RIASEC-</span> I-S-A</li>
+        <li><span class="tag-dimension">ABIL-</span> analytical, empathy, verbal, listening</li>
+        <li><span class="tag-dimension">ACT-</span> research, counsel, communicate, diagnose</li>
+        <li><span class="tag-dimension">CTX-</span> office, hospital, clinic, one-on-one</li>
+        <li><span class="tag-dimension">VAL-</span> service, knowledge, autonomy, growth-of-others</li>
+        <li><span class="tag-dimension">PATH-</span> specialist, academic, consultant</li>
+        <li><span class="tag-dimension">EDU-</span> doctoral</li>
+        <li><span class="tag-dimension">STR-</span> relator, developer, empathy, intellection, learner, individualization</li>
+        <li><span class="tag-dimension">TENS-</span> high-emotional-demand + need-boundaries; research-rigor-vs-clinical-flexibility</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>数据规模 / Data Scale</h2>
+      <p>当前 TAG 数据集包含 20 个代表性职业集群，覆盖 RIASEC 全部六种类型及若干新兴混合型职业。完整数据以 JSON 与 Markdown 两种格式存储：</p>
+      <ul>
+        <li>Markdown 版本：<code>03-tag-system/holland-clusters-tagged.md</code></li>
+        <li>JSON 版本：<code>03-tag-system/clusters-tagged.json</code></li>
+        <li>一致性分析报告：<code>data/processed/tag-consistency-report.json</code></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>CliftonStrengths → RIASEC 映射示例</h2>
+      <table>
+        <tr><th>CliftonStrengths 主题</th><th>主 RIASEC</th><th>次 RIASEC</th><th>所属领域</th></tr>
+        <tr><td>Analytical</td><td>I</td><td>C</td><td>Strategic Thinking</td></tr>
+        <tr><td>Relator</td><td>S</td><td>I</td><td>Relationship Building</td></tr>
+        <tr><td>Woo</td><td>E</td><td>S</td><td>Influencing</td></tr>
+        <tr><td>Achiever</td><td>C</td><td>E</td><td>Executing</td></tr>
+        <tr><td>Ideation</td><td>A</td><td>I</td><td>Strategic Thinking</td></tr>
+        <tr><td>Developer</td><td>S</td><td>E</td><td>Relationship Building</td></tr>
+      </table>
+      <p>完整映射表见项目文档：<code>03-tag-system/mapping-strengths-riasec.md</code>。</p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 盖洛普-霍兰德职业测评整合研究项目 | 内容仅供学术研究参考</p>
+  </footer>
+</body>
+</html>
