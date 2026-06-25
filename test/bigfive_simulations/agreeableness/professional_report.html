@@ -1,0 +1,907 @@
+
+<meta charset="UTF-8">
+<div class="kz-report">
+
+<style>
+.kz-report { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #1f2937; line-height: 1.7; max-width: 960px; margin: 0 auto; }
+.kz-report h1 { font-size: 28px; font-weight: 700; color: #111827; margin: 0 0 12px 0; }
+.kz-report h2 { font-size: 22px; font-weight: 700; color: #1e40af; margin: 32px 0 14px 0; padding-bottom: 8px; border-bottom: 2px solid #dbeafe; }
+.kz-report h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin: 24px 0 10px 0; }
+.kz-report h4 { font-size: 16px; font-weight: 700; color: #374151; margin: 18px 0 8px 0; }
+.kz-report p { margin: 8px 0; }
+.kz-report .kz-meta { background: #f8fafc; border-left: 4px solid #2563eb; padding: 14px 18px; margin: 16px 0; border-radius: 6px; }
+.kz-report .kz-meta p { margin: 4px 0; }
+.kz-report .kz-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-highlight { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 6px; margin: 14px 0; }
+.kz-report .kz-tip { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #166534; }
+.kz-report .kz-warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #92400e; }
+.kz-report .kz-info { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #1e40af; }
+.kz-report table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+.kz-report th, .kz-report td { border: 1px solid #e5e7eb; padding: 10px 12px; text-align: left; vertical-align: top; }
+.kz-report th { background: #f3f4f6; font-weight: 600; color: #374151; }
+.kz-report tr:nth-child(even) { background: #f9fafb; }
+.kz-report .kz-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 6px; }
+.kz-report .kz-tag-steady { background: #d1fae5; color: #065f46; }
+.kz-report .kz-tag-explore { background: #fef3c7; color: #92400e; }
+.kz-report .kz-tag-challenge { background: #fee2e2; color: #991b1b; }
+.kz-report .kz-matrix-dominant { background: #dbeafe; border: 3px solid #1d4ed8 !important; font-weight: 700; box-shadow: inset 0 0 0 1px #93c5fd; }
+.kz-report .kz-matrix-secondary { background: #fffbeb; border: 2px dashed #d97706 !important; }
+.kz-report .kz-matrix-tertiary { background: #f5f3ff; border: 2px dotted #7c3aed !important; }
+.kz-report .kz-matrix-header { background: #1e40af; color: #fff; font-weight: 600; }
+.kz-report .kz-matrix-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; line-height: 1.3; }
+.kz-report .kz-matrix-badge-dominant { background: #1d4ed8; color: #fff; }
+.kz-report .kz-matrix-badge-secondary { background: #d97706; color: #fff; }
+.kz-report .kz-matrix-badge-tertiary { background: #7c3aed; color: #fff; }
+.kz-report .kz-matrix-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.kz-report .kz-matrix-legend-item { flex: 1; min-width: 200px; padding: 12px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+.kz-report .kz-matrix-legend-dominant { border: 3px solid #1d4ed8; background: #eff6ff; }
+.kz-report .kz-matrix-legend-secondary { border: 2px dashed #d97706; background: #fffbeb; }
+.kz-report .kz-matrix-legend-tertiary { border: 2px dotted #7c3aed; background: #f5f3ff; }
+.kz-report .kz-matrix-legend-item strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.kz-report .kz-matrix-domain-title { font-weight: 700; font-size: 13px; line-height: 1.4; }
+.kz-report .kz-matrix-table td { font-size: 12px; line-height: 1.35; padding: 8px 10px; }
+.kz-report .kz-matrix-table th { font-size: 12px; padding: 8px 10px; }
+.kz-report .kz-intersection-detail { margin-top: 28px; }
+.kz-report .kz-intersection-detail > h3 { font-size: 18px; color: #1e40af; margin: 0 0 8px 0; padding-bottom: 8px; border-bottom: 2px solid #dbeafe; }
+.kz-report .kz-intersection-intro { color: #4b5563; font-size: 14px; line-height: 1.65; margin: 0 0 20px 0; }
+.kz-report .kz-intersection-tier { margin-bottom: 24px; }
+.kz-report .kz-intersection-tier-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; padding: 14px 16px; border-radius: 10px; }
+.kz-report .kz-intersection-tier-primary .kz-intersection-tier-header { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #93c5fd; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-tier-header { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fcd34d; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-tier-header { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #c4b5fd; }
+.kz-report .kz-intersection-tier-badge { flex-shrink: 0; display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #fff; }
+.kz-report .kz-intersection-tier-primary .kz-intersection-tier-badge { background: #1d4ed8; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-tier-badge { background: #d97706; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-tier-badge { background: #7c3aed; }
+.kz-report .kz-intersection-tier-desc { margin: 0; font-size: 14px; line-height: 1.65; color: #374151; }
+.kz-report .kz-intersection-cards { display: grid; gap: 14px; }
+.kz-report .kz-intersection-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.kz-report .kz-intersection-tier-primary .kz-intersection-card { border-left: 4px solid #1d4ed8; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-card { border-left: 4px solid #d97706; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-card { border-left: 4px solid #7c3aed; }
+.kz-report .kz-intersection-card-title { font-size: 16px; font-weight: 700; color: #111827; margin: 0 0 6px 0; }
+.kz-report .kz-intersection-card-tagline { font-size: 14px; color: #1e40af; font-style: italic; margin: 0 0 12px 0; line-height: 1.5; }
+.kz-report .kz-intersection-card-body { font-size: 14px; line-height: 1.7; color: #374151; margin: 0 0 14px 0; }
+.kz-report .kz-intersection-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb; }
+.kz-report .kz-intersection-meta-item { font-size: 12px; line-height: 1.5; }
+.kz-report .kz-intersection-meta-item strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: #6b7280; margin-bottom: 3px; font-weight: 600; }
+.kz-report .kz-intersection-prompt { margin-top: 12px; padding: 10px 14px; background: #f0fdf4; border-radius: 8px; font-size: 13px; color: #166534; line-height: 1.55; }
+.kz-report .kz-ethics { background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid #0284c7; padding: 14px 18px; border-radius: 8px; margin: 16px 0; color: #0c4a6e; }
+.kz-report .kz-synthesis { background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+.kz-report .kz-synthesis h3 { margin-top: 0; color: #1e40af; }
+.kz-report .kz-synthesis-advice { background: #fff; border-radius: 8px; padding: 14px 18px; margin: 12px 0; border-left: 4px solid #22c55e; }
+.kz-report .kz-small { color: #6b7280; font-size: 13px; }
+.kz-report .kz-en { color: #6b7280; font-style: italic; }
+.kz-report ul.kz-list { padding-left: 22px; }
+.kz-report ul.kz-list li { margin: 8px 0; }
+.kz-report .kz-answer-line { display: inline-block; min-width: 160px; border-bottom: 1px solid #9ca3af; }
+.kz-report .kz-stage-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; background: #ede9fe; color: #5b21b6; font-size: 13px; font-weight: 600; }
+.kz-report .kz-print-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.kz-report .kz-print-btn { background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; }
+.kz-report .kz-print-btn:hover { background: #1d4ed8; }
+
+/* 学生版报告可视化 / Student report visuals */
+.kz-report .kz-type-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-align: center; }
+.kz-report .kz-type-badges { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.kz-report .kz-type-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 80px; padding: 10px 20px; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.kz-report .kz-type-plus { font-size: 24px; font-weight: 700; color: #9ca3af; }
+.kz-report .kz-type-summary { font-size: 16px; color: #374151; line-height: 1.6; }
+.kz-report .kz-type-summary .kz-en { font-size: 14px; }
+.kz-report .kz-chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 22px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-chart-title { font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 14px 0; }
+.kz-report .kz-chart-subtitle { font-size: 13px; color: #6b7280; margin: -10px 0 14px 0; }
+.kz-report .kz-domain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 10px 0; }
+.kz-report .kz-domain-block { border-radius: 10px; padding: 16px 10px; text-align: center; position: relative; min-height: 90px; display: flex; flex-direction: column; justify-content: center; }
+.kz-report .kz-domain-name { font-size: 15px; font-weight: 700; color: #1f2937; }
+.kz-report .kz-domain-en { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.kz-report .kz-domain-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+.kz-report .kz-domain-primary { background: #1f2937; color: #fff; }
+.kz-report .kz-domain-secondary { background: #fff; color: #1f2937; border: 1px solid #1f2937; }
+.kz-report .kz-top5-pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.kz-report .kz-top5-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+.kz-report .kz-top5-rank { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; }
+.kz-report .kz-illustration-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+.kz-report .kz-illustration-card { flex: 1; min-width: 140px; max-width: 220px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-illustration-card svg { width: 100%; height: auto; display: block; }
+.kz-report .kz-illustration-label { font-size: 13px; font-weight: 600; color: #374151; margin-top: 10px; }
+.kz-report .kz-illustration-en { font-size: 11px; color: #6b7280; font-style: italic; }
+.kz-report .kz-hero-illustration { background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 20px; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.kz-report .kz-hero-illustration svg { width: 160px; height: 120px; flex-shrink: 0; }
+.kz-report .kz-hero-text { flex: 1; min-width: 200px; }
+.kz-report .kz-hero-text p { margin: 6px 0; }
+@media (max-width: 640px) {
+  .kz-report .kz-domain-grid { grid-template-columns: repeat(2, 1fr); }
+  .kz-report .kz-type-badge { font-size: 18px; padding: 8px 14px; }
+  .kz-report .kz-hero-illustration { flex-direction: column; text-align: center; }
+  .kz-report .kz-hero-illustration svg { width: 140px; height: 105px; }
+}
+.kz-report { counter-reset: kz-section; }
+.kz-report h2.kz-section { counter-increment: kz-section; counter-reset: kz-subsection; }
+.kz-report h2.kz-section::before { content: counter(kz-section, simp-chinese-informal) "、"; font-weight: 700; color: inherit; }
+.kz-report h3.kz-subsection { counter-increment: kz-subsection; }
+.kz-report h3.kz-subsection::before { content: counter(kz-section) "." counter(kz-subsection) " "; font-weight: 700; color: inherit; }
+.kz-report .kz-screen-only { }
+@media print {
+  .kz-report .kz-print-btn { display: none; }
+  .kz-report { max-width: 100%; }
+  .kz-report h2 { page-break-after: avoid; }
+  .kz-report table { page-break-inside: avoid; }
+  .kz-report .kz-card, .kz-report .kz-highlight, .kz-report .kz-tip, .kz-report .kz-warning, .kz-report .kz-type-card, .kz-report .kz-chart-card, .kz-report .kz-domain-block, .kz-report .kz-illustration-card, .kz-report .kz-hero-illustration { page-break-inside: avoid; }
+  .kz-report .kz-screen-only { display: none !important; }
+  .kz-report .kz-screen-only h2.kz-section { counter-increment: none; counter-reset: none; }
+}
+</style>
+
+<div class="kz-print-header">
+  <h1>双维度测评报告（专业详细版）| Dual-Dimension Assessment Report (Professional Edition)</h1>
+  <button class="kz-print-btn" onclick="window.print()">🖨️ 打印 / Print</button>
+</div>
+<div class="kz-meta">
+  <p><strong>姓名 / Name</strong>：林暖语</p>
+  <p><strong>测评日期 / Date</strong>：以系统记录为准 / As recorded by system</p>
+  <p><strong>目标申请方向 / Target Region</strong>：未指定 / Not specified</p>
+</div>
+
+<div class="kz-warning kz-screen-only">
+  <strong>数据质量提示 / Data Quality Notes</strong>
+  <ul class="kz-list">
+    <li>Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report.</li>
+  </ul>
+</div>
+
+
+<h2>报告概览 | Report at a Glance</h2>
+<div class="kz-highlight">
+  <p><strong>你是独一无二的存在。本报告基于你的 Holland RIASEC 兴趣测评与 Gallup CliftonStrengths 优势测评，帮助你了解自己的兴趣舞台、优势风格，以及两者交叉后的职业与专业探索方向。</strong></p>
+  <p class="kz-en"><em>You are uniquely wired. This report integrates your Holland RIASEC interest profile and Gallup CliftonStrengths talent profile to help you understand your preferred stage, natural strengths style, and intersecting career and major directions.</em></p>
+</div>
+<table>
+  <tr><th>维度 / Dimension</th><th>结果 / Result</th></tr>
+  <tr><td>Holland 三码 / Holland Code</td><td><strong>SAR</strong> — 社会型（Social）</td></tr>
+  <tr><td>主导兴趣舞台 / Dominant Stage</td><td>人际关怀派 / People Helper</td></tr>
+  <tr><td>CliftonStrengths 主导领域 / Leading Domain</td><td>关系建立 / Relationship Building</td></tr>
+  <tr><td>CliftonStrengths 次要领域 / Secondary Domain</td><td>影响力 / Influencing</td></tr>
+  <tr><td>优势风格 / Strengths Style</td><td>关系连接型 / Relationship Builder</td></tr>
+</table>
+
+<h3>🎯 稳妥入口职业 | Safe Entry Points</h3>
+<p>如果你更关注就业稳定性和现实可行性，以下方向是不错的起点。这些岗位需求稳定、入行路径清晰，适合作为长期探索的「安全基地」。</p>
+<p class="kz-en">If you prioritize employment stability and practical entry paths, these roles are good starting points with clear demand and accessible entry routes.</p>
+<table>
+  <tr><th>职业 / Career</th><th>为何稳妥 / Why Steady</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>运动教练</td>
+          <td>根据学员体能目标制定训练计划，示范动作、纠正姿势、记录训练数据并预防运动损伤。</td>
+          <td>运动训练、体育教育、运动人体科学、康复治疗</td>
+        </tr>
+        <tr>
+          <td>心理咨询师</td>
+          <td>通过面谈或测评帮助来访者理解情绪与行为问题，制定辅导计划并持续跟进。</td>
+          <td>心理学、应用心理学、临床心理学、社会工作</td>
+        </tr>
+</table>
+<div class="kz-tip">
+  💡 <strong>提示 / Tip</strong>：即使你的高适配方向看起来偏创意或研究，也可以从「稳妥入口」开始积累经验，再逐步转向理想方向。
+  <br><span class="kz-en">Even if your best-fit directions seem creative or research-oriented, you can start from safe entry points and gradually move toward your ideal path.</span>
+</div>
+
+
+<h2 class="kz-section">我的兴趣舞台 | My Interest Stage</h2>
+<p>你的 Holland 三码是 <strong>SAR</strong>，三个字母分别代表你最感兴趣、次感兴趣和第三感兴趣的工作舞台。</p>
+<p class="kz-en">Your Holland code is <strong>SAR</strong>. The three letters represent your strongest, second-strongest, and third-strongest areas of work interest.</p>
+<table>
+  <tr><th>排名 / Rank</th><th>类型 / Type</th><th>舞台标签 / Stage Tag</th><th>含义 / Meaning</th></tr>
+  
+        <tr>
+          <td>1</td>
+          <td>S — 社会型（Social）</td>
+          <td><span class="kz-stage-badge">人际关怀派 / People Helper</span></td>
+          <td>喜欢与人互动、帮助他人、教导或治疗，重视人际关系与社会贡献。<br><span class="kz-en">You enjoy interacting with, helping, teaching, or treating people, and value social contribution.</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>A — 艺术型（Artistic）</td>
+          <td><span class="kz-stage-badge">创意表达派 / Creative Expresser</span></td>
+          <td>喜欢艺术、设计、音乐、写作或表演，重视自我表达、创造力和审美体验。<br><span class="kz-en">You enjoy art, design, music, writing, or performance, and value self-expression and creativity.</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>R — 现实型（Realistic）</td>
+          <td><span class="kz-stage-badge">实践行动派 / Hands-On Doer</span></td>
+          <td>喜欢使用工具、机器或体力技能解决实际问题，重视具体成果。<br><span class="kz-en">You enjoy working with tools, machines, or physical skills to solve practical problems.</span></td>
+        </tr>
+</table>
+
+
+<h2 class="kz-section">我的优势风格 | My Strengths Style</h2>
+<p>你的 Gallup CliftonStrengths Top 10 主题按排名加权后，<strong>关系建立</strong> 领域得分最高，是最能代表你稳定工作方式的领域；<strong>影响力</strong> 为次要领域。这意味着你最自然的工作方式是 <strong>关系连接型 / Relationship Builder</strong>。</p>
+<p class="kz-en">When your Gallup CliftonStrengths Top 10 themes are weighted by rank, <strong>Relationship Building</strong> scores highest as your leading domain and <strong>Influencing</strong> is your secondary domain. Your most natural way of working is as an <strong>Relationship Builder</strong>.</p>
+<div class="kz-card">
+  <p><strong>关系建立 / Relationship Building</strong>：重视连接、信任和团队协作，善于让不同的人走到一起。/ You value connection, trust, and teamwork, bringing people together.</p>
+</div>
+<h3>Top 10 主题一览 | Top 10 Themes at a Glance</h3>
+<table>
+  <tr><th>排名 / Rank</th><th>主题 / Theme</th><th>领域 / Domain</th></tr>
+  
+        <tr>
+          <td>1</td>
+          <td>交往 / Relator</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>包容 / Includer</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>和谐 / Harmony</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>关联 / Connectedness</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>积极 / Positivity</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>伯乐 / Developer</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>行动 / Activator</td>
+          <td>影响力 / Influencing</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>体谅 / Empathy</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>回顾 / Context</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>适应 / Adaptability</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+</table>
+<h3>Top 5 才干主题详细解读 | Your Top 5 Themes in Detail</h3>
+<p>以下是对你最突出的 5 个才干主题的详细解读。第 6–10 名主题已列在上方一览表中，作为延伸线索。/ Detailed narratives are provided for your top 5 themes. Themes 6–10 are listed above as extended clues.</p>
+<table>
+  <tr><th>排名 / Rank</th><th>主题 / Theme</th><th>领域 / Domain</th><th>一句话定义 / One-Liner</th></tr>
+  
+        <tr>
+          <td>1</td>
+          <td>交往 / Relator</td>
+          <td>关系建立 / Relationship Building</td>
+          <td>交往能力强的人喜欢人际间的亲密关系。 他们最大的满足是与朋友一道为实现一个目标而共同努力。<br><span class='kz-en'>People exceptionally talented in the Relator theme enjoy close relationships with others. They find deep satisfaction in working hard with friends to achieve a goal.</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>包容 / Includer</td>
+          <td>关系建立 / Relationship Building</td>
+          <td>包容力强的人善于接纳他人。他们关心那些被忽略的人， 并努力让这些人融入集体。<br><span class='kz-en'>People exceptionally talented in the Includer theme accept others. They show awareness of those who feel left out and make efforts to include them.</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>和谐 / Harmony</td>
+          <td>关系建立 / Relationship Building</td>
+          <td>“和谐”才干主题突出的人渴求协调一致。 他们避免冲突，寻求共识。<br><span class='kz-en'>People exceptionally talented in the Harmony theme look for consensus. They don't enjoy conflict; rather, they seek areas of agreement.</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>关联 / Connectedness</td>
+          <td>关系建立 / Relationship Building</td>
+          <td>“关联”才干主题突出的人深信世间万物都彼此关联。 他们相信，世间没有巧合，凡事必有成因。<br><span class='kz-en'>People exceptionally talented in the Connectedness theme have faith in the links among all things. They believe there are few coincidences and that almost every event has meaning.</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>积极 / Positivity</td>
+          <td>关系建立 / Relationship Building</td>
+          <td>积极的人浑身充满了富有感染力的热情。 他们乐观向上，并能感召周围的人。<br><span class='kz-en'>People exceptionally talented in the Positivity theme have an enthusiasm that is contagious. They are upbeat and can get others excited about what they are going to do.</span></td>
+        </tr>
+</table>
+<p><strong>Top 10 领域分布 / Domain Distribution (Top 10)</strong>：</p>
+<ul class="kz-list">
+  <li>关系建立 / Relationship Building：8</li><li>影响力 / Influencing：1</li><li>战略思维 / Strategic Thinking：1</li>
+</ul>
+
+
+<h2 class="kz-section">兴趣 × 优势交叉矩阵 | Interest × Strengths Cross-Matrix</h2>
+
+<div class="kz-ethics">
+  <p><strong>关于本矩阵的说明 / About This Matrix</strong></p>
+  <p>本框架是一个<strong>辅助你探索兴趣与潜能交集</strong>的工具，而非对你下结论的标签。矩阵中的每一格代表一种<strong>职业范畴</strong>（方向层），是根据 Holland 兴趣舞台与 Gallup 工作方式的理论整合而定义；报告后文的「推荐职业路径」则提供具体岗位线索。请把结果当作<strong>对话与行动的起点</strong>，通过课程体验、实习、访谈和项目实践来验证。</p>
+  <p class="kz-en"><em>This matrix is an <strong>exploration aid</strong>, not a diagnostic label. Each cell represents an <strong>occupational domain</strong> (direction layer) defined by the integration of Holland interest stage and Gallup working style; specific job suggestions appear later in the career paths section. Use these insights as a starting point for conversation and action; validate them through real experiences, internships, interviews, and projects.</em></p>
+</div>
+
+<p>下方矩阵展示了 6 种 RIASEC 兴趣类型与 4 大 CliftonStrengths 优势领域交叉形成的 <strong>24 种职业范畴</strong>。表格中每格仅标注范畴名称；带色边框的格子与你结果相关——边框越实、颜色越深，关联越强。具体解读见矩阵下方。</p>
+<p class="kz-en"><em>The matrix shows <strong>24 occupational domains</strong>. Each cell lists only the domain name; colored borders mark relevance to your results. See detailed interpretation below the matrix.</em></p>
+
+<div class="kz-matrix-legend">
+  <div class="kz-matrix-legend-item kz-matrix-legend-dominant">
+    <strong>主导交叉 / Primary</strong>
+    当你最强烈的兴趣舞台，遇上最自然擅长的做事方式，一个特别值得率先投入的方向便会浮现——不妨从这里开始验证自己的热情与能力。
+    <br><span class="kz-en">Where your strongest interest stage meets your most natural working style — a direction worth exploring first.</span>
+  </div>
+  <div class="kz-matrix-legend-item kz-matrix-legend-secondary">
+    <strong>次要交叉 / Secondary</strong>
+    兴趣与才干以另一种配比相遇时，会照亮若干值得并行留意的拓展面——它们未必是主航道，却可能藏着你尚未充分尝试的潜能。
+    <br><span class="kz-en">Alternative pairings of interest and strength that reveal expansion paths and untapped potential.</span>
+  </div>
+  <div class="kz-matrix-legend-item kz-matrix-legend-tertiary">
+    <strong>第三交叉 / Third</strong>
+    在三码与双领域的交汇处，还有一些更轻柔、更长期的线索——适合作为背景关注，在主业之外慢慢积累体验与见识。
+    <br><span class="kz-en">Gentler, longer-term clues at the edges of your profile — worth keeping on your radar over time.</span>
+  </div>
+</div>
+
+<table class="kz-matrix-table"><tr><th class="kz-matrix-header">RIASEC \ 领域 / Domain</th><th class="kz-matrix-header">战略思维 / Strategic Thinking</th><th class="kz-matrix-header">执行力 / Executing</th><th class="kz-matrix-header">影响力 / Influencing</th><th class="kz-matrix-header">关系建立 / Relationship Building</th></tr><tr><th>R / Realistic</th><td class=""><div class="kz-matrix-domain-title">实操技术研究与工程应用范畴</div></td><td class=""><div class="kz-matrix-domain-title">建造运维与现场执行范畴</div></td><td class=""><div class="kz-matrix-domain-title">竞技表现与技术影响范畴</div></td><td class="kz-matrix-tertiary"><div class="kz-matrix-domain-title">动手教学与体能指导范畴</div></td></tr><tr><th>I / Investigative</th><td class=""><div class="kz-matrix-domain-title">科学研究与战略探索范畴</div></td><td class=""><div class="kz-matrix-domain-title">实验研究与规范执行范畴</div></td><td class=""><div class="kz-matrix-domain-title">科学传播与知识转化范畴</div></td><td class=""><div class="kz-matrix-domain-title">学术教育与科研传承范畴</div></td></tr><tr><th>A / Artistic</th><td class=""><div class="kz-matrix-domain-title">创意概念与美学策略范畴</div></td><td class=""><div class="kz-matrix-domain-title">创作落地与展演执行范畴</div></td><td class="kz-matrix-tertiary"><div class="kz-matrix-domain-title">创意表达与公众影响范畴</div></td><td class="kz-matrix-secondary"><div class="kz-matrix-domain-title">艺术疗愈与社区文化范畴</div></td></tr><tr><th>S / Social</th><td class=""><div class="kz-matrix-domain-title">教育研究与用户体验范畴</div></td><td class=""><div class="kz-matrix-domain-title">社会服务与照护执行范畴</div></td><td class="kz-matrix-secondary"><div class="kz-matrix-domain-title">教育培训与公益领导范畴</div></td><td class="kz-matrix-dominant"><div class="kz-matrix-domain-title">人际关怀与关系支持范畴</div></td></tr><tr><th>E / Enterprising</th><td class=""><div class="kz-matrix-domain-title">商业战略与决策分析范畴</div></td><td class=""><div class="kz-matrix-domain-title">组织运营与目标达成范畴</div></td><td class=""><div class="kz-matrix-domain-title">创业影响与市场竞争范畴</div></td><td class=""><div class="kz-matrix-domain-title">组织发展与关系经营范畴</div></td></tr><tr><th>C / Conventional</th><td class=""><div class="kz-matrix-domain-title">数据分析与财务规划范畴</div></td><td class=""><div class="kz-matrix-domain-title">财务行政与流程执行范畴</div></td><td class=""><div class="kz-matrix-domain-title">商务流程与市场运作范畴</div></td><td class=""><div class="kz-matrix-domain-title">客户服务与人力事务范畴</div></td></tr></table>
+
+<div class="kz-intersection-detail">
+  <h3>你的交叉解读 | Your Intersection Profile</h3>
+  <p class="kz-intersection-intro">矩阵中标色边框的格子，对应你测评结果中兴趣与优势的不同交汇方式。下方按层级展开具体范畴——帮助你从「方向感」走向「可尝试的行动线索」。</p>
+  <p class="kz-intersection-intro kz-en"><em>Colored cells in the matrix mark how your interests and strengths intersect. The sections below expand each domain — moving from direction to actionable exploration clues.</em></p>
+  
+<div class="kz-intersection-tier kz-intersection-tier-primary">
+  <div class="kz-intersection-tier-header">
+    <span class="kz-intersection-tier-badge">主导交叉</span>
+    <p class="kz-intersection-tier-desc">这是你当前最值得优先投入精力的方向。不妨问自己：在这个范畴里，哪些具体活动曾让你忘记时间？哪些经历让你感到「这就是我擅长的事」？<br><span class="kz-en">Your top-priority direction. Ask yourself: which activities in this domain made you lose track of time? When did you feel 'this is what I'm good at'?</span></p>
+  </div>
+  <div class="kz-intersection-cards">
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">人际关怀与关系支持范畴</p>
+  <p class="kz-intersection-card-tagline">倾听、陪伴、支持——在关系中助人成长</p>
+  <p class="kz-intersection-card-body">社会型兴趣的核心舞台，关系建立优势的天然主场；交叉指向心理咨询、教学辅导、HR 伙伴、个人服务等深度人际支持方向。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>社会服务、医疗保健服务、个人服务、教学/教育、人力资源</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>心理咨询师、教师/辅导员、HR 伙伴</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Empathy、Relator、Harmony、Developer、Individualization</div></div>
+  <div class="kz-intersection-prompt">💡 试着找一个与此范畴相关的小项目或体验，记录你在其中的能量变化。<br><span class="kz-en">💡 Try a small project in this domain and note how your energy shifts.</span></div>
+</div></div>
+</div>
+<div class="kz-intersection-tier kz-intersection-tier-secondary">
+  <div class="kz-intersection-tier-header">
+    <span class="kz-intersection-tier-badge">次要交叉</span>
+    <p class="kz-intersection-tier-desc">这些交叉为你打开了另一种可能的组合方式。它们适合作为并行探索的支线——不必立刻做出选择，但值得在课程、社团或短期项目中轻轻试探。<br><span class="kz-en">These intersections open alternative combinations worth exploring in parallel — try them lightly through courses, clubs, or short projects.</span></p>
+  </div>
+  <div class="kz-intersection-cards">
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">教育培训与公益领导范畴</p>
+  <p class="kz-intersection-card-tagline">激励群体、引领改变——在教育与公益中发声</p>
+  <p class="kz-intersection-card-body">社会型提供群体服务对象，影响力优势提供培训、倡导与领导；交叉指向培训师、教育管理者、公益领袖、职业咨询等。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>教学/教育、专业咨询/指导、宗教活动、社会服务</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>培训师、教育管理者、公益组织领导者</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Communication、Developer、Includer、Significance</div></div>
+  <div class="kz-intersection-prompt">💡 可以把它当作「第二战场」——在主业之外，每周留出一小块时间做相关尝试。<br><span class="kz-en">💡 Treat this as a 'second front' — set aside a small weekly slice for related experiments.</span></div>
+</div>
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">艺术疗愈与社区文化范畴</p>
+  <p class="kz-intersection-card-tagline">用艺术连接人心、在社区中播种美感</p>
+  <p class="kz-intersection-card-body">艺术型提供表达媒介，关系建立优势提供共情与连接；交叉指向艺术治疗、创意写作教学、社区艺术、烹饪分享等「艺术的人际价值」。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>烹饪艺术、创意写作、视觉艺术、表演艺术、教学/教育</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>艺术治疗师、创意写作教师、社区艺术组织者</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Empathy、Developer、Connectedness、Positivity</div></div>
+  <div class="kz-intersection-prompt">💡 可以把它当作「第二战场」——在主业之外，每周留出一小块时间做相关尝试。<br><span class="kz-en">💡 Treat this as a 'second front' — set aside a small weekly slice for related experiments.</span></div>
+</div></div>
+</div>
+<div class="kz-intersection-tier kz-intersection-tier-tertiary">
+  <div class="kz-intersection-tier-header">
+    <span class="kz-intersection-tier-badge">第三交叉</span>
+    <p class="kz-intersection-tier-desc">这些线索处于你兴趣与优势谱系的边缘地带，不必急于定义，却值得长期留意。随着阅历增长，它们有时会意外成为新的突破口。<br><span class="kz-en">These clues sit at the edges of your profile — no rush to define them, but worth tracking as experience grows; they may become unexpected breakthroughs.</span></p>
+  </div>
+  <div class="kz-intersection-cards">
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">创意表达与公众影响范畴</p>
+  <p class="kz-intersection-card-tagline">让作品被看见、让美学成为话语权</p>
+  <p class="kz-intersection-card-body">艺术型提供表达载体，影响力优势提供展示、说服与公众动员；交叉指向创意总监、品牌公关、艺术经纪、媒体传播等。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>营销/广告、媒体、表演艺术、视觉艺术、创意写作</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>创意总监、品牌公关、艺术经纪人</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Communication、Significance、Woo、Maximizer</div></div>
+  <div class="kz-intersection-prompt">💡 不必立刻行动，但可以把相关领域加入你的阅读清单或关注列表，保持开放。<br><span class="kz-en">💡 No immediate action needed — add related topics to your reading list and stay open.</span></div>
+</div>
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">动手教学与体能指导范畴</p>
+  <p class="kz-intersection-card-tagline">手把手带、贴身教——在动作与陪伴中建立信任</p>
+  <p class="kz-intersection-card-body">现实型提供技能传授与身体互动舞台，关系建立优势强调陪伴、信任与个体化关注；交叉指向运动教练、动物照护、技术实训师等「在动手中育人」的方向。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>体育运动、动物服务、工程、农业</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>运动教练、技术培训师、动物服务</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Developer、Individualization、Relator、Positivity</div></div>
+  <div class="kz-intersection-prompt">💡 不必立刻行动，但可以把相关领域加入你的阅读清单或关注列表，保持开放。<br><span class="kz-en">💡 No immediate action needed — add related topics to your reading list and stay open.</span></div>
+</div></div>
+</div>
+</div>
+
+
+<h2 class="kz-section">推荐申请专业 | Recommended Majors</h2>
+<p>以下专业根据推荐职业路径分层整理。<strong>核心专业</strong>建议优先了解；<strong>拓展专业</strong>可作为备选或第二专业方向；<strong>可关注专业</strong>适合作为长期兴趣跟踪。</p>
+<p class="kz-en"><em>Majors are organized by priority. <strong>Core</strong> majors are the top priorities; <strong>Expand</strong> majors are alternatives or second-field options; <strong>Watch</strong> majors are for long-term interest tracking.</em></p>
+
+<h3 class="kz-subsection">核心专业 | Core Majors</h3>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>心理学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>应用心理学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>临床心理学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>社会工作</td>
+          <td>法学/管理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>师范类专业</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>学科教育</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>教育学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>特殊教育</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">拓展专业 | Expand Majors</h3>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>人力资源管理</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>劳动关系</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>工商管理</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>运动训练</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>体育教育</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>运动人体科学</td>
+          <td>理学/工学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>康复治疗</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>艺术治疗</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">可关注专业 | Watch Majors</h3>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>音乐治疗</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>美术学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>创意写作</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>汉语言文学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>戏剧影视文学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>艺术管理</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<div class="kz-warning">
+  ⚠️ <strong>提醒 / Reminder</strong>：推荐专业仅为参考路径。国内路径需对照教育部本科专业目录与各省招生计划；海外路径需以目标院校官网 Programme/Course 名称为准。
+  <br><span class="kz-en">Recommended majors are reference paths. For domestic applications, verify against the Ministry of Education catalog and provincial enrollment plans. For overseas applications, confirm programme titles on target university websites.</span>
+</div>
+
+
+<h2 class="kz-section">推荐职业路径 | Recommended Career Paths</h2>
+<p>以下推荐分为三个层级：</p>
+<ol class="kz-list">
+  <li><strong>高适配路径 / High Fit</strong>：与你的主导兴趣和主导优势精确匹配。</li>
+  <li><strong>中适配路径 / Moderate Fit</strong>：与你的主导兴趣或主导优势部分匹配，可作为拓展方向。</li>
+  <li><strong>就业友好备选 / Employment-Friendly Alternatives</strong>：即使你对某些高适配方向存有顾虑，这些方向也能让你在现实就业市场中找到稳定入口。</li>
+</ol>
+<p class="kz-en"><em>Recommendations are divided into three tiers. Each career is tagged with <strong>Steady Employment</strong>, <strong>Explore-oriented</strong>, or <strong>High Challenge</strong> to help you choose.</em></p>
+
+<div class="kz-card">
+  <p><strong>标签说明 / Tag Guide</strong>：</p>
+  <ul class="kz-list">
+    <li><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span>：岗位需求稳定，入行路径清晰。</li>
+    <li><span class="kz-tag kz-tag-explore">探索型 / Explore-oriented</span>：需要更多尝试和积累，适合作为长期方向。</li>
+    <li><span class="kz-tag kz-tag-challenge">高挑战型 / High Challenge</span>：竞争激烈或需要长期资源积累，适合有强烈动机的人。</li>
+  </ul>
+</div>
+
+<h3 class="kz-subsection">高适配路径 | High Fit</h3>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>主要工作 / What They Do</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>心理咨询师</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>通过面谈或测评帮助来访者理解情绪与行为问题，制定辅导计划并持续跟进。</td>
+          <td>心理学、应用心理学、临床心理学、社会工作</td>
+        </tr>
+        <tr>
+          <td>教师</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>在中小学或培训机构备课、授课、批改作业，关注学生成长并与家长沟通。</td>
+          <td>师范类专业、学科教育、教育学、特殊教育</td>
+        </tr>
+        <tr>
+          <td>HR 伙伴</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>协助业务部门进行招聘、员工关系、绩效沟通与团队建设，支持人才发展。</td>
+          <td>人力资源管理、心理学、劳动关系、工商管理</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">中适配路径 | Moderate Fit</h3>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>主要工作 / What They Do</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>运动教练</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>根据学员体能目标制定训练计划，示范动作、纠正姿势、记录训练数据并预防运动损伤。</td>
+          <td>运动训练、体育教育、运动人体科学、康复治疗</td>
+        </tr>
+        <tr>
+          <td>艺术治疗师</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>通过绘画、音乐或戏剧等艺术活动帮助来访者表达情绪、缓解压力、促进康复。</td>
+          <td>艺术治疗、心理学、音乐治疗、社会工作、美术学</td>
+        </tr>
+        <tr>
+          <td>创意写作教师</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>教授小说、诗歌或剧本写作技巧，批改学员作品并组织读书会或写作工作坊。</td>
+          <td>创意写作、汉语言文学、教育学、戏剧影视文学</td>
+        </tr>
+        <tr>
+          <td>社区艺术组织者</td>
+          <td><span class="kz-tag kz-tag-explore">探索型 / Explore-oriented</span></td>
+          <td>在社区策划公共艺术项目、工作坊或文化节，邀请居民参与并促进社区交流。</td>
+          <td>艺术管理、社会工作、公共艺术、文化产业管理</td>
+        </tr>
+        <tr>
+          <td>技术培训师</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>为企业或学校学员讲授设备操作、软件使用或工艺流程，设计实操练习并考核学习效果。</td>
+          <td>职业技术教育、机械工程、人力资源管理、教育学</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">就业友好备选 | Employment-Friendly Alternatives</h3>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>为何作为备选 / Why This Alternative</th><th>相关专业 / Related Majors</th></tr>
+  <tr><td colspan="4">暂无 / None</td></tr>
+</table>
+
+
+<h2 class="kz-section">兴趣-优势整合分析 | Interest-Strengths Integration</h2>
+<ul class="kz-list">
+  <li><strong>主导兴趣 / Dominant Interest</strong>：社会型（Social）</li>
+  <li><strong>主导优势 / Dominant Strength</strong>：关系建立 / Relationship Building</li>
+  <li><strong>整体契合度 / Overall Fit</strong>：兴趣与优势高度一致 / High alignment</li>
+</ul>
+<div class="kz-card">
+  <p><strong>张力分析 / Tension Analysis</strong>：你的 Gallup 主导领域（关系建立）与 Holland 三码中的 S 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (关系建立) aligns strongly with the S type in your Holland code, giving you both internal motivation and natural ability in related directions.</p>
+</div>
+<div class="kz-tip">
+  <strong>一致性提示 / Consistency</strong>：三码在六边形上有一定跨度，兴趣范围较广，可重点关注能将多面向结合的方向。/ Your three-letter code spans a moderate range on the hexagon; consider directions that integrate multiple interests.
+</div>
+
+<div class="kz-screen-only">
+
+<h2 class="kz-section">就业市场参考 | Employment Market Reference</h2>
+<div class="kz-tip">
+  <strong>数据建设中 / Data Under Construction</strong>：本模块计划接入第三方就业数据源（招聘平台、行业报告、校友追踪），为每个推荐职业补充平均起薪、岗位需求、学历要求、热门城市与发展路径。当前版本暂以框架形式呈现，具体数值请以目标院校就业报告和招聘平台实时数据为准。
+  <br><span class="kz-en">This module will integrate third-party employment data (job platforms, industry reports, alumni tracking) to add entry salary, job demand, education requirements, top cities, and career paths for each recommended role. Current version shows the framework only; please verify specific figures against university employment reports and live job platforms.</span>
+</div>
+<table>
+  <tr><th>数据项 / Data Item</th><th>说明 / Description</th><th>参考来源 / Potential Source</th></tr>
+  <tr><td>平均起薪 / Entry Salary</td><td>应届生或初级岗位的中位数起薪</td><td>麦可思、智联招聘、BOSS直聘</td></tr>
+  <tr><td>岗位需求量 / Job Demand</td><td>近一年招聘发布数量与增长趋势</td><td>智联招聘、前程无忧、猎聘</td></tr>
+  <tr><td>学历要求 / Education Requirement</td><td>本科/硕士/博士占比</td><td>教育部就业质量报告、招聘平台</td></tr>
+  <tr><td>热门城市 / Top Cities</td><td>岗位分布集中的城市或地区</td><td>BOSS直聘、猎聘城市报告</td></tr>
+  <tr><td>发展路径 / Career Path</td><td>3-5 年、5-10 年的典型晋升方向</td><td>行业报告、校友访谈</td></tr>
+</table>
+
+
+<h2 class="kz-section">证据等级说明与科学性建设 | Evidence Levels & Scientific Roadmap</h2>
+<h3 class="kz-subsection">当前证据等级定义 | Current Evidence Level Definitions</h3>
+<table>
+  <tr><th>等级 / Level</th><th>含义 / Meaning</th><th>当前应用情况 / Current Application</th></tr>
+  <tr><td><strong>A</strong></td><td>大样本实证研究或长期追踪数据支持</td><td>当前暂无，需通过用户毕业去向追踪积累</td></tr>
+  <tr><td><strong>B</strong></td><td>小样本研究、专家评审或行业调研支持</td><td>当前暂无，可通过行业专家访谈与毕业生反馈逐步建立</td></tr>
+  <tr><td><strong>C</strong></td><td>理论推导与现有文献综述支持</td><td>当前大部分职业-专业映射属于此等级</td></tr>
+  <tr><td><strong>D</strong></td><td>基于个案经验或初步假设</td><td>少量映射属于此等级</td></tr>
+</table>
+
+<h3 class="kz-subsection">如何积累 A/B 级证据 | How to Build A/B-Level Evidence</h3>
+<ol class="kz-list">
+  <li><strong>毕业生追踪研究 / Graduate tracking studies</strong>：对使用本工具的用户进行 1 年、3 年、5 年跟踪，记录其专业选择与职业满意度。
+    <br><span class="kz-en">Follow users at 1, 3, and 5 years to record major choices and career satisfaction.</span></li>
+  <li><strong>行业专家评议 / Expert review</strong>：邀请各职业领域的资深从业者对推荐匹配度进行 1-5 分评分。
+    <br><span class="kz-en">Invite senior practitioners to rate the fit of recommendations.</span></li>
+  <li><strong>用人单位调研 / Employer surveys</strong>：收集招聘方对相关专业毕业生的能力匹配评价。
+    <br><span class="kz-en">Collect hiring managers' assessments of graduates from related majors.</span></li>
+  <li><strong>纵向对照实验 / Longitudinal controlled experiments</strong>：对比使用本工具与未使用本工具的学生在专业选择清晰度、就业对口率上的差异。
+    <br><span class="kz-en">Compare students who used the tool versus those who did not.</span></li>
+</ol>
+
+
+<h2 class="kz-section">行动跟踪模块 | Action Tracking Module</h2>
+<p>本模块帮助你把报告结论转化为具体行动并记录进展。若使用在线版工具，可自动保存打卡与复盘。</p>
+<p class="kz-en">This module helps turn report insights into concrete actions and track progress. The online version can automatically save check-ins and reflections.</p>
+
+<h3>行动 1：职业访谈记录 | Career Interview Log</h3>
+<table>
+  <tr><th>项目 / Item</th><th>内容 / Content</th></tr>
+  <tr><td>访谈对象 / Interviewee</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>职业 / Career</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>访谈日期 / Date</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>三个关键发现 / Key Insights</td><td>1. <span class="kz-answer-line"></span><br>2. <span class="kz-answer-line"></span><br>3. <span class="kz-answer-line"></span></td></tr>
+  <tr><td>我喜欢 / What I Liked</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>我担心 / What Concerned Me</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>下一步 / Next Step</td><td><span class="kz-answer-line"></span></td></tr>
+</table>
+
+<h3>行动 2：专业体验记录 | Major Exploration Log</h3>
+<table>
+  <tr><th>项目 / Item</th><th>内容 / Content</th></tr>
+  <tr><td>体验专业 / Major</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>体验方式 / Activity</td><td>□ 线上课程 / Online course &nbsp; □ 校园开放日 / Open day &nbsp; □ 旁听课程 / Audit &nbsp; □ 实习 / Internship</td></tr>
+  <tr><td>体验时间 / Date</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>感受 / Reflection</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>是否愿意继续探索 / Continue?</td><td>□ 是 / Yes &nbsp; □ 否 / No &nbsp; □ 再试试 / Maybe</td></tr>
+</table>
+
+<h3>行动 3：月度复盘 | Monthly Review</h3>
+<table>
+  <tr><th>问题 / Question</th><th>我的回答 / My Answer</th></tr>
+  <tr><td>这个月我尝试了哪些方向？ / What did I try this month?</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>哪些方向让我更有能量？ / What energized me?</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>哪些方向让我感觉不适合？ / What felt like a poor fit?</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>下个月我要聚焦什么？ / What will I focus on next month?</td><td><span class="kz-answer-line"></span></td></tr>
+</table>
+
+
+<h2 class="kz-section">下一步行动 | Next Steps</h2>
+<ol class="kz-list">
+  <li><strong>阅读学生一页纸摘要 / Read student one-pager</strong>：快速抓住核心结论。</li>
+  <li><strong>选择 1-2 个稳妥入口职业 / Pick 1-2 safe entry points</strong>：在招聘网站查找真实岗位描述。</li>
+  <li><strong>了解 2-3 个核心专业 / Explore 2-3 core majors</strong>：查看目标院校的国内招生目录或海外 Programme 页面。</li>
+  <li><strong>完成一次职业访谈 / Do one career interview</strong>：记录到「行动跟踪模块」。</li>
+  <li><strong>与测评师讨论 / Discuss with a counselor</strong>：带着报告参加一对一职业咨询。</li>
+</ol>
+
+</div>
+
+<h2>附录：专业版解读 | Appendix: Professional Interpretation</h2>
+<h3>A. RIASEC 剖面 | RIASEC Profile</h3>
+<table>
+  <tr><th>类型 / Type</th><th>得分 / Score</th><th>类型 / Type</th><th>得分 / Score</th></tr>
+  
+        <tr>
+          <td>R 现实型 / Realistic</td><td>25</td>
+          <td>I 研究型 / Investigative</td><td>19</td>
+        </tr>
+        <tr>
+          <td>A 艺术型 / Artistic</td><td>39</td>
+          <td>S 社会型 / Social</td><td>42</td>
+        </tr>
+        <tr>
+          <td>E 企业型 / Enterprising</td><td>22</td>
+          <td>C 常规型 / Conventional</td><td>20</td>
+        </tr>
+</table>
+<ul class="kz-list">
+  <li><strong>三码 / Code</strong>：SAR</li>
+  <li><strong>区分度提示 / Differentiation Note</strong>：最高与最低分相差 23 分，兴趣轮廓较为平缓。</li>
+  <li><span class="kz-en"><strong>Differentiation Note</strong>：The gap between highest and lowest scores is 23; your interest profile is relatively flat.</span></li>
+</ul>
+
+<h3>B. 主题叙事 | Theme Narrative</h3>
+<div class="kz-info">
+  <strong>说明 / Note</strong>：以下主题叙事已提供中英双语对照：中文翻译优先保留本土教练式表达，英文保留 Gallup CliftonStrengths 原有表述风格。每个主题依次列出标准定义、特征、应用建议与盲点。
+  <br><span class="kz-en">The theme narratives below are presented in bilingual format: Chinese translations retain a local coaching style, while English preserves the original Gallup CliftonStrengths tone. Each theme includes its standard definition, feature, application tips, and blind spots.</span>
+</div>
+
+        <h4>交往 / Relator（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：交往能力强的人喜欢人际间的亲密关系。 他们最大的满足是与朋友一道为实现一个目标而共同努力。<br><span class='kz-en'>People exceptionally talented in the Relator theme enjoy close relationships with others. They find deep satisfaction in working hard with friends to achieve a goal.</span></p>
+        <p><strong>特征 / Feature</strong>：交往能力强的人享受亲密的人际关系。他们最大的乐趣是与朋友一起合作，共同实现共同目标。<br><span class='kz-en'>You enjoy close, intimate relationships. Your greatest pleasure comes from working alongside friends toward a shared goal.</span></p>
+        <p><strong>应用 / Application</strong>：愿意与他人分享知识和经验，支持他人的成长和发展。 尊重和接纳他人的不同观点、文化和背景。倡导多样性和包容性，并与不同背景的人合作，增进相互理 解和合作。 重视他人的观点和感受。倾听他人的需求和问题，并展现出真正的关心。 培养良好的社交技巧，学会察言观色，适应不同的人际交往风格，以更好地理解和与他人沟通。 培养解决问题的技巧，处理冲突时保持冷静和客观，寻求妥协和解决方案，有效沟通，寻求共同的利益 和理解。<br><span class='kz-en'>Be willing to share your knowledge and experience with others to support their growth and development.
+Respect and accept others' different viewpoints, cultures, and backgrounds. Advocate for diversity and inclusion, and work with people from diverse backgrounds to increase mutual understanding and cooperation.
+Value others' perspectives and feelings. Listen to their needs and problems and show genuine care.
+Develop good social skills. Learn to read the room and adapt to different interpersonal styles so you can better understand and communicate with others.
+Build problem-solving skills. Stay calm and objective when handling conflict, seek compromise and solutions, communicate effectively, and look for shared interests and understanding.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 过于坚持己见和固定的交往模式，不愿意适应和调整自己的行为和观念，影响交往的互动性和流畅度。 · 忽视寻找共同的利益点和共同目标，导致交往关系的表面化和短暂性。 · 不尊重他人的个人空间和隐私，过于侵入性的行为和过问，造成他人的不适和疏离。<br><span class='kz-en'>· You may cling too tightly to your own views and fixed ways of relating, resisting adapting or adjusting your behavior and beliefs, which can make interactions less fluid.
+· You may neglect to find shared interests and common goals, causing relationships to become superficial and short-lived.
+· You may fail to respect others' personal space and privacy, behaving intrusively or asking overly personal questions, which can make others uncomfortable and distant.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>包容 / Includer（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：包容力强的人善于接纳他人。他们关心那些被忽略的人， 并努力让这些人融入集体。<br><span class='kz-en'>People exceptionally talented in the Includer theme accept others. They show awareness of those who feel left out and make efforts to include them.</span></p>
+        <p><strong>特征 / Feature</strong>：包容力强的人是慈善家，他们善于接纳他人，关心被忽视的人，并促使他们融入集体。<br><span class='kz-en'>You are naturally accepting, caring about those who are overlooked and helping them become part of the group.</span></p>
+        <p><strong>应用 / Application</strong>：展现对不同背景、观点和经验的尊重和欣赏。认识到每个人都有独特的贡献和价值，倾听并接纳不同意 见和观点。 主动提供支持和帮助他人的机会，展现关心和同理心。愿意倾听他人的需求，并努力为他人提供支持和 协助。 鼓励积极的沟通和反馈，提供安全和开放的环境，让每个人都能表达意见和感受。确保沟通渠道畅通， 包括定期会议、团队讨论和个人反馈。 加强自我意识，了解自己的偏好和偏见，积极反思和调整自己的行为，加强与他人的情感连接和共情能 力。<br><span class='kz-en'>Show respect and appreciation for different backgrounds, perspectives, and experiences. Recognize that everyone has unique contributions and value, and listen to and accept differing opinions and views.
+Actively offer opportunities to support and help others, showing care and empathy. Be willing to listen to others' needs and do your best to provide support and assistance.
+Encourage positive communication and feedback by providing a safe and open environment where everyone can express opinions and feelings. Make sure communication channels stay open, including regular meetings, team discussions, and personal feedback.
+Strengthen self-awareness by understanding your own preferences and biases, reflecting actively, and adjusting your behavior to build stronger emotional connections and empathy with others.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 对于不同文化背景、价值观和行为规范的认知不足，缺乏对多元文化的尊重和理解。 · 与同质化的社交圈子保持较高的亲密度，缺乏与多样化背景的人交流和接触的机会。 · 身处不支持包容和多样性的环境，如歧视性言论和行为较多的地方，会对包容主题产生负面影响。<br><span class='kz-en'>· You may lack knowledge of different cultural backgrounds, values, and behavioral norms, leading to insufficient respect and understanding of diversity.
+· You may stay closely connected to a homogeneous social circle and miss opportunities to interact with people from diverse backgrounds.
+· Being in an environment that does not support inclusion and diversity, such as one with frequent discriminatory words or actions, can weaken your Includer theme.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>和谐 / Harmony（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“和谐”才干主题突出的人渴求协调一致。 他们避免冲突，寻求共识。<br><span class='kz-en'>People exceptionally talented in the Harmony theme look for consensus. They don't enjoy conflict; rather, they seek areas of agreement.</span></p>
+        <p><strong>特征 / Feature</strong>：和谐主题突出的人追求协调与共识，像和平天使一样化解冲突、营造和谐。<br><span class='kz-en'>You pursue coordination and consensus, resolving conflict and creating harmony like a peacemaker.</span></p>
+        <p><strong>应用 / Application</strong>：确保与周围人之间有开放、透明和及时的沟通渠道，避免信息不对称和误解，增强合作和和谐。 重视他人的观点和感受，积极倾听他人的想法和建议，展示出真诚的关怀和关心。 鼓励团队成员之间的合作和协作，强调团队的共同目标和利益，共同努力解决问题和实现目标。 处理冲突时采取积极的方法，鼓励开放的对话和理解，寻求妥协和共赢的解决方案，以维护和谐的关 系。<br><span class='kz-en'>Make sure open, transparent, and timely communication channels exist with the people around you. Avoid information gaps and misunderstandings, and strengthen cooperation and harmony.
+Value others' perspectives and feelings. Listen actively to their ideas and suggestions and show sincere care and concern.
+Encourage teamwork and collaboration among team members, emphasizing shared goals and interests so everyone works together to solve problems and achieve objectives.
+Approach conflict constructively by encouraging open dialogue and understanding, seeking compromise and win-win solutions, and preserving harmonious relationships.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 合理的冲突可以带来创新和改进，过度追求和谐可能忽视了冲突的积极作用。 · 可能导致忽视个人的需求和边界，无法有效地满足自己的利益和利益。 · 压抑自己的情绪和需求，可能使得问题无法得到解决和满足。<br><span class='kz-en'>· Healthy conflict can drive innovation and improvement; pursuing harmony too strongly may overlook the positive role of conflict.
+· It may lead you to neglect your own needs and boundaries, making it hard to protect your own interests.
+· Suppressing your own emotions and needs may prevent problems from being resolved and needs from being met.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>关联 / Connectedness（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“关联”才干主题突出的人深信世间万物都彼此关联。 他们相信，世间没有巧合，凡事必有成因。<br><span class='kz-en'>People exceptionally talented in the Connectedness theme have faith in the links among all things. They believe there are few coincidences and that almost every event has meaning.</span></p>
+        <p><strong>特征 / Feature</strong>：关联主题突出的人坚信世界万物相互关联，认为一切都有其成因和联系。<br><span class='kz-en'>You believe that everything in the world is connected and that every event has its cause and purpose.</span></p>
+        <p><strong>应用 / Application</strong>：努力理解他人的需求、意见和观点，并尝试找到共同利益和解决方案。 与不同部门和团队的人合作，促进跨部门的合作、协调和促进信息共享，保证项目的顺利进行。 积极参与行业内的网络活动和社交场合。与同行、专家和领导者建立联系，通过交流和分享经验来扩大 影响力和资源。 与他人分享自己的知识、经验和资源，帮助他人提升技能和知识水平。<br><span class='kz-en'>Strive to understand others' needs, opinions, and perspectives, and look for shared interests and solutions.
+Work with people across departments and teams to promote collaboration, coordination, and information sharing so projects run smoothly.
+Actively participate in networks and social events. Connect with peers, experts, and leaders to expand your influence and resources through exchange and shared experience.
+Share your knowledge, experience, and resources with others to help them grow their skills and understanding.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 追求关联而忽视事实和逻辑的支持。将不相关的事物强行关联起来，导致关联的无效性和误导性。 · 忽视潜在的相关性，而未能发现事物之间的关联。这种遗漏可能导致对问题的理解不完整，无法获得全面的 洞察。 · 关联主题往往涉及多个因素和变量，可能过于关注某些因素，而忽视了其他重要的因素。这种偏重可能导致 对问题的解释和预测的不准确性。<br><span class='kz-en'>· You may pursue connections while neglecting factual and logical support, forcing unrelated things together and producing invalid or misleading links.
+· You may overlook potential connections and miss relationships between things, leading to incomplete understanding and less comprehensive insight.
+· Connectedness often involves many factors and variables; you may focus too much on certain factors while ignoring others, reducing the accuracy of your explanations and predictions.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>积极 / Positivity（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：积极的人浑身充满了富有感染力的热情。 他们乐观向上，并能感召周围的人。<br><span class='kz-en'>People exceptionally talented in the Positivity theme have an enthusiasm that is contagious. They are upbeat and can get others excited about what they are going to do.</span></p>
+        <p><strong>特征 / Feature</strong>：积极的人散发着富有感染力的热情，以快乐和积极向上的态度激励周围的人。<br><span class='kz-en'>You radiate contagious enthusiasm, inspiring those around you with joy and a positive, forward-looking attitude.</span></p>
+        <p><strong>应用 / Application</strong>：关注自己内心的对话，并将其转化为积极的、励志的声音。培养自信和自尊，相信自己的能力和潜力。 以积极的心态对待工作中的挑战和困难。寻找解决问题的方法和机会，抱有成长的心态，相信自己能够 克服困难并取得成功。 与积极向上的人为伍，建立支持和积极的人际关系。分享积极的经历和观点，与他人共享快乐和成功， 鼓励和激励他人。 注重自己的身心健康，保持良好的生活习惯。合理安排工作和休息时间，参与锻炼、放松和充电的活 动，保持积极的生活态度。<br><span class='kz-en'>Pay attention to your inner dialogue and turn it into a positive, encouraging voice. Build confidence and self-respect by believing in your abilities and potential.
+Approach challenges and difficulties with a positive mindset. Look for ways to solve problems and seize opportunities. Adopt a growth mindset and believe you can overcome obstacles and succeed.
+Surround yourself with positive people and build supportive, uplifting relationships. Share positive experiences and perspectives, spread joy and success with others, and encourage and inspire them.
+Take care of your physical and mental health and maintain good habits. Balance work and rest, exercise, relax, and recharge so you can keep a positive attitude toward life.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 过于积极的人可能忽视现实中的问题和困难，对挑战和障碍持过于乐观的态度，导致缺乏实际的解决方案。 · 有时候，过于强调积极的态度可能导致表面上的积极，而忽视真实的情感和需求，造成内心的不满和不适。 · 积极主题的人可能过于追求成功和进步，过度竞争和自我比较，导致焦虑和不满足感。<br><span class='kz-en'>· Being overly positive may cause you to overlook real problems and difficulties, approach challenges with excessive optimism, and fail to develop practical solutions.
+· Sometimes emphasizing a positive attitude too strongly can create a surface-level positivity that ignores real emotions and needs, causing inner dissatisfaction and discomfort.
+· People with strong Positivity may pursue success and progress so intensely that they become overly competitive and compare themselves too much with others, leading to anxiety and a sense of inadequacy.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>伯乐 / Developer（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“伯乐”才干主题突出者善于发现并培养他人的潜能。 他们能够察觉任何微小的进步，并从中得到满足感。<br><span class='kz-en'>People exceptionally talented in the Developer theme recognize and cultivate the potential in others. They spot the signs of each small improvement and derive satisfaction from evidence of progress.</span></p>
+        <p><strong>特征 / Feature</strong>：欣赏他人潜力并善于发现进步的人，喜悦于细微的成长，激励他人不断进步。<br><span class='kz-en'>You appreciate others' potential, notice even small improvements, and find joy in every sign of growth as you encourage people to keep progressing.</span></p>
+        <p><strong>应用 / Application</strong>：观察和评估身边的人，发现他们的优点、才能和潜力，注意他们的成就和特长。 与他人建立良好的沟通和合作关系，了解他们的目标和需求，帮助他们发展他们的潜力，并在实现目标 的过程中提供指导和建议。 通过认可和赞赏，激发他人的动力和自信心。表达对他们的信任，并鼓励他们尝试新的挑战和机会。 通过良好的领导实践和积极的影响力，发展自己的领导能力，成为他人的榜样和引导者。 与他人建立导师关系，分享经验和知识，帮助他们发展专业能力和职业发展。<br><span class='kz-en'>Observe and evaluate the people around you to discover their strengths, talents, and potential. Notice their achievements and special abilities.
+Build good communication and working relationships with others. Understand their goals and needs, help them develop their potential, and offer guidance and suggestions as they work toward their objectives.
+Recognize and praise others to spark their motivation and confidence. Express your trust in them and encourage them to try new challenges and opportunities.
+Develop your leadership through positive influence and good practices, becoming a role model and guide for others.
+Build mentoring relationships, sharing experience and knowledge to help others grow professionally.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 依赖他人的赞许和认可，忽视自身的价值和成就，导致自我价值感受受损。 · 过分专注于他人的潜力和成功，忽略了自己的个人成长和发展，可能导致自身进步的缓慢。 · 对他人的成长和进步寄予过高期望，忽视每个人的独特情况和发展速度，可能带来不必要的压力和失望。<br><span class='kz-en'>· You may rely too much on others' praise and recognition, neglecting your own value and achievements and damaging your self-worth.
+· You may focus so much on others' potential and success that you ignore your own growth and development, slowing your own progress.
+· You may hold overly high expectations for others' growth, overlooking each person's unique situation and pace, which can create unnecessary pressure and disappointment.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>行动 / Activator（影响力 / Influencing）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“行动”才干主题突出的人善于把想法变成行动。他们渴望立刻行动，而不只是空谈。<br><span class='kz-en'>People exceptionally talented in the Activator theme can make things happen by turning thoughts into action. They want to do things now, rather than simply talk about them.</span></p>
+        <p><strong>特征 / Feature</strong>：能够把想法化为行动，让事情发生；他们想做就做，不愿只停留在讨论。<br><span class='kz-en'>can make things happen by turning thoughts into action. They want to do things now, rather than simply talk about them.</span></p>
+        <p><strong>应用 / Application</strong>：如果“行动”是你的前五才干之一，你很擅长动员团队行动起来：你清楚地传达需要做什么，并营造紧迫感。你是为组织节省时间、精力和成本的催化剂。当项目停滞不前时，你会推动事情前进。你不害怕冒险，这让你成为一个出色的创新者。你的能量和以行动为导向的方式能带动势头，让事情持续推进。<br><span class='kz-en'>With Activator in your Top 5, you likely excel at mobilising your team to action — you communicate what has to be done and then instill a sense of urgency. You are a catalyst for saving your organization time, energy and money. You are impatient for action and get things moving when projects stall. You are not afraid to take risks, which can make you a great innovator. Your energy and action-oriented approach instill momentum — you keep things progressing forward.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：你可能倾向于在没有具体计划的情况下就冲出去行动。在行动前，先停下来考虑替代方案和可能的后果。
+
+你急于开始，可能会错过别人的重要想法。给团队中的其他人表达意见的机会。
+
+因为你相信只有行动才能带来成果，别人可能会觉得你缺乏条理或冲动。如果你是管理者或团队领导，花时间解释你的思路，并确保大家对期望有清晰的了解。
+
+你启动事情很快，这可能让其他人感到被忽视、不被欣赏或不被重视。花时间倾听别人，确保方向正确。
+
+虽然有时大家都需要在没有周密计划的情况下勇往直前，但在做重大决定前，考虑各种选择并权衡利弊总是一个好习惯。
+
+你催促别人采取行动的力度，可能会让一些人感到不堪重负，被迫在准备好之前行动。拥有较强“行动”才干的人要记住，别人不一定有同样的紧迫感，有些人需要更多时间思考后再行动。
+
+如果“行动”不是你的突出才干，也不意味着你缺乏主动性或激情。你可能只是更喜欢在行动前仔细考虑。当需要立即行动时，尽量在自己熟悉或擅长的领域发挥。找到能帮助你启动事情的其他才干，比如“责任”“信仰”或“包容”，它们也能为你点燃行动的火花。有时你需要给自己设定一个合理的标准，然后立刻去做。<br><span class='kz-en'>You may have a tendency to charge ahead and act without a concrete plan. Challenge yourself to stop and consider alternatives and consequences before taking action. Your drive to get started means you may miss important ideas from others. Give others on the team a chance to give input. Because you believe only action leads to performance, you may be perceived as unorganised or impulsive. If you are a manager or team leader, take time to explain your reasoning and make sure you are clear about your expectations. You start things quickly and that may cause others to feel left out, unappreciated or undervalued. Take time to listen to others to ensure you are headed in the right direction. There are times everyone needs to charge ahead and act without a solid plan. Before making a major decision, it is always a good practice to consider alternatives and weigh options first. The force of their urging people to take action might make others feel overwhelmed and pressured to act before they are comfortable. People with strong Activator talents should remember that others may not feel that same urgency, and some people will need more time to think before they act. If Activator Is a Lesser Theme for You If you lack the intensity of Activator talents, it does not mean you lack initiative, fire or the ability to get things started. Rather, you might be someone who prefers to consider actions carefully before taking them. Ensure that you are operating in areas of familiarity or expertise if the situation requires immediate action. Know the best way to prepare yourself to take action. Consider the significant decisions you’ve made in your life and determine what steps you went through to feel ready to take action. Did you talk to others first to get their opinions? Did you thoroughly research the topic area? Did you systematically evaluate different scenarios and obstacles? Among your top themes, find those that help you get things started. Responsibility , Belief or Includer talents could provide the spark of initiative for you in the same way Activator talents do for others. Sometimes you might have to set a reasonable standard for yourself and just do it. More Resources for Activator Theme Loving Your Theme Theme Dynamics Strengths-based Leadership Focusing on Success Highlights from Your CliftonStrengths 34 Report Developing Teams and Managers</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>体谅 / Empathy（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“体谅”才干主题突出的人能够设身处地地体会他人的 感受。<br><span class='kz-en'>People exceptionally talented in the Empathy theme can sense the feelings of other people by imagining themselves in others' lives.</span></p>
+        <p><strong>特征 / Feature</strong>：具备同理心的人是心灵导师，善于感同身受，体察他人情感，以温暖他人心灵。<br><span class='kz-en'>You are a natural emotional guide, able to put yourself in others' shoes, sense their feelings, and warm their hearts with understanding.</span></p>
+        <p><strong>应用 / Application</strong>：积极倾听他人的意见和观点，尊重他人的感受和想法，表达出对他人感受的关心和共鸣。 尊重和接纳不同个体的差异，包括文化背景、观念和工作风格等，鼓励多样性和不同声音的表达。 关注他人的困难和挑战，愿意伸出援手并提供实质性的帮助，共同解决问题并实现共同目标。 关注并回应他人的需求。表达对他人的关心和支持，提供合适的帮助和资源，以满足他人的需求，并促 进他人的成长和发展。<br><span class='kz-en'>Listen actively to others' opinions and perspectives, respect their feelings and ideas, and show genuine care and resonance for what they feel.
+Respect and accept differences among individuals, including cultural backgrounds, values, and working styles, and encourage diversity and diverse voices.
+Pay attention to others' difficulties and challenges, be willing to lend a hand, and provide practical help to solve problems together and achieve shared goals.
+Notice and respond to others' needs. Express care and support, offer appropriate help and resources, and promote others' growth and development.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 过度假设他人的感受可能导致误解和误判，无法真正理解他人的需求和情感。 · 自我牺牲和忽视自己的需求和边界，使自己处于不利的境地。 · 不敢表达自己的意见和需求，忽视了良好的沟通和建立互相理解的机会。<br><span class='kz-en'>· Assuming too much about how others feel can lead to misunderstanding and misjudgment, preventing you from truly grasping their needs and emotions.
+· You may sacrifice yourself and neglect your own needs and boundaries, putting yourself at a disadvantage.
+· You may hesitate to express your own opinions and needs, missing opportunities for good communication and mutual understanding.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>回顾 / Context（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“回顾”才干主题突出的人喜欢追溯从前。 他们通过思考过去来了解现状。<br><span class='kz-en'>People exceptionally talented in the Context theme enjoy thinking about the past. They understand the present by researching its history.</span></p>
+        <p><strong>特征 / Feature</strong>：具有回顾主题的人喜欢追溯过去，通过对过去的揣摩来理解现在。<br><span class='kz-en'>People with strong Context talents enjoy looking back. They understand the present by examining the past.</span></p>
+        <p><strong>应用 / Application</strong>：定期回顾自己的工作和生活表现，反思过去的经验和成果，了解自己的优点和改进的领域。 识别自己在工作和生活中取得的成功和优势、技能和特长，认识到自己的价值和潜力。 利用回顾的机会来识别自己的学习需求和发展机会，不断提升自己的技能和知识。 根据自己的反思和目标，制定相应的行动计划，并持续跟踪和评估自己的进展。<br><span class='kz-en'>Regularly review your work and life performance. Reflect on past experiences and results to understand your strengths and areas for improvement.
+Identify your successes and strengths — your skills and talents — in work and life, recognising your value and potential.
+Use opportunities to look back to identify your learning needs and development opportunities, continuously improving your skills and knowledge.
+Based on your reflection and goals, develop corresponding action plans, and continuously track and evaluate your progress.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 苛求自己，对自己的行为和决策持过度批判的态度。这可能导致自我评价过低和自责心理的产生。 · 关注过去的错误和失败，而忽视了自身的成长和进步。他们可能无法看到自己取得的进步和积极变化。 · 回顾自己的过程中缺乏客观观察，过分依赖主观的情绪和偏见。这可能影响对自身行为的准确评估和深入理 解。<br><span class='kz-en'>You may be overly critical of yourself and your behaviours and decisions. This can lead to low self-evaluation and feelings of guilt.
+You may focus on past mistakes and failures while overlooking your growth and progress. You may be unable to see the progress and positive changes you have made.
+In the process of reflection, you may lack objective observation and rely too much on subjective emotions and biases. This can affect the accurate assessment and deeper understanding of your own behaviour.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>适应 / Adaptability（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：适应力强的人倾向于“随大流”。他们活在“当前”， 接受现实，随遇而安。<br><span class='kz-en'>People exceptionally talented in the Adaptability theme prefer to go with the flow. They tend to be &quot;now&quot; people who take things as they come and discover the future one choice at a time.</span></p>
+        <p><strong>特征 / Feature</strong>：适应性强的人倾向于顺应潮流，他们活在当下，接受现实，随遇而安。<br><span class='kz-en'>You readily go with the flow, live in the present moment, accept reality as it is, and adjust naturally to whatever comes your way.</span></p>
+        <p><strong>应用 / Application</strong>：积极面对变化并适应新的情况 ,培养灵活性和应变能力，学会适应不断变化的工作环境和生活需求。 寻求灵活的工作安排，如弹性工作时间或远程办公，以更好地适应个人需求和工作要求。 与不同背景和经验的人合作，开阔自己的视野，学会从多个角度看待问题，以更好地适应多样化的工作 环境。<br><span class='kz-en'>Embrace change and adapt actively to new situations. Cultivate flexibility and resilience so you can respond to evolving work environments and life demands.
+Seek flexible arrangements such as adjustable schedules or remote options that let you match your personal needs with changing responsibilities.
+Collaborate with people from diverse backgrounds and experiences to broaden your perspective and learn to see situations from multiple angles.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 过于顺应他人和环境的期待，而忽视了自己真实的需求和价值观。 · 太重视与他人的和谐相处，而忽视了自己的个人成长和发展的重要性。 · 对变化和不确定性感到不适应，导致焦虑和固执于既定的方式和习惯。<br><span class='kz-en'>· You may follow others' and the environment's expectations too closely, neglecting your true needs and values.
+· You may prioritize harmony with others so much that you overlook your own growth and development.
+· You may feel uneasy about change and uncertainty, leading to anxiety and stubborn attachment to established ways and habits.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+<p><strong>主导领域分析 / Leading Domain Analysis</strong>：Top 10 中 关系建立 / Relationship Building 领域占 8 项，说明该生在行动方式上偏向 <strong>关系连接型 / Relationship Builder</strong>。</p>
+<p class="kz-en"><em>In your Top 10, Relationship Building accounts for 8 themes, indicating a natural tendency toward Relationship Builder.</em></p>
+
+<h3>C. 伦理与边界声明 | Ethics & Boundaries</h3>
+<ul class="kz-list">
+  <li>本报告基于理论推导与模拟数据，未经过实证验证，仅用于职业探索参考。/ <span class="kz-en">This report is based on theoretical integration and simulated data, not empirically validated. It is for career exploration reference only.</span></li>
+  <li>不用于选拔、分班、评奖等高利害决策。/ <span class="kz-en">Not for high-stakes decisions such as selection, placement, or awards.</span></li>
+  <li>不替代专业心理咨询或临床评估。/ <span class="kz-en">Not a substitute for professional psychological counseling or clinical assessment.</span></li>
+  <li>职业建议仅为可能性探索，需结合能力、价值观、市场需求综合判断。/ <span class="kz-en">Career suggestions are possibilities to explore; final decisions require integrating ability, values, and market demand.</span></li>
+</ul>
+
+</div>

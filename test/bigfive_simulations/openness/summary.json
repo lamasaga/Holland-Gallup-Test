@@ -1,0 +1,46 @@
+{
+  "profile": "高开放性 · 创新型探索者",
+  "username": "sim_openness_01",
+  "password": "Sim@1234!",
+  "display_name": "陈启思",
+  "user_id": "a185633c-7938-4b14-b0e2-02df773d7e98",
+  "holland_code": "IAS",
+  "holland_scores": {
+    "R": 23,
+    "I": 43,
+    "A": 42,
+    "S": 32,
+    "E": 23,
+    "C": 18
+  },
+  "gallup_domain": "战略思维",
+  "gallup_secondary_domain": "影响力",
+  "gallup_top5": [
+    "理念",
+    "学习",
+    "搜集",
+    "竞争",
+    "战略"
+  ],
+  "student_careers": [
+    "科学家",
+    "研究员",
+    "战略顾问",
+    "概念设计师",
+    "品牌策略师"
+  ],
+  "professional_careers": [
+    "科学家",
+    "研究员",
+    "战略顾问",
+    "概念设计师",
+    "品牌策略师",
+    "教育心理学家",
+    "用户研究员",
+    "艺术研究员"
+  ],
+  "tension": "你的 Gallup 主导领域（战略思维）与 Holland 三码中的 I 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (战略思维) aligns strongly with the I type in your Holland code, giving you both internal motivation and natural ability in related directions.",
+  "data_quality_notes": [
+    "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+  ]
+}

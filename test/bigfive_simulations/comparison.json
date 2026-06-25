@@ -1,0 +1,189 @@
+{
+  "results": [
+    {
+      "profile": "高开放性 · 创新型探索者",
+      "username": "sim_openness_01",
+      "password": "Sim@1234!",
+      "display_name": "陈启思",
+      "user_id": "a185633c-7938-4b14-b0e2-02df773d7e98",
+      "holland_code": "IAS",
+      "holland_scores": {
+        "R": 23,
+        "I": 43,
+        "A": 42,
+        "S": 32,
+        "E": 23,
+        "C": 18
+      },
+      "gallup_domain": "战略思维",
+      "gallup_secondary_domain": "影响力",
+      "gallup_top5": [
+        "理念",
+        "学习",
+        "搜集",
+        "竞争",
+        "战略"
+      ],
+      "student_careers": [
+        "科学家",
+        "研究员",
+        "战略顾问",
+        "概念设计师",
+        "品牌策略师"
+      ],
+      "professional_careers": [
+        "科学家",
+        "研究员",
+        "战略顾问",
+        "概念设计师",
+        "品牌策略师",
+        "教育心理学家",
+        "用户研究员",
+        "艺术研究员"
+      ],
+      "tension": "你的 Gallup 主导领域（战略思维）与 Holland 三码中的 I 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (战略思维) aligns strongly with the I type in your Holland code, giving you both internal motivation and natural ability in related directions.",
+      "data_quality_notes": [
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "高尽责性 · 严谨实干者",
+      "username": "sim_conscientious_01",
+      "password": "Sim@1234!",
+      "display_name": "王守规",
+      "user_id": "5bdfa275-e6ab-4f8b-b90c-6315936fb8ca",
+      "holland_code": "CRI",
+      "holland_scores": {
+        "R": 38,
+        "I": 36,
+        "A": 14,
+        "S": 19,
+        "E": 20,
+        "C": 40
+      },
+      "gallup_domain": "执行力",
+      "gallup_secondary_domain": "战略思维",
+      "gallup_top5": [
+        "审慎",
+        "纪律",
+        "成就",
+        "统筹",
+        "专注"
+      ],
+      "student_careers": [
+        "会计师",
+        "审计师",
+        "项目经理",
+        "施工主管",
+        "医学实验技师"
+      ],
+      "professional_careers": [
+        "会计师",
+        "审计师",
+        "项目经理",
+        "施工主管",
+        "医学实验技师",
+        "行政经理",
+        "质量控制员",
+        "合规研究员"
+      ],
+      "tension": "你的 Gallup 主导领域（执行力）与 Holland 三码中的 C 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (执行力) aligns strongly with the C type in your Holland code, giving you both internal motivation and natural ability in related directions.",
+      "data_quality_notes": [
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "高外向性 · 社交影响者",
+      "username": "sim_extraversion_01",
+      "password": "Sim@1234!",
+      "display_name": "刘朗行",
+      "user_id": "3050fa1a-c77f-4eb0-ba88-26389b59dfcb",
+      "holland_code": "ESA",
+      "holland_scores": {
+        "R": 18,
+        "I": 15,
+        "A": 34,
+        "S": 41,
+        "E": 49,
+        "C": 13
+      },
+      "gallup_domain": "影响力",
+      "gallup_secondary_domain": "关系建立",
+      "gallup_top5": [
+        "行动",
+        "取悦",
+        "竞争",
+        "追求",
+        "自信"
+      ],
+      "student_careers": [
+        "销售总监",
+        "培训师",
+        "创意总监",
+        "品牌公关",
+        "创业者"
+      ],
+      "professional_careers": [
+        "销售总监",
+        "培训师",
+        "创意总监",
+        "品牌公关",
+        "创业者",
+        "投资人",
+        "教育管理者",
+        "公益组织领导者"
+      ],
+      "tension": "你的 Gallup 主导领域（影响力）与 Holland 三码中的 E 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (影响力) aligns strongly with the E type in your Holland code, giving you both internal motivation and natural ability in related directions.",
+      "data_quality_notes": [
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "高宜人性 · 亲和协调者",
+      "username": "sim_agreeable_01",
+      "password": "Sim@1234!",
+      "display_name": "林暖语",
+      "user_id": "f97458ee-9c2c-4156-a217-059c44b7d02d",
+      "holland_code": "SAR",
+      "holland_scores": {
+        "R": 25,
+        "I": 19,
+        "A": 39,
+        "S": 42,
+        "E": 22,
+        "C": 20
+      },
+      "gallup_domain": "关系建立",
+      "gallup_secondary_domain": "影响力",
+      "gallup_top5": [
+        "交往",
+        "包容",
+        "和谐",
+        "关联",
+        "积极"
+      ],
+      "student_careers": [
+        "心理咨询师",
+        "教师",
+        "HR 伙伴",
+        "运动教练",
+        "艺术治疗师"
+      ],
+      "professional_careers": [
+        "心理咨询师",
+        "教师",
+        "HR 伙伴",
+        "运动教练",
+        "艺术治疗师",
+        "创意写作教师",
+        "社区艺术组织者",
+        "技术培训师"
+      ],
+      "tension": "你的 Gallup 主导领域（关系建立）与 Holland 三码中的 S 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (关系建立) aligns strongly with the S type in your Holland code, giving you both internal motivation and natural ability in related directions.",
+      "data_quality_notes": [
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    }
+  ],
+  "generated_at": "2026-06-25T01:59:55.897973+00:00"
+}

@@ -1,0 +1,46 @@
+{
+  "profile": "高外向性 · 社交影响者",
+  "username": "sim_extraversion_01",
+  "password": "Sim@1234!",
+  "display_name": "刘朗行",
+  "user_id": "3050fa1a-c77f-4eb0-ba88-26389b59dfcb",
+  "holland_code": "ESA",
+  "holland_scores": {
+    "R": 18,
+    "I": 15,
+    "A": 34,
+    "S": 41,
+    "E": 49,
+    "C": 13
+  },
+  "gallup_domain": "影响力",
+  "gallup_secondary_domain": "关系建立",
+  "gallup_top5": [
+    "行动",
+    "取悦",
+    "竞争",
+    "追求",
+    "自信"
+  ],
+  "student_careers": [
+    "销售总监",
+    "培训师",
+    "创意总监",
+    "品牌公关",
+    "创业者"
+  ],
+  "professional_careers": [
+    "销售总监",
+    "培训师",
+    "创意总监",
+    "品牌公关",
+    "创业者",
+    "投资人",
+    "教育管理者",
+    "公益组织领导者"
+  ],
+  "tension": "你的 Gallup 主导领域（影响力）与 Holland 三码中的 E 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (影响力) aligns strongly with the E type in your Holland code, giving you both internal motivation and natural ability in related directions.",
+  "data_quality_notes": [
+    "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+  ]
+}

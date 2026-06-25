@@ -6,6 +6,7 @@ from app import models, schemas, auth
 from app.database import get_db
 from app.services.holland import calculate_holland
 from app.services.gallup import calculate_gallup
+from app.services.response_quality import evaluate_holland_quality, evaluate_gallup_quality
 
 router = APIRouter(prefix="/api/assessments", tags=["assessments"])
 
@@ -39,6 +40,7 @@ def get_progress(
         "holland_scores": assessment.holland_scores,
         "gallup_coverage": status.get("gallup_coverage"),
         "holland_quality": status.get("holland_quality"),
+        "gallup_quality": status.get("gallup_quality"),
     }
 
 
@@ -109,9 +111,11 @@ def submit_holland(
     assessment.holland_done = 1
 
     status = dict(assessment.status or {})
+    holland_response_quality = evaluate_holland_quality([a.model_dump() for a in data.answers])
     status["holland_quality"] = {
         "differentiation": result["differentiation"],
         "is_flat": result["is_flat"],
+        "response_quality": holland_response_quality,
     }
     status["holland_used_fallback"] = result["used_fallback"]
     assessment.status = status
@@ -161,7 +165,9 @@ def submit_gallup(
     assessment.gallup_done = 1
 
     status = dict(assessment.status or {})
+    gallup_response_quality = evaluate_gallup_quality([a.model_dump() for a in data.answers])
     status["gallup_coverage"] = result["coverage"]
+    status["gallup_quality"] = {"response_quality": gallup_response_quality}
     assessment.status = status
 
     if assessment.holland_done:
@@ -178,4 +184,5 @@ def submit_gallup(
         "holland_scores": assessment.holland_scores,
         "gallup_coverage": status.get("gallup_coverage"),
         "holland_quality": status.get("holland_quality"),
+        "gallup_quality": status.get("gallup_quality"),
     }

@@ -1,0 +1,357 @@
+{
+  "results": [
+    {
+      "profile": "Holland 全部选 3",
+      "username": "sim_quality_straight",
+      "password": "Test@1234!",
+      "display_name": "直线作答者",
+      "user_id": "72a938a9-3ba4-45c7-b1ec-44632f1a107a",
+      "holland_code": "RIA",
+      "holland_quality": {
+        "differentiation": 0,
+        "is_flat": true,
+        "response_quality": {
+          "score": 0.0,
+          "flags": [
+            "straight_line",
+            "low_variance",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。",
+          "message_en": "Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+          "details": {
+            "variance": 0.0,
+            "entropy": 0.0,
+            "straight_line_ratio": 1.0,
+            "alternating_ratio": 0.0,
+            "max_run": 60
+          }
+        }
+      },
+      "gallup_domain": "影响力",
+      "gallup_quality": {
+        "response_quality": {
+          "score": 0.1,
+          "flags": [
+            "one_side_bias",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。",
+          "message_en": "Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+          "details": {
+            "entropy": 0.0,
+            "neutral_rate": 0.0,
+            "one_side_ratio": 1.0,
+            "extreme_alternation_ratio": 0.0,
+            "alternating_ratio": 0.0,
+            "max_run": 180
+          }
+        }
+      },
+      "data_quality_notes": [
+        "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+        "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。 / Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+        "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。 / Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "Holland 1-5 交替",
+      "username": "sim_quality_alt",
+      "password": "Test@1234!",
+      "display_name": "交替作答者",
+      "user_id": "238809e3-61fd-48ef-a3de-7d21372dbbdb",
+      "holland_code": "RIA",
+      "holland_quality": {
+        "differentiation": 0,
+        "is_flat": true,
+        "response_quality": {
+          "score": 0.6,
+          "flags": [
+            "alternating_pattern",
+            "low_entropy"
+          ],
+          "risk_level": "medium",
+          "message_zh": "答案呈现明显交替规律，可能存在乱答或机器作答。",
+          "message_en": "Your answers show a clear alternating pattern, which may indicate random or automated responding.",
+          "details": {
+            "variance": 2.017,
+            "entropy": 1.0,
+            "straight_line_ratio": 0.5,
+            "alternating_ratio": 1.0,
+            "max_run": 1
+          }
+        }
+      },
+      "gallup_domain": "影响力",
+      "gallup_quality": {
+        "response_quality": {
+          "score": 0.1,
+          "flags": [
+            "one_side_bias",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。",
+          "message_en": "Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+          "details": {
+            "entropy": 0.0,
+            "neutral_rate": 0.0,
+            "one_side_ratio": 1.0,
+            "extreme_alternation_ratio": 0.0,
+            "alternating_ratio": 0.0,
+            "max_run": 180
+          }
+        }
+      },
+      "data_quality_notes": [
+        "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+        "答案呈现明显交替规律，可能存在乱答或机器作答。 / Your answers show a clear alternating pattern, which may indicate random or automated responding.",
+        "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。 / Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "Holland 低方差",
+      "username": "sim_quality_lowvar",
+      "password": "Test@1234!",
+      "display_name": "低方差作答者",
+      "user_id": "c1df1a1e-83cb-4145-a1a2-e2a08aaeace7",
+      "holland_code": "CRI",
+      "holland_quality": {
+        "differentiation": 5,
+        "is_flat": true,
+        "response_quality": {
+          "score": 0.0,
+          "flags": [
+            "straight_line",
+            "low_variance",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。",
+          "message_en": "Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+          "details": {
+            "variance": 0.424,
+            "entropy": 0.842,
+            "straight_line_ratio": 0.817,
+            "alternating_ratio": 0.103,
+            "max_run": 15
+          }
+        }
+      },
+      "gallup_domain": "影响力",
+      "gallup_quality": {
+        "response_quality": {
+          "score": 0.1,
+          "flags": [
+            "one_side_bias",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。",
+          "message_en": "Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+          "details": {
+            "entropy": 0.0,
+            "neutral_rate": 0.0,
+            "one_side_ratio": 1.0,
+            "extreme_alternation_ratio": 0.0,
+            "alternating_ratio": 0.0,
+            "max_run": 180
+          }
+        }
+      },
+      "data_quality_notes": [
+        "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+        "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。 / Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+        "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。 / Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "Gallup 全中立",
+      "username": "sim_quality_neutral",
+      "password": "Test@1234!",
+      "display_name": "全中立作答者",
+      "user_id": "4cc6afd4-3d14-4ea2-991d-cc95b27ac3b3",
+      "holland_code": "RIA",
+      "holland_quality": {
+        "differentiation": 0,
+        "is_flat": true,
+        "response_quality": {
+          "score": 0.0,
+          "flags": [
+            "straight_line",
+            "low_variance",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。",
+          "message_en": "Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+          "details": {
+            "variance": 0.0,
+            "entropy": 0.0,
+            "straight_line_ratio": 1.0,
+            "alternating_ratio": 0.0,
+            "max_run": 60
+          }
+        }
+      },
+      "gallup_domain": "执行力",
+      "gallup_quality": {
+        "response_quality": {
+          "score": 0.05,
+          "flags": [
+            "neutral_rate",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "中立选项过多，可能未做明确选择，建议认真重新作答。",
+          "message_en": "Too many neutral choices detected; please retake and make clearer selections.",
+          "details": {
+            "entropy": 0.0,
+            "neutral_rate": 1.0,
+            "one_side_ratio": 0.0,
+            "extreme_alternation_ratio": 0.0,
+            "alternating_ratio": 0.0,
+            "max_run": 180
+          }
+        }
+      },
+      "data_quality_notes": [
+        "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+        "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。 / Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+        "中立选项过多，可能未做明确选择，建议认真重新作答。 / Too many neutral choices detected; please retake and make clearer selections.",
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "Gallup 单边偏向",
+      "username": "sim_quality_oneside",
+      "password": "Test@1234!",
+      "display_name": "单边偏向者",
+      "user_id": "dac0f925-7313-4654-b844-3efdd2fc497b",
+      "holland_code": "RIA",
+      "holland_quality": {
+        "differentiation": 0,
+        "is_flat": true,
+        "response_quality": {
+          "score": 0.0,
+          "flags": [
+            "straight_line",
+            "low_variance",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。",
+          "message_en": "Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+          "details": {
+            "variance": 0.0,
+            "entropy": 0.0,
+            "straight_line_ratio": 1.0,
+            "alternating_ratio": 0.0,
+            "max_run": 60
+          }
+        }
+      },
+      "gallup_domain": "影响力",
+      "gallup_quality": {
+        "response_quality": {
+          "score": 0.1,
+          "flags": [
+            "one_side_bias",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。",
+          "message_en": "Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+          "details": {
+            "entropy": 0.0,
+            "neutral_rate": 0.0,
+            "one_side_ratio": 1.0,
+            "extreme_alternation_ratio": 0.0,
+            "alternating_ratio": 0.0,
+            "max_run": 180
+          }
+        }
+      },
+      "data_quality_notes": [
+        "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+        "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。 / Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+        "答案明显偏向 A 侧或 B 侧，可能存在理解偏差或敷衍。 / Responses are strongly biased toward one side; possible misunderstanding or rushing.",
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    },
+    {
+      "profile": "Gallup 极端交替",
+      "username": "sim_quality_extreme",
+      "password": "Test@1234!",
+      "display_name": "极端交替者",
+      "user_id": "158c7d90-dcbd-461f-b797-a73810d5b968",
+      "holland_code": "RIA",
+      "holland_quality": {
+        "differentiation": 0,
+        "is_flat": true,
+        "response_quality": {
+          "score": 0.0,
+          "flags": [
+            "straight_line",
+            "low_variance",
+            "low_entropy",
+            "long_run"
+          ],
+          "risk_level": "high",
+          "message_zh": "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。",
+          "message_en": "Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+          "details": {
+            "variance": 0.0,
+            "entropy": 0.0,
+            "straight_line_ratio": 1.0,
+            "alternating_ratio": 0.0,
+            "max_run": 60
+          }
+        }
+      },
+      "gallup_domain": "执行力",
+      "gallup_quality": {
+        "response_quality": {
+          "score": 0.2,
+          "flags": [
+            "extreme_alternation",
+            "low_entropy",
+            "alternating_pattern"
+          ],
+          "risk_level": "high",
+          "message_zh": "检测到极端选项频繁交替，疑似乱答。",
+          "message_en": "Frequent alternation between extreme options detected; possible random responding.",
+          "details": {
+            "entropy": 1.0,
+            "neutral_rate": 0.0,
+            "one_side_ratio": 0.5,
+            "extreme_alternation_ratio": 1.0,
+            "alternating_ratio": 1.0,
+            "max_run": 1
+          }
+        }
+      },
+      "data_quality_notes": [
+        "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+        "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。 / Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+        "检测到极端选项频繁交替，疑似乱答。 / Frequent alternation between extreme options detected; possible random responding.",
+        "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+      ]
+    }
+  ],
+  "generated_at": "2026-06-25T01:58:38.949822+00:00"
+}

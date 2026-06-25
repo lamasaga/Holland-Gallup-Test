@@ -76,6 +76,57 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="student-cards">
+        <div v-for="student in filteredStudents" :key="student.id" class="student-card">
+          <div class="student-card-header">
+            <div>
+              <strong>{{ student.display_name || student.username }}</strong>
+              <span class="student-username">{{ student.username }}</span>
+            </div>
+            <span v-if="!student.is_active" class="status pending">已停用</span>
+          </div>
+          <div class="student-card-body">
+            <div v-if="student.school || student.grade" class="card-row">
+              <span class="card-label">学校/年级</span>
+              <span>{{ student.school || '—' }} {{ student.grade || '' }}</span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Holland</span>
+              <span>
+                <span :class="['status', student.holland_done ? 'done' : 'pending']">
+                  {{ student.holland_done ? '已完成' : '未完成' }}
+                </span>
+                <span v-if="student.holland_code" class="code">{{ student.holland_code }}</span>
+              </span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">Gallup</span>
+              <span>
+                <span :class="['status', student.gallup_done ? 'done' : 'pending']">
+                  {{ student.gallup_done ? '已完成' : '未完成' }}
+                </span>
+                <span v-if="student.gallup_domain" class="code">{{ student.gallup_domain }}</span>
+              </span>
+            </div>
+            <div class="card-row">
+              <span class="card-label">状态</span>
+              <span v-if="student.holland_done && student.gallup_done" class="status done">可生成报告</span>
+              <span v-else class="status pending">待完成</span>
+            </div>
+          </div>
+          <div class="student-card-actions">
+            <button
+              v-if="student.holland_done && student.gallup_done"
+              @click="viewReport(student.id)"
+            >报告</button>
+            <button class="btn-secondary btn-sm" @click="resetPassword(student)">重置密码</button>
+            <button class="btn-secondary btn-sm" @click="toggleStudent(student)">
+              {{ student.is_active ? '停用' : '启用' }}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div v-if="showCreate" class="modal-mask" @click.self="showCreate = false">
@@ -370,4 +421,85 @@ async function toggleStudent(student) {
 .modal-actions { display: flex; gap: 8px; margin-top: 12px; }
 
 .create-msg { margin-top: 10px; font-size: 13px; color: #16a34a; }
+
+.student-cards { display: none; }
+
+@media (max-width: 640px) {
+  .filter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-input,
+  .filter-select,
+  .filter-row button {
+    width: 100%;
+  }
+
+  .student-table { display: none; }
+
+  .student-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .student-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .student-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .student-card-header strong {
+    display: block;
+    font-size: 16px;
+    color: #111827;
+  }
+
+  .student-username {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .student-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .card-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .card-label {
+    color: #6b7280;
+    font-size: 13px;
+  }
+
+  .student-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .student-card-actions button {
+    flex: 1;
+    min-width: 80px;
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
 </style>

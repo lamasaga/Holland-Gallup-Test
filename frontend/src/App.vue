@@ -2,12 +2,19 @@
   <div id="app">
     <nav class="navbar" v-if="auth.isLoggedIn">
       <div class="nav-left">
-        <router-link :to="auth.homePath" class="nav-brand">测评平台</router-link>
-        <div class="nav-links">
-          <router-link v-if="auth.isStudent" to="/student">测评中心</router-link>
-          <router-link v-if="auth.isStudent" to="/student/career">职业规划</router-link>
-          <router-link v-if="auth.isStaff" to="/teacher">学生管理</router-link>
-          <router-link v-if="auth.isAdmin" to="/admin">系统管理</router-link>
+        <router-link :to="auth.homePath" class="nav-brand" @click="closeMobileMenu">测评平台</router-link>
+        <button class="mobile-menu-toggle" @click="toggleMobileMenu" aria-label="菜单">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-links" :class="{ open: mobileMenuOpen }">
+          <router-link v-if="auth.isStudent" to="/student" @click="closeMobileMenu">测评中心</router-link>
+          <router-link v-if="auth.isStudent" to="/student/career" @click="closeMobileMenu">职业规划</router-link>
+          <router-link v-if="auth.isStaff" to="/teacher" @click="closeMobileMenu">学生管理</router-link>
+          <router-link v-if="auth.isAdmin" to="/admin" @click="closeMobileMenu">系统管理</router-link>
+          <router-link to="/profile" class="mobile-only" @click="closeMobileMenu">资料</router-link>
+          <button class="mobile-only mobile-logout" @click="logout">退出</button>
         </div>
       </div>
       <div class="nav-user">
@@ -24,12 +31,13 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from './stores/auth'
 
 const auth = useAuthStore()
 const router = useRouter()
+const mobileMenuOpen = ref(false)
 
 const roleLabel = computed(() => {
   const map = { student: '学生', teacher: '教师', admin: '管理员' }
@@ -41,8 +49,17 @@ onMounted(() => {
 })
 
 function logout() {
+  mobileMenuOpen.value = false
   auth.logout()
   router.push('/login')
+}
+
+function toggleMobileMenu() {
+  mobileMenuOpen.value = !mobileMenuOpen.value
+}
+
+function closeMobileMenu() {
+  mobileMenuOpen.value = false
 }
 </script>
 
@@ -65,6 +82,7 @@ body {
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
   flex-wrap: wrap;
   gap: 12px;
+  position: relative;
 }
 
 .nav-left {
@@ -128,6 +146,91 @@ button {
 
 button:hover { background: #1d4ed8; }
 button:disabled { background: #9ca3af; cursor: not-allowed; }
+
+.mobile-menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+.mobile-menu-toggle span {
+  display: block;
+  height: 2px;
+  background: #374151;
+  border-radius: 1px;
+}
+
+.mobile-only { display: none !important; }
+
+@media (max-width: 640px) {
+  .navbar {
+    flex-wrap: nowrap;
+    padding: 10px 16px;
+  }
+
+  .nav-left {
+    flex: 1;
+    justify-content: space-between;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 56px;
+    left: 16px;
+    right: 16px;
+    flex-direction: column;
+    gap: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    padding: 8px 0;
+    z-index: 200;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a,
+  .nav-links button {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 0;
+    background: transparent;
+    color: #1f2937;
+    text-align: left;
+    font-size: 15px;
+    width: 100%;
+  }
+
+  .nav-links a.router-link-active {
+    background: #eff6ff;
+  }
+
+  .nav-links .mobile-logout {
+    color: #dc2626;
+  }
+
+  .nav-user {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+}
 
 .container {
   max-width: 1100px;

@@ -36,3 +36,5 @@ backend/data/*.sqlite
 .pytest_cache/
 .coverage
 htmlcov/
+backend/test_student_report_visuals.html
+frontend/screenshots-responsive/

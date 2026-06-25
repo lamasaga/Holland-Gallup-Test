@@ -37,6 +37,11 @@
       </div>
     </div>
 
+    <div class="card warning-card" v-if="qualityWarning">
+      <h3>⚠️ 作答质量提示 / Response Quality</h3>
+      <p>{{ qualityWarning }}</p>
+    </div>
+
     <div class="card summary-card" v-if="progress.holland_done && progress.gallup_done">
       <h2>🎉 测评完成</h2>
       <p>你已经完成了全部测评，可以查看你的专属解读报告。</p>
@@ -65,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { getProgress } from '../api'
@@ -81,7 +86,8 @@ const progress = ref({
   gallup_secondary_domain: '',
   holland_scores: null,
   gallup_coverage: null,
-  holland_quality: null
+  holland_quality: null,
+  gallup_quality: null
 })
 
 onMounted(async () => {
@@ -90,6 +96,19 @@ onMounted(async () => {
   } catch (err) {
     console.error('Failed to load progress', err)
   }
+})
+
+const qualityWarning = computed(() => {
+  const hq = progress.value.holland_quality?.response_quality
+  const gq = progress.value.gallup_quality?.response_quality
+  const warnings = []
+  if (hq && hq.risk_level !== 'low') {
+    warnings.push(hq.message_zh)
+  }
+  if (gq && gq.risk_level !== 'low') {
+    warnings.push(gq.message_zh)
+  }
+  return warnings.length ? warnings.join('\n') : ''
 })
 
 function startHolland() {
@@ -174,6 +193,22 @@ function confirmRetake(type) {
 
 .summary-card {
   text-align: center;
+}
+
+.warning-card {
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+}
+
+.warning-card h3 {
+  margin-top: 0;
+  color: #b45309;
+}
+
+.warning-card p {
+  white-space: pre-line;
+  line-height: 1.6;
 }
 
 .summary-grid {

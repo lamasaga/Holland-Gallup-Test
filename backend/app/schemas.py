@@ -158,6 +158,20 @@ class GallupCoverage(BaseModel):
 class HollandQuality(BaseModel):
     differentiation: int
     is_flat: bool
+    response_quality: Optional[Dict[str, Any]] = None
+
+
+class ResponseQuality(BaseModel):
+    score: float
+    flags: List[str]
+    risk_level: str
+    message_zh: str
+    message_en: str
+    details: Optional[Dict[str, Any]] = None
+
+
+class GallupQuality(BaseModel):
+    response_quality: Optional[ResponseQuality] = None
 
 
 class AssessmentProgress(BaseModel):
@@ -170,6 +184,7 @@ class AssessmentProgress(BaseModel):
     holland_scores: Optional[Dict[str, int]] = None
     gallup_coverage: Optional[GallupCoverage] = None
     holland_quality: Optional[HollandQuality] = None
+    gallup_quality: Optional[GallupQuality] = None
 
 
 class AssessmentOut(BaseModel):
@@ -229,6 +244,7 @@ class ReportStudent(BaseModel):
     data_quality_notes: List[str] = []
     gallup_coverage: Optional[GallupCoverage] = None
     holland_quality: Optional[HollandQuality] = None
+    gallup_quality: Optional[GallupQuality] = None
 
 
 class ReportProfessional(BaseModel):
@@ -247,3 +263,4 @@ class ReportProfessional(BaseModel):
     data_quality_notes: List[str] = []
     gallup_coverage: Optional[GallupCoverage] = None
     holland_quality: Optional[HollandQuality] = None
+    gallup_quality: Optional[GallupQuality] = None

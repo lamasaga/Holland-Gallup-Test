@@ -396,4 +396,32 @@ async function submit() {
 .btn-secondary {
   background: #9ca3af;
 }
+
+@media (max-width: 640px) {
+  .question-nav {
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .question-nav button {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
+  }
+
+  .statements {
+    gap: 12px;
+  }
+
+  .statement-a, .statement-b {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .options button {
+    min-width: 76px;
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+}
 </style>

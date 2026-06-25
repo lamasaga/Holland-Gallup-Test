@@ -35,6 +35,13 @@
           </div>
         </div>
 
+        <div v-if="qualityWarnings.length" class="card warning-card">
+          <h3>⚠️ 作答质量提示 / Response Quality</h3>
+          <ul>
+            <li v-for="(msg, idx) in qualityWarnings" :key="idx">{{ msg }}</li>
+          </ul>
+        </div>
+
         <div v-if="view === 'pro' && report" class="card" v-html="report.report_html"></div>
         <div v-else-if="view === 'student' && studentReport" class="card" v-html="studentReport.report_html"></div>
         <div v-else class="card">报告数据不可用</div>
@@ -44,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getProfessionalReport, getStudentReportById } from '../api'
 
@@ -56,6 +63,22 @@ const report = ref(null)
 const studentReport = ref(null)
 const loading = ref(true)
 const error = ref('')
+
+const qualityWarnings = computed(() => {
+  const warnings = []
+  const sources = [report.value, studentReport.value].filter(Boolean)
+  for (const src of sources) {
+    const hq = src.holland_quality?.response_quality
+    const gq = src.gallup_quality?.response_quality
+    if (hq && hq.risk_level !== 'low' && hq.message_zh) {
+      warnings.push(hq.message_zh)
+    }
+    if (gq && gq.risk_level !== 'low' && gq.message_zh) {
+      warnings.push(gq.message_zh)
+    }
+  }
+  return [...new Set(warnings)]
+})
 
 onMounted(() => {
   loadReports()
@@ -144,5 +167,42 @@ async function loadReports() {
 .error-card p {
   white-space: pre-line;
   margin-bottom: 16px;
+}
+
+.warning-card {
+  background: #fffbeb;
+  border: 1px solid #f59e0b;
+  color: #92400e;
+}
+
+.warning-card h3 {
+  margin-top: 0;
+  color: #b45309;
+}
+
+.warning-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.warning-card li {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .report-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .toggle {
+    width: 100%;
+  }
+
+  .toggle button {
+    flex: 1;
+  }
 }
 </style>

@@ -1,0 +1,409 @@
+
+<meta charset="UTF-8">
+<div class="kz-report">
+
+<style>
+.kz-report { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #1f2937; line-height: 1.7; max-width: 960px; margin: 0 auto; }
+.kz-report h1 { font-size: 28px; font-weight: 700; color: #111827; margin: 0 0 12px 0; }
+.kz-report h2 { font-size: 22px; font-weight: 700; color: #1e40af; margin: 32px 0 14px 0; padding-bottom: 8px; border-bottom: 2px solid #dbeafe; }
+.kz-report h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin: 24px 0 10px 0; }
+.kz-report h4 { font-size: 16px; font-weight: 700; color: #374151; margin: 18px 0 8px 0; }
+.kz-report p { margin: 8px 0; }
+.kz-report .kz-meta { background: #f8fafc; border-left: 4px solid #2563eb; padding: 14px 18px; margin: 16px 0; border-radius: 6px; }
+.kz-report .kz-meta p { margin: 4px 0; }
+.kz-report .kz-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-highlight { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 6px; margin: 14px 0; }
+.kz-report .kz-tip { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #166534; }
+.kz-report .kz-warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #92400e; }
+.kz-report .kz-info { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #1e40af; }
+.kz-report table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+.kz-report th, .kz-report td { border: 1px solid #e5e7eb; padding: 10px 12px; text-align: left; vertical-align: top; }
+.kz-report th { background: #f3f4f6; font-weight: 600; color: #374151; }
+.kz-report tr:nth-child(even) { background: #f9fafb; }
+.kz-report .kz-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 6px; }
+.kz-report .kz-tag-steady { background: #d1fae5; color: #065f46; }
+.kz-report .kz-tag-explore { background: #fef3c7; color: #92400e; }
+.kz-report .kz-tag-challenge { background: #fee2e2; color: #991b1b; }
+.kz-report .kz-matrix-dominant { background: #dbeafe; border: 3px solid #1d4ed8 !important; font-weight: 700; box-shadow: inset 0 0 0 1px #93c5fd; }
+.kz-report .kz-matrix-secondary { background: #fffbeb; border: 2px dashed #d97706 !important; }
+.kz-report .kz-matrix-tertiary { background: #f5f3ff; border: 2px dotted #7c3aed !important; }
+.kz-report .kz-matrix-header { background: #1e40af; color: #fff; font-weight: 600; }
+.kz-report .kz-matrix-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; line-height: 1.3; }
+.kz-report .kz-matrix-badge-dominant { background: #1d4ed8; color: #fff; }
+.kz-report .kz-matrix-badge-secondary { background: #d97706; color: #fff; }
+.kz-report .kz-matrix-badge-tertiary { background: #7c3aed; color: #fff; }
+.kz-report .kz-matrix-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.kz-report .kz-matrix-legend-item { flex: 1; min-width: 200px; padding: 12px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+.kz-report .kz-matrix-legend-dominant { border: 3px solid #1d4ed8; background: #eff6ff; }
+.kz-report .kz-matrix-legend-secondary { border: 2px dashed #d97706; background: #fffbeb; }
+.kz-report .kz-matrix-legend-tertiary { border: 2px dotted #7c3aed; background: #f5f3ff; }
+.kz-report .kz-matrix-legend-item strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.kz-report .kz-matrix-domain-title { font-weight: 700; font-size: 13px; line-height: 1.4; }
+.kz-report .kz-matrix-table td { font-size: 12px; line-height: 1.35; padding: 8px 10px; }
+.kz-report .kz-matrix-table th { font-size: 12px; padding: 8px 10px; }
+.kz-report .kz-intersection-detail { margin-top: 28px; }
+.kz-report .kz-intersection-detail > h3 { font-size: 18px; color: #1e40af; margin: 0 0 8px 0; padding-bottom: 8px; border-bottom: 2px solid #dbeafe; }
+.kz-report .kz-intersection-intro { color: #4b5563; font-size: 14px; line-height: 1.65; margin: 0 0 20px 0; }
+.kz-report .kz-intersection-tier { margin-bottom: 24px; }
+.kz-report .kz-intersection-tier-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; padding: 14px 16px; border-radius: 10px; }
+.kz-report .kz-intersection-tier-primary .kz-intersection-tier-header { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #93c5fd; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-tier-header { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fcd34d; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-tier-header { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #c4b5fd; }
+.kz-report .kz-intersection-tier-badge { flex-shrink: 0; display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #fff; }
+.kz-report .kz-intersection-tier-primary .kz-intersection-tier-badge { background: #1d4ed8; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-tier-badge { background: #d97706; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-tier-badge { background: #7c3aed; }
+.kz-report .kz-intersection-tier-desc { margin: 0; font-size: 14px; line-height: 1.65; color: #374151; }
+.kz-report .kz-intersection-cards { display: grid; gap: 14px; }
+.kz-report .kz-intersection-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.kz-report .kz-intersection-tier-primary .kz-intersection-card { border-left: 4px solid #1d4ed8; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-card { border-left: 4px solid #d97706; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-card { border-left: 4px solid #7c3aed; }
+.kz-report .kz-intersection-card-title { font-size: 16px; font-weight: 700; color: #111827; margin: 0 0 6px 0; }
+.kz-report .kz-intersection-card-tagline { font-size: 14px; color: #1e40af; font-style: italic; margin: 0 0 12px 0; line-height: 1.5; }
+.kz-report .kz-intersection-card-body { font-size: 14px; line-height: 1.7; color: #374151; margin: 0 0 14px 0; }
+.kz-report .kz-intersection-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb; }
+.kz-report .kz-intersection-meta-item { font-size: 12px; line-height: 1.5; }
+.kz-report .kz-intersection-meta-item strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: #6b7280; margin-bottom: 3px; font-weight: 600; }
+.kz-report .kz-intersection-prompt { margin-top: 12px; padding: 10px 14px; background: #f0fdf4; border-radius: 8px; font-size: 13px; color: #166534; line-height: 1.55; }
+.kz-report .kz-ethics { background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid #0284c7; padding: 14px 18px; border-radius: 8px; margin: 16px 0; color: #0c4a6e; }
+.kz-report .kz-synthesis { background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+.kz-report .kz-synthesis h3 { margin-top: 0; color: #1e40af; }
+.kz-report .kz-synthesis-advice { background: #fff; border-radius: 8px; padding: 14px 18px; margin: 12px 0; border-left: 4px solid #22c55e; }
+.kz-report .kz-small { color: #6b7280; font-size: 13px; }
+.kz-report .kz-en { color: #6b7280; font-style: italic; }
+.kz-report ul.kz-list { padding-left: 22px; }
+.kz-report ul.kz-list li { margin: 8px 0; }
+.kz-report .kz-answer-line { display: inline-block; min-width: 160px; border-bottom: 1px solid #9ca3af; }
+.kz-report .kz-stage-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; background: #ede9fe; color: #5b21b6; font-size: 13px; font-weight: 600; }
+.kz-report .kz-print-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.kz-report .kz-print-btn { background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; }
+.kz-report .kz-print-btn:hover { background: #1d4ed8; }
+
+/* 学生版报告可视化 / Student report visuals */
+.kz-report .kz-type-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-align: center; }
+.kz-report .kz-type-badges { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.kz-report .kz-type-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 80px; padding: 10px 20px; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.kz-report .kz-type-plus { font-size: 24px; font-weight: 700; color: #9ca3af; }
+.kz-report .kz-type-summary { font-size: 16px; color: #374151; line-height: 1.6; }
+.kz-report .kz-type-summary .kz-en { font-size: 14px; }
+.kz-report .kz-chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 22px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-chart-title { font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 14px 0; }
+.kz-report .kz-chart-subtitle { font-size: 13px; color: #6b7280; margin: -10px 0 14px 0; }
+.kz-report .kz-domain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 10px 0; }
+.kz-report .kz-domain-block { border-radius: 10px; padding: 16px 10px; text-align: center; position: relative; min-height: 90px; display: flex; flex-direction: column; justify-content: center; }
+.kz-report .kz-domain-name { font-size: 15px; font-weight: 700; color: #1f2937; }
+.kz-report .kz-domain-en { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.kz-report .kz-domain-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+.kz-report .kz-domain-primary { background: #1f2937; color: #fff; }
+.kz-report .kz-domain-secondary { background: #fff; color: #1f2937; border: 1px solid #1f2937; }
+.kz-report .kz-top5-pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.kz-report .kz-top5-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+.kz-report .kz-top5-rank { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; }
+.kz-report .kz-illustration-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+.kz-report .kz-illustration-card { flex: 1; min-width: 140px; max-width: 220px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-illustration-card svg { width: 100%; height: auto; display: block; }
+.kz-report .kz-illustration-label { font-size: 13px; font-weight: 600; color: #374151; margin-top: 10px; }
+.kz-report .kz-illustration-en { font-size: 11px; color: #6b7280; font-style: italic; }
+.kz-report .kz-hero-illustration { background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 20px; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.kz-report .kz-hero-illustration svg { width: 160px; height: 120px; flex-shrink: 0; }
+.kz-report .kz-hero-text { flex: 1; min-width: 200px; }
+.kz-report .kz-hero-text p { margin: 6px 0; }
+@media (max-width: 640px) {
+  .kz-report .kz-domain-grid { grid-template-columns: repeat(2, 1fr); }
+  .kz-report .kz-type-badge { font-size: 18px; padding: 8px 14px; }
+  .kz-report .kz-hero-illustration { flex-direction: column; text-align: center; }
+  .kz-report .kz-hero-illustration svg { width: 140px; height: 105px; }
+}
+.kz-report { counter-reset: kz-section; }
+.kz-report h2.kz-section { counter-increment: kz-section; counter-reset: kz-subsection; }
+.kz-report h2.kz-section::before { content: counter(kz-section, simp-chinese-informal) "、"; font-weight: 700; color: inherit; }
+.kz-report h3.kz-subsection { counter-increment: kz-subsection; }
+.kz-report h3.kz-subsection::before { content: counter(kz-section) "." counter(kz-subsection) " "; font-weight: 700; color: inherit; }
+.kz-report .kz-screen-only { }
+@media print {
+  .kz-report .kz-print-btn { display: none; }
+  .kz-report { max-width: 100%; }
+  .kz-report h2 { page-break-after: avoid; }
+  .kz-report table { page-break-inside: avoid; }
+  .kz-report .kz-card, .kz-report .kz-highlight, .kz-report .kz-tip, .kz-report .kz-warning, .kz-report .kz-type-card, .kz-report .kz-chart-card, .kz-report .kz-domain-block, .kz-report .kz-illustration-card, .kz-report .kz-hero-illustration { page-break-inside: avoid; }
+  .kz-report .kz-screen-only { display: none !important; }
+  .kz-report .kz-screen-only h2.kz-section { counter-increment: none; counter-reset: none; }
+}
+</style>
+
+<div class="kz-print-header">
+  <h1>学生一页纸测评摘要 | Student One-Page Summary</h1>
+  <button class="kz-print-btn" onclick="window.print()">🖨️ 打印 / Print</button>
+</div>
+<div class="kz-meta">
+  <p><strong>姓名 / Name</strong>：林暖语</p>
+  <p><strong>Holland 三码 / Holland Code</strong>：<strong>SAR</strong> — 社会型（Social）</p>
+  <p><strong>优势领域 / Leading Strength Domain</strong>：关系建立</p>
+  <p><strong>优势风格 / Strengths Style</strong>：关系连接型 / Relationship Builder</p>
+</div>
+
+<div class="kz-warning kz-screen-only">
+  <strong>数据质量提示 / Data Quality Notes</strong>
+  <ul class="kz-list">
+    <li>Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report.</li>
+  </ul>
+</div>
+
+
+<div class="kz-synthesis">
+  <h3>综合解读与给你的建议 | Summary & Recommendations</h3>
+  <p><strong>林暖语</strong>，你好。以下是对你本次双维度测评的综合解读——帮你把「喜欢做什么」和「擅长怎么做」放在一起看。</p>
+  <p class="kz-en"><em>Hello <strong>林暖语</strong>. This section integrates what you enjoy doing with how you naturally work best.</em></p>
+
+  <h4>你是谁：兴趣舞台 + 优势风格 | Who You Are</h4>
+  <p>你的 Holland 三码是 <strong>SAR</strong>，兴趣舞台标签为 <strong>人际关怀派 / People Helper</strong>；Gallup 主导优势领域是 <strong>关系建立</strong>（次要领域：影响力），工作风格偏向 <strong>关系连接型 / Relationship Builder</strong>。</p>
+  <p>Top 5 才干主题：交往、包容、和谐、关联、积极</p>
+  <ul class="kz-list">
+    <li><strong>S</strong>（社会型（Social））— 最感兴趣：喜欢与人互动、帮助他人、教导或治疗，重视人际关系与社会贡献。</li>
+<li><strong>A</strong>（艺术型（Artistic））— 次感兴趣：喜欢艺术、设计、音乐、写作或表演，重视自我表达、创造力和审美体验。</li>
+<li><strong>R</strong>（现实型（Realistic））— 第三感兴趣：喜欢使用工具、机器或体力技能解决实际问题，重视具体成果。</li>
+  </ul>
+
+  <h4>兴趣与优势如何配合 | How Interests & Strengths Fit</h4>
+  <p>你的 Gallup 主导领域（关系建立）与 Holland 三码中的 S 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (关系建立) aligns strongly with the S type in your Holland code, giving you both internal motivation and natural ability in related directions.</p>
+  <p><strong>整体契合度 / Overall Fit</strong>：兴趣与优势高度一致 / High alignment</p>
+  <p class="kz-small">三码在六边形上有一定跨度，兴趣范围较广，可重点关注能将多面向结合的方向。/ Your three-letter code spans a moderate range on the hexagon; consider directions that integrate multiple interests.</p>
+
+  <div class="kz-synthesis-advice">
+    <p><strong>给你的三条建议 / Three Recommendations for You</strong></p>
+    <ol class="kz-list">
+      <li>参与一次助人或陪伴活动（辅导、志愿、倾听朋友），留意你在互动中的感受与消耗。/ Join a helping or mentoring activity and notice how you feel during and after the interaction.</li><li>主动与一位你欣赏的人深聊，记录你们建立信任的过程——你的优势在「连接人与信任」。/ Have a deep conversation with someone you admire and notice how trust builds—your strength is connecting people.</li><li>你的兴趣与优势整体一致，可以较大胆地在主导交叉方向上投入时间；仍建议用实习或项目做小范围验证。/ Your interests and strengths align well—feel confident investing time in your primary intersection, but still validate through projects or internships.</li>
+    </ol>
+  </div>
+
+  <p>结合以上解读，当前最值得你留意的探索方向包括：<strong>心理咨询师、教师、HR 伙伴</strong>。请从下方「稳妥入口职业」和「核心推荐专业」中挑选 1–2 个，用真实体验去验证——喜欢不等于适合，适合也需要在实践中确认。</p>
+  <p class="kz-en"><em>Based on this profile, directions worth exploring include: <strong>心理咨询师、教师、HR 伙伴</strong>. Pick 1–2 from the safe-entry careers and core majors below, and validate through real experience.</em></p>
+
+  <div class="kz-ethics">
+    <p><strong>重要提醒 / Important Reminder</strong>：本报告是<strong>探索与自我发现的辅助工具</strong>，不能替代你的判断，也不能限制你的可能性。测评结果会随经历与成长而变化——请带着好奇而非焦虑阅读，并与信任的老师、家长或咨询师讨论你的下一步。</p>
+    <p class="kz-en"><em>This report is an <strong>exploration aid</strong>, not a verdict on who you must become. Results can evolve with experience—read with curiosity, not anxiety, and discuss your next steps with trusted adults or counselors.</em></p>
+  </div>
+</div>
+
+
+
+    <div class="kz-type-card" style="border-left: 6px solid #22c55e;">
+      <div class="kz-type-badges">
+        <span class="kz-type-badge kz-holland-badge" style="background:#22c55e;">SAR</span>
+        <span class="kz-type-plus">+</span>
+        <span class="kz-type-badge kz-domain-badge" style="background:#22c55e;">关系建立</span>
+      </div>
+      <div class="kz-type-summary">
+        <strong>人际关怀派 / People Helper</strong> × <strong>关系连接型</strong>
+        <br><span class="kz-en">People Helper × Relationship Builder</span>
+      </div>
+    </div>
+    
+
+
+    <div class="kz-hero-illustration">
+      <div class="kz-illustration-row" style="margin:0;">
+        <div class="kz-illustration-card" style="max-width:180px;">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dcfce7"/>
+      <circle cx="80" cy="60" r="28" fill="#22c55e" opacity="0.15"/>
+      <circle cx="62" cy="55" r="12" fill="#22c55e"/>
+      <circle cx="98" cy="55" r="12" fill="#22c55e"/>
+      <path d="M74 70 Q80 78 86 70" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M55 82 Q80 100 105 82" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="80" cy="92" r="5" fill="#22c55e"/>
+    </svg>
+          <div class="kz-illustration-label">人际关怀派</div>
+          <div class="kz-illustration-en">People Helper</div>
+        </div>
+        <div class="kz-illustration-card" style="max-width:180px;">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dcfce7"/>
+      <circle cx="80" cy="60" r="28" fill="#22c55e" opacity="0.15"/>
+      <circle cx="62" cy="52" r="10" fill="#22c55e"/>
+      <circle cx="98" cy="52" r="10" fill="#22c55e"/>
+      <path d="M70 62 Q80 72 90 62" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="62" cy="52" r="14" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.5"/>
+      <circle cx="98" cy="52" r="14" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.5"/>
+      <path d="M50 70 Q80 95 110 70" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+    </svg>
+          <div class="kz-illustration-label">关系建立</div>
+          <div class="kz-illustration-en">Relationship Building</div>
+        </div>
+      </div>
+      <div class="kz-hero-text">
+        <p><strong>你的组合画像 / Your Profile</strong></p>
+        <p>兴趣舞台：人际关怀派（People Helper）；优势领域：关系建立 / Relationship Building。</p>
+        <p class="kz-en">Interest stage: People Helper; Leading strength domain: Relationship Building.</p>
+      </div>
+    </div>
+    
+
+<h2>1. 我的测评画像 | My Profile</h2>
+
+<div class="kz-chart-card">
+  <div class="kz-chart-title">Holland 兴趣六维得分 | RIASEC Scores</div>
+  <div class="kz-chart-subtitle">分数越高，代表该类型越能描述你的兴趣倾向 / Higher scores mean stronger alignment with that interest type.</div>
+  <svg width="100%" height="224" viewBox="0 0 420 224" xmlns="http://www.w3.org/2000/svg"><rect x="70" y="10" width="300" height="22" rx="11" fill="#fee2e2"/><rect x="70" y="10" width="178.57142857142858" height="22" rx="11" fill="#ef4444"/><text x="60" y="26.0" text-anchor="end" font-size="13" font-weight="600" fill="#374151">现实型 R</text><text x="256.57142857142856" y="26.0" font-size="12" font-weight="600" fill="#374151">25</text><rect x="70" y="44" width="300" height="22" rx="11" fill="#dbeafe"/><rect x="70" y="44" width="135.71428571428572" height="22" rx="11" fill="#3b82f6"/><text x="60" y="60.0" text-anchor="end" font-size="13" font-weight="600" fill="#374151">研究型 I</text><text x="213.71428571428572" y="60.0" font-size="12" font-weight="600" fill="#374151">19</text><rect x="70" y="78" width="300" height="22" rx="11" fill="#ede9fe"/><rect x="70" y="78" width="278.57142857142856" height="22" rx="11" fill="#8b5cf6"/><text x="60" y="94.0" text-anchor="end" font-size="13" font-weight="600" fill="#374151">艺术型 A</text><text x="356.57142857142856" y="94.0" font-size="12" font-weight="600" fill="#374151">39</text><rect x="70" y="112" width="300" height="22" rx="11" fill="#dcfce7"/><rect x="70" y="112" width="300.0" height="22" rx="11" fill="#22c55e"/><text x="60" y="128.0" text-anchor="end" font-size="13" font-weight="600" fill="#374151">社会型 S</text><text x="378.0" y="128.0" font-size="12" font-weight="600" fill="#374151">42</text><rect x="70" y="146" width="300" height="22" rx="11" fill="#fef3c7"/><rect x="70" y="146" width="157.14285714285714" height="22" rx="11" fill="#f59e0b"/><text x="60" y="162.0" text-anchor="end" font-size="13" font-weight="600" fill="#374151">企业型 E</text><text x="235.14285714285714" y="162.0" font-size="12" font-weight="600" fill="#374151">22</text><rect x="70" y="180" width="300" height="22" rx="11" fill="#f3f4f6"/><rect x="70" y="180" width="142.85714285714286" height="22" rx="11" fill="#6b7280"/><text x="60" y="196.0" text-anchor="end" font-size="13" font-weight="600" fill="#374151">常规型 C</text><text x="220.85714285714286" y="196.0" font-size="12" font-weight="600" fill="#374151">20</text></svg>
+</div>
+
+<div class="kz-chart-card">
+  <div class="kz-chart-title">Gallup 优势领域 | CliftonStrengths Domains</div>
+  <div class="kz-chart-subtitle">主导领域是你最自然的工作方式，次要领域是其次 / Your leading domain is your most natural way of working.</div>
+  <div class="kz-domain-grid">
+        <div class="kz-domain-block" style="background:#fee2e2; border-top: 4px solid #ef4444;">
+          <div class="kz-domain-name">执行力</div>
+          <div class="kz-domain-en">Executing</div>
+          
+        </div>
+        
+        <div class="kz-domain-block" style="background:#fef3c7; border-top: 4px solid #f59e0b;">
+          <div class="kz-domain-name">影响力</div>
+          <div class="kz-domain-en">Influencing</div>
+          <span class="kz-domain-badge kz-domain-secondary">次要</span>
+        </div>
+        
+        <div class="kz-domain-block" style="background:#dcfce7; border-top: 4px solid #22c55e;">
+          <div class="kz-domain-name">关系建立</div>
+          <div class="kz-domain-en">Relationship Building</div>
+          <span class="kz-domain-badge kz-domain-primary">主导</span>
+        </div>
+        
+        <div class="kz-domain-block" style="background:#dbeafe; border-top: 4px solid #3b82f6;">
+          <div class="kz-domain-name">战略思维</div>
+          <div class="kz-domain-en">Strategic Thinking</div>
+          
+        </div>
+        </div>
+</div>
+
+<div class="kz-chart-card">
+  <div class="kz-chart-title">Top 5 才干主题 | My Top 5 Themes</div>
+  <div class="kz-chart-subtitle">颜色代表该主题所属的优势领域 / Colors show which domain each theme belongs to.</div>
+  <div class="kz-top5-pills">
+        <div class="kz-top5-pill" style="background:#22c55e20; border: 1px solid #22c55e; color:#22c55e;">
+          <span class="kz-top5-rank">1</span>
+          <span class="kz-top5-name">交往</span>
+        </div>
+        
+        <div class="kz-top5-pill" style="background:#22c55e20; border: 1px solid #22c55e; color:#22c55e;">
+          <span class="kz-top5-rank">2</span>
+          <span class="kz-top5-name">包容</span>
+        </div>
+        
+        <div class="kz-top5-pill" style="background:#22c55e20; border: 1px solid #22c55e; color:#22c55e;">
+          <span class="kz-top5-rank">3</span>
+          <span class="kz-top5-name">和谐</span>
+        </div>
+        
+        <div class="kz-top5-pill" style="background:#22c55e20; border: 1px solid #22c55e; color:#22c55e;">
+          <span class="kz-top5-rank">4</span>
+          <span class="kz-top5-name">关联</span>
+        </div>
+        
+        <div class="kz-top5-pill" style="background:#22c55e20; border: 1px solid #22c55e; color:#22c55e;">
+          <span class="kz-top5-rank">5</span>
+          <span class="kz-top5-name">积极</span>
+        </div>
+        </div>
+</div>
+
+<h2>2. 我的核心结果 | My Core Results</h2>
+<table>
+  <tr><th>维度 / Dimension</th><th>结果 / Result</th></tr>
+  <tr><td>Holland 三码 / Holland Code</td><td><strong>SAR</strong> — 社会型（Social）</td></tr>
+  <tr><td>优势领域 / Leading Strength Domain</td><td>关系建立</td></tr>
+  <tr><td>优势风格 / Strengths Style</td><td>关系连接型 / Relationship Builder</td></tr>
+</table>
+
+
+        <div class="kz-illustration-card">
+          <svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dcfce7"/>
+      <circle cx="80" cy="60" r="28" fill="#22c55e" opacity="0.15"/>
+      <circle cx="62" cy="55" r="12" fill="#22c55e"/>
+      <circle cx="98" cy="55" r="12" fill="#22c55e"/>
+      <path d="M74 70 Q80 78 86 70" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M55 82 Q80 100 105 82" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="80" cy="92" r="5" fill="#22c55e"/>
+    </svg>
+          <div class="kz-illustration-label">人际关怀派</div>
+          <div class="kz-illustration-en">People Helper</div>
+        </div>
+        
+
+<h2>3. 稳妥入口职业 | Safe Entry Points</h2>
+<p>如果你更关注就业稳定性和现实可行性，以下方向是不错的起点。</p>
+<p class="kz-en">If you prioritize employment stability and practical entry paths, these roles are good starting points.</p>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>运动教练</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>运动训练、体育教育、运动人体科学、康复治疗</td>
+        </tr>
+        <tr>
+          <td>心理咨询师</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>心理学、应用心理学、临床心理学、社会工作</td>
+        </tr>
+</table>
+
+<h2>4. 核心推荐专业 | Core Recommended Majors</h2>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>心理学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>应用心理学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>临床心理学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>社会工作</td>
+          <td>法学/管理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>师范类专业</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>学科教育</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>教育学</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>特殊教育</td>
+          <td>教育学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<h2>5. 三个下一步行动 | Three Next Steps</h2>
+<ul class="kz-list">
+  <li>参加一次志愿或辅导活动：观察自己在帮助他人时的能量变化。/ Take part in a volunteer or tutoring activity and observe your energy level.</li><li>了解一个社会服务类专业：如教育、心理、社会工作、护理等。/ Explore a social-service major such as education, psychology, social work, or nursing.</li><li>主动与一位新朋友或久未联系的朋友深聊 30 分钟。/ Have a 30-minute deep conversation with a new or old friend.</li>
+</ul>
+
+<div class="kz-tip">
+  📄 <strong>完整报告 / Full Report</strong>：请查看专业版报告获取 RIASEC 剖面、主题叙事、交叉矩阵与详细专业映射。
+  <br><span class="kz-en">See the professional report for RIASEC profile, theme narrative, cross-matrix, and detailed major mappings.</span>
+</div>
+</div>

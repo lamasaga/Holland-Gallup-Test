@@ -50,15 +50,30 @@ RIASEC_MEANING = {
 # 数据质量与个性化内容 / Data quality & personalization
 # ---------------------------------------------------------------------------
 
-def _build_data_quality_notes(holland_quality: Dict[str, Any] = None, gallup_coverage: Dict[str, Any] = None) -> List[str]:
-    """根据 Holland 区分度与 Gallup 映射覆盖率生成数据质量提示。"""
+def _build_data_quality_notes(
+    holland_quality: Dict[str, Any] = None,
+    gallup_coverage: Dict[str, Any] = None,
+    gallup_quality: Dict[str, Any] = None,
+) -> List[str]:
+    """根据 Holland 区分度、Gallup 映射覆盖率与作答响应质量生成数据质量提示。"""
     notes = []
 
-    if holland_quality and holland_quality.get("is_flat"):
-        notes.append(
-            "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ "
-            "Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences."
-        )
+    # Holland 响应质量
+    if holland_quality:
+        if holland_quality.get("is_flat"):
+            notes.append(
+                "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ "
+                "Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences."
+            )
+        rq = holland_quality.get("response_quality") or {}
+        if rq.get("risk_level") in ("medium", "high") and rq.get("message_zh"):
+            notes.append(f"{rq['message_zh']} / {rq.get('message_en', '')}".strip())
+
+    # Gallup 响应质量
+    if gallup_quality:
+        rq = gallup_quality.get("response_quality") or {}
+        if rq.get("risk_level") in ("medium", "high") and rq.get("message_zh"):
+            notes.append(f"{rq['message_zh']} / {rq.get('message_en', '')}".strip())
 
     if gallup_coverage:
         b_ratio = gallup_coverage.get("b_side_ratio", 0)
@@ -181,7 +196,7 @@ def generate_student_report(db: Session, user_id: str) -> Dict[str, Any]:
     careers = get_career_recommendations(db, holland_code, gallup_domain, limit=5)
 
     # Data quality notes
-    data_quality_notes = _build_data_quality_notes(holland_quality, gallup_coverage)
+    data_quality_notes = _build_data_quality_notes(holland_quality, gallup_coverage, status.get("gallup_quality"))
 
     # Tension & personalized actions
     tension = analyze_tension(holland_code, gallup_domain)
@@ -214,6 +229,7 @@ def generate_student_report(db: Session, user_id: str) -> Dict[str, Any]:
         "data_quality_notes": data_quality_notes,
         "gallup_coverage": gallup_coverage,
         "holland_quality": holland_quality,
+        "gallup_quality": status.get("gallup_quality"),
     }
 
 
@@ -233,24 +249,31 @@ def generate_professional_report(db: Session, user_id: str) -> Dict[str, Any]:
     gallup_secondary_domain = assessment.gallup_secondary_domain or ""
     gallup_scores = assessment.gallup_scores or {}
 
-    top5_details = []
-    for theme in gallup_top5:
+    # Build details for Top 10 themes (Top 5 will get detailed narrative, 6-10 concise list)
+    top10_details = []
+    for theme in gallup_top10:
         desc = db.query(models.ThemeDescription).filter(
             models.ThemeDescription.theme_name == theme
         ).first()
-        top5_details.append({
+        top10_details.append({
             "theme": theme,
             "theme_en": desc.theme_name_en if desc else "",
             "domain": desc.domain if desc else "",
-            "definition": desc.standard_definition if desc else "",
-            "feature": desc.feature if desc else "",
-            "application": desc.application if desc else "",
-            "blind_spots": desc.blind_spots if desc else "",
+            "definition_zh": desc.standard_definition_zh if desc else "",
+            "definition_en": desc.standard_definition_en if desc else "",
+            "feature_zh": desc.feature_zh if desc else "",
+            "feature_en": desc.feature_en if desc else "",
+            "description_zh": desc.description_zh if desc else "",
+            "description_en": desc.description_en if desc else "",
+            "application_zh": desc.application_zh if desc else "",
+            "application_en": desc.application_en if desc else "",
+            "blind_spots_zh": desc.blind_spots_zh if desc else "",
+            "blind_spots_en": desc.blind_spots_en if desc else "",
         })
 
-    # Domain distribution from top5
+    # Domain distribution from top10 for consistency with "Top 10 weighted by rank" narrative
     domain_distribution = {}
-    for d in top5_details:
+    for d in top10_details:
         domain_distribution[d["domain"]] = domain_distribution.get(d["domain"], 0) + 1
 
     # Tension
@@ -261,7 +284,7 @@ def generate_professional_report(db: Session, user_id: str) -> Dict[str, Any]:
     status = assessment.status or {}
     gallup_coverage = status.get("gallup_coverage")
     holland_quality = status.get("holland_quality")
-    data_quality_notes = _build_data_quality_notes(holland_quality, gallup_coverage)
+    data_quality_notes = _build_data_quality_notes(holland_quality, gallup_coverage, status.get("gallup_quality"))
 
     report_html = _build_professional_html(
         db=db,
@@ -271,7 +294,7 @@ def generate_professional_report(db: Session, user_id: str) -> Dict[str, Any]:
         gallup_domain=gallup_domain,
         gallup_secondary_domain=gallup_secondary_domain,
         domain_distribution=domain_distribution,
-        top5_details=top5_details,
+        top10_details=top10_details,
         gallup_top10=gallup_top10,
         tension=tension,
         careers=careers,
@@ -282,7 +305,7 @@ def generate_professional_report(db: Session, user_id: str) -> Dict[str, Any]:
         "student_name": student_name,
         "holland_scores": holland_scores,
         "holland_code": holland_code,
-        "gallup_top5": top5_details,
+        "gallup_top5": top10_details[:5],
         "gallup_top10": gallup_top10,
         "gallup_domain": gallup_domain,
         "gallup_secondary_domain": gallup_secondary_domain,
@@ -294,6 +317,7 @@ def generate_professional_report(db: Session, user_id: str) -> Dict[str, Any]:
         "data_quality_notes": data_quality_notes,
         "gallup_coverage": gallup_coverage,
         "holland_quality": holland_quality,
+        "gallup_quality": status.get("gallup_quality"),
     }
 
 
@@ -327,6 +351,7 @@ def _css() -> str:
 .kz-report .kz-highlight { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 6px; margin: 14px 0; }
 .kz-report .kz-tip { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #166534; }
 .kz-report .kz-warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #92400e; }
+.kz-report .kz-info { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #1e40af; }
 .kz-report table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
 .kz-report th, .kz-report td { border: 1px solid #e5e7eb; padding: 10px 12px; text-align: left; vertical-align: top; }
 .kz-report th { background: #f3f4f6; font-weight: 600; color: #374151; }
@@ -390,12 +415,72 @@ def _css() -> str:
 .kz-report .kz-print-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
 .kz-report .kz-print-btn { background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; }
 .kz-report .kz-print-btn:hover { background: #1d4ed8; }
+
+/* 学生版报告可视化 / Student report visuals */
+.kz-report .kz-type-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-align: center; }
+.kz-report .kz-type-badges { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.kz-report .kz-type-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 80px; padding: 10px 20px; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.kz-report .kz-type-plus { font-size: 24px; font-weight: 700; color: #9ca3af; }
+.kz-report .kz-type-summary { font-size: 16px; color: #374151; line-height: 1.6; }
+.kz-report .kz-type-summary .kz-en { font-size: 14px; }
+.kz-report .kz-chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 22px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-chart-title { font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 14px 0; }
+.kz-report .kz-chart-subtitle { font-size: 13px; color: #6b7280; margin: -10px 0 14px 0; }
+.kz-report .kz-domain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 10px 0; }
+.kz-report .kz-domain-block { border-radius: 10px; padding: 16px 10px; text-align: center; position: relative; min-height: 90px; display: flex; flex-direction: column; justify-content: center; }
+.kz-report .kz-domain-name { font-size: 15px; font-weight: 700; color: #1f2937; }
+.kz-report .kz-domain-en { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.kz-report .kz-domain-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+.kz-report .kz-domain-primary { background: #1f2937; color: #fff; }
+.kz-report .kz-domain-secondary { background: #fff; color: #1f2937; border: 1px solid #1f2937; }
+.kz-report .kz-top5-pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.kz-report .kz-top5-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+.kz-report .kz-top5-rank { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; }
+.kz-report .kz-illustration-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+.kz-report .kz-illustration-card { flex: 1; min-width: 140px; max-width: 220px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-illustration-card svg { width: 100%; height: auto; display: block; }
+.kz-report .kz-illustration-label { font-size: 13px; font-weight: 600; color: #374151; margin-top: 10px; }
+.kz-report .kz-illustration-en { font-size: 11px; color: #6b7280; font-style: italic; }
+.kz-report .kz-hero-illustration { background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 20px; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.kz-report .kz-hero-illustration svg { width: 160px; height: 120px; flex-shrink: 0; }
+.kz-report .kz-hero-text { flex: 1; min-width: 200px; }
+.kz-report .kz-hero-text p { margin: 6px 0; }
+@media (max-width: 640px) {
+  .kz-report { max-width: 100%; padding: 0 8px; overflow-x: auto; }
+  .kz-report h1 { font-size: 22px; }
+  .kz-report h2 { font-size: 18px; }
+  .kz-report h3 { font-size: 16px; }
+  .kz-report h4 { font-size: 14px; }
+  .kz-report p, .kz-report li, .kz-report td, .kz-report th { font-size: 13px; }
+  .kz-report .kz-meta, .kz-report .kz-card, .kz-report .kz-highlight, .kz-report .kz-tip, .kz-report .kz-warning { padding: 12px 14px; }
+  .kz-report table { font-size: 12px; }
+  .kz-report th, .kz-report td { padding: 8px 10px; }
+  .kz-report .kz-matrix-table { min-width: 560px; }
+  .kz-report .kz-domain-grid { grid-template-columns: repeat(2, 1fr); }
+  .kz-report .kz-type-badge { font-size: 18px; padding: 8px 14px; }
+  .kz-report .kz-hero-illustration { flex-direction: column; text-align: center; }
+  .kz-report .kz-hero-illustration svg { width: 140px; height: 105px; }
+  .kz-report .kz-illustration-row { flex-direction: column; align-items: center; }
+  .kz-report .kz-illustration-card { max-width: 100%; width: 100%; }
+  .kz-report .kz-top5-pill { font-size: 13px; padding: 6px 12px; }
+  .kz-report .kz-type-card { padding: 18px 20px; }
+  .kz-report .kz-print-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .kz-report .kz-print-btn { align-self: flex-start; }
+}
+.kz-report { counter-reset: kz-section; }
+.kz-report h2.kz-section { counter-increment: kz-section; counter-reset: kz-subsection; }
+.kz-report h2.kz-section::before { content: counter(kz-section, simp-chinese-informal) "、"; font-weight: 700; color: inherit; }
+.kz-report h3.kz-subsection { counter-increment: kz-subsection; }
+.kz-report h3.kz-subsection::before { content: counter(kz-section) "." counter(kz-subsection) " "; font-weight: 700; color: inherit; }
+.kz-report .kz-screen-only { }
 @media print {
   .kz-report .kz-print-btn { display: none; }
   .kz-report { max-width: 100%; }
   .kz-report h2 { page-break-after: avoid; }
   .kz-report table { page-break-inside: avoid; }
-  .kz-report .kz-card, .kz-report .kz-highlight, .kz-report .kz-tip, .kz-report .kz-warning { page-break-inside: avoid; }
+  .kz-report .kz-card, .kz-report .kz-highlight, .kz-report .kz-tip, .kz-report .kz-warning, .kz-report .kz-type-card, .kz-report .kz-chart-card, .kz-report .kz-domain-block, .kz-report .kz-illustration-card, .kz-report .kz-hero-illustration { page-break-inside: avoid; }
+  .kz-report .kz-screen-only { display: none !important; }
+  .kz-report .kz-screen-only h2.kz-section { counter-increment: none; counter-reset: none; }
 }
 </style>
 """
@@ -885,6 +970,327 @@ def _build_student_advice(
     ]
 
 
+# ---------------------------------------------------------------------------
+# 学生版报告可视化 / Student report visuals
+# ---------------------------------------------------------------------------
+
+_RIASEC_COLORS = {
+    "R": "#ef4444",
+    "I": "#3b82f6",
+    "A": "#8b5cf6",
+    "S": "#22c55e",
+    "E": "#f59e0b",
+    "C": "#6b7280",
+}
+
+_RIASEC_BG_COLORS = {
+    "R": "#fee2e2",
+    "I": "#dbeafe",
+    "A": "#ede9fe",
+    "S": "#dcfce7",
+    "E": "#fef3c7",
+    "C": "#f3f4f6",
+}
+
+_DOMAIN_COLORS = {
+    "执行力": "#ef4444",
+    "影响力": "#f59e0b",
+    "关系建立": "#22c55e",
+    "战略思维": "#3b82f6",
+}
+
+_DOMAIN_BG_COLORS = {
+    "执行力": "#fee2e2",
+    "影响力": "#fef3c7",
+    "关系建立": "#dcfce7",
+    "战略思维": "#dbeafe",
+}
+
+# ---------------------------------------------------------------------------
+# 报告主题插画 / Report illustrations (inline SVG)
+# ---------------------------------------------------------------------------
+
+_RIASEC_SVGS = {
+    "R": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#fee2e2"/>
+      <circle cx="80" cy="60" r="28" fill="#ef4444" opacity="0.15"/>
+      <path d="M62 55 L78 71 L112 37" stroke="#ef4444" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="105" cy="80" r="14" fill="none" stroke="#ef4444" stroke-width="5"/>
+      <circle cx="105" cy="80" r="6" fill="#ef4444"/>
+      <rect x="48" y="78" width="26" height="8" rx="2" fill="#ef4444" transform="rotate(-45 61 82)"/>
+    </svg>""",
+    "I": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dbeafe"/>
+      <circle cx="80" cy="60" r="28" fill="#3b82f6" opacity="0.15"/>
+      <path d="M70 85 L70 50" stroke="#3b82f6" stroke-width="5" stroke-linecap="round"/>
+      <path d="M58 40 L82 40 L82 50 L58 50 Z" fill="#3b82f6"/>
+      <circle cx="80" cy="32" r="4" fill="#3b82f6"/>
+      <circle cx="105" cy="55" r="8" fill="none" stroke="#3b82f6" stroke-width="3"/>
+      <circle cx="118" cy="42" r="5" fill="none" stroke="#3b82f6" stroke-width="3"/>
+      <circle cx="118" cy="68" r="5" fill="none" stroke="#3b82f6" stroke-width="3"/>
+    </svg>""",
+    "A": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#ede9fe"/>
+      <circle cx="80" cy="60" r="28" fill="#8b5cf6" opacity="0.15"/>
+      <ellipse cx="65" cy="70" rx="14" ry="10" fill="none" stroke="#8b5cf6" stroke-width="4"/>
+      <path d="M51 70 L65 55 L72 62 L79 52" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M92 48 L100 80 L95 80 L87 48 Z" fill="#8b5cf6"/>
+      <path d="M82 55 Q95 45 108 55" stroke="#8b5cf6" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <circle cx="113" cy="52" r="3" fill="#8b5cf6"/>
+    </svg>""",
+    "S": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dcfce7"/>
+      <circle cx="80" cy="60" r="28" fill="#22c55e" opacity="0.15"/>
+      <circle cx="62" cy="55" r="12" fill="#22c55e"/>
+      <circle cx="98" cy="55" r="12" fill="#22c55e"/>
+      <path d="M74 70 Q80 78 86 70" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M55 82 Q80 100 105 82" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="80" cy="92" r="5" fill="#22c55e"/>
+    </svg>""",
+    "E": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#fef3c7"/>
+      <circle cx="80" cy="60" r="28" fill="#f59e0b" opacity="0.15"/>
+      <rect x="55" y="75" width="50" height="8" rx="2" fill="#f59e0b"/>
+      <rect x="60" y="50" width="8" height="25" rx="2" fill="#f59e0b"/>
+      <rect x="75" y="40" width="8" height="35" rx="2" fill="#f59e0b"/>
+      <rect x="90" y="55" width="8" height="20" rx="2" fill="#f59e0b"/>
+      <path d="M110 45 L120 35 L120 55 Z" fill="#f59e0b"/>
+      <circle cx="125" cy="45" r="8" fill="none" stroke="#f59e0b" stroke-width="3"/>
+    </svg>""",
+    "C": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#f3f4f6"/>
+      <circle cx="80" cy="60" r="28" fill="#6b7280" opacity="0.15"/>
+      <rect x="52" y="42" width="36" height="48" rx="4" fill="none" stroke="#6b7280" stroke-width="4"/>
+      <rect x="60" y="52" width="20" height="4" rx="1" fill="#6b7280"/>
+      <rect x="60" y="60" width="20" height="4" rx="1" fill="#6b7280"/>
+      <rect x="60" y="68" width="14" height="4" rx="1" fill="#6b7280"/>
+      <path d="M95 50 L125 50" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+      <path d="M95 60 L118 60" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+      <path d="M95 70 L115 70" stroke="#6b7280" stroke-width="3" stroke-linecap="round"/>
+    </svg>""",
+}
+
+_DOMAIN_SVGS = {
+    "执行力": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#fee2e2"/>
+      <circle cx="80" cy="60" r="28" fill="#ef4444" opacity="0.15"/>
+      <path d="M55 65 L75 85 L105 45" stroke="#ef4444" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="100" y="35" width="20" height="28" rx="2" fill="none" stroke="#ef4444" stroke-width="4"/>
+      <path d="M105 45 L112 52 L120 40" stroke="#ef4444" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>""",
+    "影响力": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#fef3c7"/>
+      <circle cx="80" cy="60" r="28" fill="#f59e0b" opacity="0.15"/>
+      <path d="M52 55 L52 75 L68 70 L68 50 Z" fill="#f59e0b"/>
+      <path d="M68 55 L95 48" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+      <path d="M95 35 L95 65" stroke="#f59e0b" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="95" cy="50" rx="10" ry="18" fill="none" stroke="#f59e0b" stroke-width="3"/>
+      <circle cx="115" cy="50" r="12" fill="none" stroke="#f59e0b" stroke-width="3"/>
+    </svg>""",
+    "关系建立": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dcfce7"/>
+      <circle cx="80" cy="60" r="28" fill="#22c55e" opacity="0.15"/>
+      <circle cx="62" cy="52" r="10" fill="#22c55e"/>
+      <circle cx="98" cy="52" r="10" fill="#22c55e"/>
+      <path d="M70 62 Q80 72 90 62" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="62" cy="52" r="14" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.5"/>
+      <circle cx="98" cy="52" r="14" fill="none" stroke="#22c55e" stroke-width="2" opacity="0.5"/>
+      <path d="M50 70 Q80 95 110 70" stroke="#22c55e" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
+    </svg>""",
+    "战略思维": """<svg viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg">
+      <rect width="160" height="120" rx="12" fill="#dbeafe"/>
+      <circle cx="80" cy="60" r="28" fill="#3b82f6" opacity="0.15"/>
+      <path d="M65 75 Q80 40 95 75" stroke="#3b82f6" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <circle cx="80" cy="55" r="14" fill="none" stroke="#3b82f6" stroke-width="4"/>
+      <path d="M80 48 L80 55 L86 55" stroke="#3b82f6" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="105" cy="45" r="6" fill="#3b82f6"/>
+      <circle cx="55" cy="50" r="4" fill="#3b82f6"/>
+      <circle cx="110" cy="70" r="4" fill="#3b82f6"/>
+    </svg>""",
+}
+
+_THEME_DOMAINS = {
+    "成就": "执行力", "统筹": "执行力", "信仰": "执行力", "公平": "执行力",
+    "审慎": "执行力", "纪律": "执行力", "专注": "执行力", "责任": "执行力", "排难": "执行力",
+    "行动": "影响力", "统率": "影响力", "沟通": "影响力", "竞争": "影响力",
+    "完美": "影响力", "自信": "影响力", "追求": "影响力", "取悦": "影响力",
+    "适应": "关系建立", "关联": "关系建立", "伯乐": "关系建立", "体谅": "关系建立",
+    "和谐": "关系建立", "包容": "关系建立", "个别": "关系建立", "积极": "关系建立", "交往": "关系建立",
+    "思维": "战略思维", "理念": "战略思维", "学习": "战略思维", "分析": "战略思维",
+    "回顾": "战略思维", "战略": "战略思维", "前瞻": "战略思维", "搜集": "战略思维",
+}
+
+
+def _holland_bar_chart(holland_scores: Dict[str, int]) -> str:
+    """生成 RIASEC 分数水平条形图（SVG）。"""
+    if not holland_scores:
+        return ""
+
+    max_score = max(holland_scores.values()) or 1
+    letters = ["R", "I", "A", "S", "E", "C"]
+    labels = {
+        "R": "现实型 R",
+        "I": "研究型 I",
+        "A": "艺术型 A",
+        "S": "社会型 S",
+        "E": "企业型 E",
+        "C": "常规型 C",
+    }
+
+    bar_height = 22
+    gap = 12
+    left_margin = 70
+    right_margin = 50
+    chart_width = 420
+    bar_max_width = chart_width - left_margin - right_margin
+    total_height = len(letters) * (bar_height + gap) + 20
+
+    svg = f'<svg width="100%" height="{total_height}" viewBox="0 0 {chart_width} {total_height}" xmlns="http://www.w3.org/2000/svg">'
+    for i, letter in enumerate(letters):
+        score = holland_scores.get(letter, 0)
+        bar_width = (score / max_score) * bar_max_width
+        y = 10 + i * (bar_height + gap)
+        color = _RIASEC_COLORS.get(letter, "#9ca3af")
+        bg_color = _RIASEC_BG_COLORS.get(letter, "#f3f4f6")
+
+        # Background track.
+        svg += f'<rect x="{left_margin}" y="{y}" width="{bar_max_width}" height="{bar_height}" rx="11" fill="{bg_color}"/>'
+        # Score bar.
+        svg += f'<rect x="{left_margin}" y="{y}" width="{bar_width}" height="{bar_height}" rx="11" fill="{color}"/>'
+        # Label.
+        svg += f'<text x="{left_margin - 10}" y="{y + bar_height/2 + 5}" text-anchor="end" font-size="13" font-weight="600" fill="#374151">{labels[letter]}</text>'
+        # Score number.
+        svg += f'<text x="{left_margin + bar_width + 8}" y="{y + bar_height/2 + 5}" font-size="12" font-weight="600" fill="#374151">{score}</text>'
+
+    svg += "</svg>"
+    return svg
+
+
+def _gallup_domain_blocks(gallup_domain: str, gallup_secondary_domain: str) -> str:
+    """生成 Gallup 四大领域可视化方块。"""
+    domains = ["执行力", "影响力", "关系建立", "战略思维"]
+    html = '<div class="kz-domain-grid">'
+    for d in domains:
+        is_primary = d == gallup_domain
+        is_secondary = d == gallup_secondary_domain
+        color = _DOMAIN_COLORS.get(d, "#9ca3af")
+        bg = _DOMAIN_BG_COLORS.get(d, "#f3f4f6")
+        badge = ""
+        if is_primary:
+            badge = '<span class="kz-domain-badge kz-domain-primary">主导</span>'
+        elif is_secondary:
+            badge = '<span class="kz-domain-badge kz-domain-secondary">次要</span>'
+
+        html += f'''
+        <div class="kz-domain-block" style="background:{bg}; border-top: 4px solid {color};">
+          <div class="kz-domain-name">{d}</div>
+          <div class="kz-domain-en">{_domain_en(d)}</div>
+          {badge}
+        </div>
+        '''
+    html += '</div>'
+    return html
+
+
+def _top5_theme_pills(gallup_top5: List[str]) -> str:
+    """生成 Top 5 主题彩色胶囊。"""
+    if not gallup_top5:
+        return ""
+    html = '<div class="kz-top5-pills">'
+    for i, theme in enumerate(gallup_top5[:5], 1):
+        domain = _THEME_DOMAINS.get(theme, "")
+        color = _DOMAIN_COLORS.get(domain, "#6b7280")
+        html += f'''
+        <div class="kz-top5-pill" style="background:{color}20; border: 1px solid {color}; color:{color};">
+          <span class="kz-top5-rank">{i}</span>
+          <span class="kz-top5-name">{_escape_html(theme)}</span>
+        </div>
+        '''
+    html += '</div>'
+    return html
+
+
+def _type_badge_card(holland_code: str, gallup_domain: str, style: str) -> str:
+    """生成顶部类型徽章卡片（MBTI 风格）。"""
+    if not holland_code:
+        return ""
+
+    primary_color = _RIASEC_COLORS.get(holland_code[0].upper(), "#2563eb")
+    domain_color = _DOMAIN_COLORS.get(gallup_domain, "#6b7280")
+
+    stage_tag = _stage_tag(holland_code[0].upper()) if holland_code else ""
+    stage_tag_en = RIASEC_STAGE_TAGS.get(holland_code[0].upper(), ("", ""))[1] if holland_code else ""
+    style_parts = style.split(" / ", 1)
+    style_zh = style_parts[0]
+    style_en = style_parts[1] if len(style_parts) > 1 else style
+
+    return f'''
+    <div class="kz-type-card" style="border-left: 6px solid {primary_color};">
+      <div class="kz-type-badges">
+        <span class="kz-type-badge kz-holland-badge" style="background:{primary_color};">{holland_code}</span>
+        <span class="kz-type-plus">+</span>
+        <span class="kz-type-badge" style="background:{domain_color};">{_escape_html(gallup_domain or '未指定')}</span>
+      </div>
+      <div class="kz-type-summary">
+        <strong>{_escape_html(stage_tag)}</strong> × <strong>{_escape_html(style_zh)}</strong>
+        <br><span class="kz-en">{stage_tag_en} × {_escape_html(style_en)}</span>
+      </div>
+    </div>
+    '''
+
+
+def _report_illustration(holland_first_letter: str, gallup_domain: str, mode: str = "combined") -> str:
+    """生成报告主题插画（内联 SVG）。mode: combined / holland / domain"""
+    letter = (holland_first_letter or "R").upper()
+    holland_svg = _RIASEC_SVGS.get(letter, _RIASEC_SVGS["R"])
+    domain_svg = _DOMAIN_SVGS.get(gallup_domain, _DOMAIN_SVGS.get("执行力", ""))
+
+    if mode == "holland":
+        stage_zh, stage_en = RIASEC_STAGE_TAGS.get(letter, ("", ""))
+        return f'''
+        <div class="kz-illustration-card">
+          {holland_svg}
+          <div class="kz-illustration-label">{_escape_html(stage_zh)}</div>
+          <div class="kz-illustration-en">{_escape_html(stage_en)}</div>
+        </div>
+        '''
+
+    if mode == "domain":
+        domain_en = _domain_en(gallup_domain) if gallup_domain else ""
+        return f'''
+        <div class="kz-illustration-card">
+          {domain_svg}
+          <div class="kz-illustration-label">{_escape_html(gallup_domain or '')}</div>
+          <div class="kz-illustration-en">{_escape_html(domain_en)}</div>
+        </div>
+        '''
+
+    # combined: side-by-side hero with short text
+    stage_zh, stage_en = RIASEC_STAGE_TAGS.get(letter, ("", ""))
+    domain_en = _domain_en(gallup_domain) if gallup_domain else ""
+    return f'''
+    <div class="kz-hero-illustration">
+      <div class="kz-illustration-row" style="margin:0;">
+        <div class="kz-illustration-card" style="max-width:180px;">
+          {holland_svg}
+          <div class="kz-illustration-label">{_escape_html(stage_zh)}</div>
+          <div class="kz-illustration-en">{_escape_html(stage_en)}</div>
+        </div>
+        <div class="kz-illustration-card" style="max-width:180px;">
+          {domain_svg}
+          <div class="kz-illustration-label">{_escape_html(gallup_domain or '')}</div>
+          <div class="kz-illustration-en">{_escape_html(domain_en)}</div>
+        </div>
+      </div>
+      <div class="kz-hero-text">
+        <p><strong>你的组合画像 / Your Profile</strong></p>
+        <p>兴趣舞台：{_escape_html(stage_zh)}（{stage_en}）；优势领域：{_escape_html(gallup_domain or '未指定')} / {_escape_html(domain_en)}。</p>
+        <p class="kz-en">Interest stage: {stage_en}; Leading strength domain: {domain_en or 'Not specified'}.</p>
+      </div>
+    </div>
+    '''
+
+
 def _build_student_html(
     student_name: str,
     holland_code: str,
@@ -904,6 +1310,13 @@ def _build_student_html(
     holland_result = f"<strong>{holland_code}</strong> — {_type_name(holland_code[0]) if holland_code else '未指定 / Not specified'}" if holland_code else "未指定 / Not specified"
     domain_en = _domain_en(gallup_domain)
     style = _strength_style(domain_en) if gallup_domain else "未指定 / Not specified"
+
+    type_card = _type_badge_card(holland_code, gallup_domain, style)
+    holland_chart = _holland_bar_chart(holland_scores)
+    domain_blocks = _gallup_domain_blocks(gallup_domain, gallup_secondary_domain)
+    top5_pills = _top5_theme_pills(gallup_top5)
+    hero_illustration = _report_illustration(holland_code[0] if holland_code else "", gallup_domain, mode="combined")
+    career_illustration = _report_illustration(holland_code[0] if holland_code else "", gallup_domain, mode="holland")
 
     safe_rows = ""
     for c in safe:
@@ -937,6 +1350,7 @@ def _build_student_html(
     )
 
     return f"""
+<meta charset="UTF-8">
 <div class="kz-report">
 {_css()}
 <div class="kz-print-header">
@@ -950,7 +1364,7 @@ def _build_student_html(
   <p><strong>优势风格 / Strengths Style</strong>：{_escape_html(style)}</p>
 </div>
 
-<div class="kz-warning">
+<div class="kz-warning kz-screen-only">
   <strong>数据质量提示 / Data Quality Notes</strong>
   <ul class="kz-list">
     {quality_items}
@@ -959,7 +1373,31 @@ def _build_student_html(
 
 {synthesis_html}
 
-<h2>1. 我的核心结果 | My Core Results</h2>
+{type_card}
+
+{hero_illustration}
+
+<h2>1. 我的测评画像 | My Profile</h2>
+
+<div class="kz-chart-card">
+  <div class="kz-chart-title">Holland 兴趣六维得分 | RIASEC Scores</div>
+  <div class="kz-chart-subtitle">分数越高，代表该类型越能描述你的兴趣倾向 / Higher scores mean stronger alignment with that interest type.</div>
+  {holland_chart}
+</div>
+
+<div class="kz-chart-card">
+  <div class="kz-chart-title">Gallup 优势领域 | CliftonStrengths Domains</div>
+  <div class="kz-chart-subtitle">主导领域是你最自然的工作方式，次要领域是其次 / Your leading domain is your most natural way of working.</div>
+  {domain_blocks}
+</div>
+
+<div class="kz-chart-card">
+  <div class="kz-chart-title">Top 5 才干主题 | My Top 5 Themes</div>
+  <div class="kz-chart-subtitle">颜色代表该主题所属的优势领域 / Colors show which domain each theme belongs to.</div>
+  {top5_pills}
+</div>
+
+<h2>2. 我的核心结果 | My Core Results</h2>
 <table>
   <tr><th>维度 / Dimension</th><th>结果 / Result</th></tr>
   <tr><td>Holland 三码 / Holland Code</td><td>{holland_result}</td></tr>
@@ -967,7 +1405,9 @@ def _build_student_html(
   <tr><td>优势风格 / Strengths Style</td><td>{_escape_html(style)}</td></tr>
 </table>
 
-<h2>2. 稳妥入口职业 | Safe Entry Points</h2>
+{career_illustration}
+
+<h2>3. 稳妥入口职业 | Safe Entry Points</h2>
 <p>如果你更关注就业稳定性和现实可行性，以下方向是不错的起点。</p>
 <p class="kz-en">If you prioritize employment stability and practical entry paths, these roles are good starting points.</p>
 <table>
@@ -975,13 +1415,13 @@ def _build_student_html(
   {safe_rows if safe_rows else '<tr><td colspan="3">暂无 / None</td></tr>'}
 </table>
 
-<h2>3. 核心推荐专业 | Core Recommended Majors</h2>
+<h2>4. 核心推荐专业 | Core Recommended Majors</h2>
 <table>
   <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
   {major_rows}
 </table>
 
-<h2>4. 三个下一步行动 | Three Next Steps</h2>
+<h2>5. 三个下一步行动 | Three Next Steps</h2>
 <ul class="kz-list">
   {action_items}
 </ul>
@@ -1002,7 +1442,7 @@ def _build_professional_html(
     gallup_domain: str,
     gallup_secondary_domain: str,
     domain_distribution: Dict[str, int],
-    top5_details: List[Dict[str, Any]],
+    top10_details: List[Dict[str, Any]],
     gallup_top10: List[str],
     tension: str,
     careers: List[Dict[str, Any]],
@@ -1062,7 +1502,7 @@ def _build_professional_html(
         </tr>"""
 
     interest_section = f"""
-<h2>一、我的兴趣舞台 | My Interest Stage</h2>
+<h2 class="kz-section">我的兴趣舞台 | My Interest Stage</h2>
 <p>你的 Holland 三码是 <strong>{holland_code}</strong>，三个字母分别代表你最感兴趣、次感兴趣和第三感兴趣的工作舞台。</p>
 <p class="kz-en">Your Holland code is <strong>{holland_code}</strong>. The three letters represent your strongest, second-strongest, and third-strongest areas of work interest.</p>
 <table>
@@ -1073,13 +1513,31 @@ def _build_professional_html(
 
     # 3. Strengths style
     top5_rows = ""
-    for idx, t in enumerate(top5_details, 1):
+    for idx, t in enumerate(top10_details[:5], 1):
+        one_liner = ""
+        if t.get('definition_zh'):
+            one_liner += _escape_html(t['definition_zh'])
+        if t.get('definition_en'):
+            if one_liner:
+                one_liner += "<br><span class='kz-en'>"
+            one_liner += _escape_html(t['definition_en'])
+            if t.get('definition_zh'):
+                one_liner += "</span>"
         top5_rows += f"""
         <tr>
           <td>{idx}</td>
           <td>{_escape_html(t['theme'])} / {_escape_html(t['theme_en'])}</td>
           <td>{_escape_html(t['domain'])} / {DOMAIN_ZH_TO_EN.get(t['domain'], t['domain'])}</td>
-          <td>{_escape_html(t['definition'][:120] if t['definition'] else '')}</td>
+          <td>{one_liner}</td>
+        </tr>"""
+
+    top10_rows = ""
+    for idx, t in enumerate(top10_details, 1):
+        top10_rows += f"""
+        <tr>
+          <td>{idx}</td>
+          <td>{_escape_html(t['theme'])} / {_escape_html(t['theme_en'])}</td>
+          <td>{_escape_html(t['domain'])} / {DOMAIN_ZH_TO_EN.get(t['domain'], t['domain'])}</td>
         </tr>"""
 
     domain_dist_items = ""
@@ -1087,18 +1545,24 @@ def _build_professional_html(
         domain_dist_items += f"<li>{_escape_html(d)} / {DOMAIN_ZH_TO_EN.get(d, d)}：{count}</li>"
 
     strengths_section = f"""
-<h2>二、我的优势风格 | My Strengths Style</h2>
+<h2 class="kz-section">我的优势风格 | My Strengths Style</h2>
 <p>你的 Gallup CliftonStrengths Top 10 主题按排名加权后，<strong>{_escape_html(gallup_domain or '未指定')}</strong> 领域得分最高，是最能代表你稳定工作方式的领域；<strong>{_escape_html(gallup_secondary_domain or '未指定')}</strong> 为次要领域。这意味着你最自然的工作方式是 <strong>{_escape_html(strength_style)}</strong>。</p>
 <p class="kz-en">When your Gallup CliftonStrengths Top 10 themes are weighted by rank, <strong>{domain_en}</strong> scores highest as your leading domain and <strong>{secondary_domain_en}</strong> is your secondary domain. Your most natural way of working is as an <strong>{_strength_style(domain_en).split(' / ')[1] if ' / ' in _strength_style(domain_en) else domain_en}</strong>.</p>
 <div class="kz-card">
   <p><strong>{_escape_html(gallup_domain or '未指定')} / {domain_en}</strong>：{_escape_html(_domain_description(domain_en))}</p>
 </div>
-<h3>Top 5 才干主题 | Your Top 5 Themes</h3>
+<h3>Top 10 主题一览 | Top 10 Themes at a Glance</h3>
+<table>
+  <tr><th>排名 / Rank</th><th>主题 / Theme</th><th>领域 / Domain</th></tr>
+  {top10_rows}
+</table>
+<h3>Top 5 才干主题详细解读 | Your Top 5 Themes in Detail</h3>
+<p>以下是对你最突出的 5 个才干主题的详细解读。第 6–10 名主题已列在上方一览表中，作为延伸线索。/ Detailed narratives are provided for your top 5 themes. Themes 6–10 are listed above as extended clues.</p>
 <table>
   <tr><th>排名 / Rank</th><th>主题 / Theme</th><th>领域 / Domain</th><th>一句话定义 / One-Liner</th></tr>
   {top5_rows}
 </table>
-<p><strong>领域分布 / Domain Distribution</strong>：</p>
+<p><strong>Top 10 领域分布 / Domain Distribution (Top 10)</strong>：</p>
 <ul class="kz-list">
   {domain_dist_items}
 </ul>
@@ -1107,7 +1571,7 @@ def _build_professional_html(
     # 4. Cross-matrix
     matrix_html = _build_matrix_html(matrix, holland_code, gallup_domain, gallup_secondary_domain)
     cross_section = f"""
-<h2>三、兴趣 × 优势交叉矩阵 | Interest × Strengths Cross-Matrix</h2>
+<h2 class="kz-section">兴趣 × 优势交叉矩阵 | Interest × Strengths Cross-Matrix</h2>
 {_matrix_ethics_notice()}
 <p>下方矩阵展示了 6 种 RIASEC 兴趣类型与 4 大 CliftonStrengths 优势领域交叉形成的 <strong>24 种职业范畴</strong>。表格中每格仅标注范畴名称；带色边框的格子与你结果相关——边框越实、颜色越深，关联越强。具体解读见矩阵下方。</p>
 <p class="kz-en"><em>The matrix shows <strong>24 occupational domains</strong>. Each cell lists only the domain name; colored borders mark relevance to your results. See detailed interpretation below the matrix.</em></p>
@@ -1122,16 +1586,10 @@ def _build_professional_html(
     # 6. Career paths
     careers_section = _build_career_tiers_html(career_tiers)
 
-    # 7. Employment market placeholder
-    market_section = _build_market_html()
-
-    # 8. Evidence levels
-    evidence_section = _build_evidence_html()
-
-    # 9. Integration
+    # 7. Integration (placed before screen-only blocks so print numbering stays continuous)
     consistency_text = _holland_consistency(holland_code)
     integration_section = f"""
-<h2>八、兴趣-优势整合分析 | Interest-Strengths Integration</h2>
+<h2 class="kz-section">兴趣-优势整合分析 | Interest-Strengths Integration</h2>
 <ul class="kz-list">
   <li><strong>主导兴趣 / Dominant Interest</strong>：{_type_name(dominant_type) if dominant_type else '未指定 / Not specified'}</li>
   <li><strong>主导优势 / Dominant Strength</strong>：{_escape_html(gallup_domain or '未指定 / Not specified')} / {domain_en}</li>
@@ -1145,12 +1603,18 @@ def _build_professional_html(
 </div>
 """
 
+    # 8. Employment market placeholder
+    market_section = _build_market_html()
+
+    # 9. Evidence levels
+    evidence_section = _build_evidence_html()
+
     # 10. Action tracking
     action_section = _build_action_html()
 
     # 11. Next steps
     next_steps = """
-<h2>十、下一步行动 | Next Steps</h2>
+<h2 class="kz-section">下一步行动 | Next Steps</h2>
 <ol class="kz-list">
   <li><strong>阅读学生一页纸摘要 / Read student one-pager</strong>：快速抓住核心结论。</li>
   <li><strong>选择 1-2 个稳妥入口职业 / Pick 1-2 safe entry points</strong>：在招聘网站查找真实岗位描述。</li>
@@ -1161,13 +1625,14 @@ def _build_professional_html(
 """
 
     # Appendix
-    appendix = _build_appendix_html(holland_scores, holland_code, top5_details, gallup_domain)
+    appendix = _build_appendix_html(holland_scores, holland_code, top10_details, gallup_domain)
 
     quality_items = ""
     for note in data_quality_notes:
         quality_items += f"<li>{_escape_html(note)}</li>"
 
     return f"""
+<meta charset="UTF-8">
 <div class="kz-report">
 {_css()}
 <div class="kz-print-header">
@@ -1180,7 +1645,7 @@ def _build_professional_html(
   <p><strong>目标申请方向 / Target Region</strong>：未指定 / Not specified</p>
 </div>
 
-<div class="kz-warning">
+<div class="kz-warning kz-screen-only">
   <strong>数据质量提示 / Data Quality Notes</strong>
   <ul class="kz-list">
     {quality_items}
@@ -1193,11 +1658,13 @@ def _build_professional_html(
 {cross_section}
 {majors_section}
 {careers_section}
+{integration_section}
+<div class="kz-screen-only">
 {market_section}
 {evidence_section}
-{integration_section}
 {action_section}
 {next_steps}
+</div>
 {appendix}
 </div>
 """
@@ -1392,23 +1859,23 @@ def _major_domestic_note(major: str) -> str:
 
 def _build_majors_html(major_tiers: Dict[str, List[Dict[str, Any]]]) -> str:
     return f"""
-<h2>四、推荐申请专业 | Recommended Majors</h2>
+<h2 class="kz-section">推荐申请专业 | Recommended Majors</h2>
 <p>以下专业根据推荐职业路径分层整理。<strong>核心专业</strong>建议优先了解；<strong>拓展专业</strong>可作为备选或第二专业方向；<strong>可关注专业</strong>适合作为长期兴趣跟踪。</p>
 <p class="kz-en"><em>Majors are organized by priority. <strong>Core</strong> majors are the top priorities; <strong>Expand</strong> majors are alternatives or second-field options; <strong>Watch</strong> majors are for long-term interest tracking.</em></p>
 
-<h3>4.1 核心专业 | Core Majors</h3>
+<h3 class="kz-subsection">核心专业 | Core Majors</h3>
 <table>
   <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
   {_major_table_rows(major_tiers['core'])}
 </table>
 
-<h3>4.2 拓展专业 | Expand Majors</h3>
+<h3 class="kz-subsection">拓展专业 | Expand Majors</h3>
 <table>
   <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
   {_major_table_rows(major_tiers['expand'])}
 </table>
 
-<h3>4.3 可关注专业 | Watch Majors</h3>
+<h3 class="kz-subsection">可关注专业 | Watch Majors</h3>
 <table>
   <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
   {_major_table_rows(major_tiers['watch'])}
@@ -1440,7 +1907,7 @@ def _career_table_rows(careers: List[Dict[str, Any]], mode: str = "fit") -> str:
 
 def _build_career_tiers_html(career_tiers: Dict[str, List[Dict[str, Any]]]) -> str:
     return f"""
-<h2>五、推荐职业路径 | Recommended Career Paths</h2>
+<h2 class="kz-section">推荐职业路径 | Recommended Career Paths</h2>
 <p>以下推荐分为三个层级：</p>
 <ol class="kz-list">
   <li><strong>高适配路径 / High Fit</strong>：与你的主导兴趣和主导优势精确匹配。</li>
@@ -1458,19 +1925,19 @@ def _build_career_tiers_html(career_tiers: Dict[str, List[Dict[str, Any]]]) -> s
   </ul>
 </div>
 
-<h3>5.1 高适配路径 | High Fit</h3>
+<h3 class="kz-subsection">高适配路径 | High Fit</h3>
 <table>
   <tr><th>职业 / Career</th><th>标签 / Tag</th><th>主要工作 / What They Do</th><th>相关专业 / Related Majors</th></tr>
   {_career_table_rows(career_tiers['high'], mode='fit')}
 </table>
 
-<h3>5.2 中适配路径 | Moderate Fit</h3>
+<h3 class="kz-subsection">中适配路径 | Moderate Fit</h3>
 <table>
   <tr><th>职业 / Career</th><th>标签 / Tag</th><th>主要工作 / What They Do</th><th>相关专业 / Related Majors</th></tr>
   {_career_table_rows(career_tiers['moderate'], mode='fit')}
 </table>
 
-<h3>5.3 就业友好备选 | Employment-Friendly Alternatives</h3>
+<h3 class="kz-subsection">就业友好备选 | Employment-Friendly Alternatives</h3>
 <table>
   <tr><th>职业 / Career</th><th>标签 / Tag</th><th>为何作为备选 / Why This Alternative</th><th>相关专业 / Related Majors</th></tr>
   {_career_table_rows(career_tiers['alternative'])}
@@ -1480,7 +1947,7 @@ def _build_career_tiers_html(career_tiers: Dict[str, List[Dict[str, Any]]]) -> s
 
 def _build_market_html() -> str:
     return """
-<h2>六、就业市场参考 | Employment Market Reference</h2>
+<h2 class="kz-section">就业市场参考 | Employment Market Reference</h2>
 <div class="kz-tip">
   <strong>数据建设中 / Data Under Construction</strong>：本模块计划接入第三方就业数据源（招聘平台、行业报告、校友追踪），为每个推荐职业补充平均起薪、岗位需求、学历要求、热门城市与发展路径。当前版本暂以框架形式呈现，具体数值请以目标院校就业报告和招聘平台实时数据为准。
   <br><span class="kz-en">This module will integrate third-party employment data (job platforms, industry reports, alumni tracking) to add entry salary, job demand, education requirements, top cities, and career paths for each recommended role. Current version shows the framework only; please verify specific figures against university employment reports and live job platforms.</span>
@@ -1498,8 +1965,8 @@ def _build_market_html() -> str:
 
 def _build_evidence_html() -> str:
     return """
-<h2>七、证据等级说明与科学性建设 | Evidence Levels & Scientific Roadmap</h2>
-<h3>7.1 当前证据等级定义 | Current Evidence Level Definitions</h3>
+<h2 class="kz-section">证据等级说明与科学性建设 | Evidence Levels & Scientific Roadmap</h2>
+<h3 class="kz-subsection">当前证据等级定义 | Current Evidence Level Definitions</h3>
 <table>
   <tr><th>等级 / Level</th><th>含义 / Meaning</th><th>当前应用情况 / Current Application</th></tr>
   <tr><td><strong>A</strong></td><td>大样本实证研究或长期追踪数据支持</td><td>当前暂无，需通过用户毕业去向追踪积累</td></tr>
@@ -1508,7 +1975,7 @@ def _build_evidence_html() -> str:
   <tr><td><strong>D</strong></td><td>基于个案经验或初步假设</td><td>少量映射属于此等级</td></tr>
 </table>
 
-<h3>7.2 如何积累 A/B 级证据 | How to Build A/B-Level Evidence</h3>
+<h3 class="kz-subsection">如何积累 A/B 级证据 | How to Build A/B-Level Evidence</h3>
 <ol class="kz-list">
   <li><strong>毕业生追踪研究 / Graduate tracking studies</strong>：对使用本工具的用户进行 1 年、3 年、5 年跟踪，记录其专业选择与职业满意度。
     <br><span class="kz-en">Follow users at 1, 3, and 5 years to record major choices and career satisfaction.</span></li>
@@ -1524,7 +1991,7 @@ def _build_evidence_html() -> str:
 
 def _build_action_html() -> str:
     return """
-<h2>九、行动跟踪模块 | Action Tracking Module</h2>
+<h2 class="kz-section">行动跟踪模块 | Action Tracking Module</h2>
 <p>本模块帮助你把报告结论转化为具体行动并记录进展。若使用在线版工具，可自动保存打卡与复盘。</p>
 <p class="kz-en">This module helps turn report insights into concrete actions and track progress. The online version can automatically save check-ins and reflections.</p>
 
@@ -1625,7 +2092,7 @@ def _holland_consistency(holland_code: str) -> str:
 def _build_appendix_html(
     holland_scores: Dict[str, int],
     holland_code: str,
-    top5_details: List[Dict[str, Any]],
+    top10_details: List[Dict[str, Any]],
     gallup_domain: str,
 ) -> str:
     # RIASEC profile
@@ -1649,18 +2116,29 @@ def _build_appendix_html(
 
     # Theme narrative
     narrative = ""
-    for t in top5_details:
+    def _bilingual_block(label: str, zh: str, en: str) -> str:
+        html = f"<p><strong>{label}</strong>"
+        if zh:
+            html += f"：{_escape_html(zh)}"
+        if en:
+            if zh:
+                html += "<br>"
+            html += f"<span class='kz-en'>{_escape_html(en)}</span>"
+        html += "</p>"
+        return html
+
+    for t in top10_details:
         narrative += f"""
         <h4>{_escape_html(t['theme'])} / {_escape_html(t['theme_en'])}（{_escape_html(t['domain'])} / {DOMAIN_ZH_TO_EN.get(t['domain'], t['domain'])}）</h4>
-        <p><strong>标准定义 / Standard Definition</strong>：{_escape_html(t['definition'] or '')}</p>
-        <p><strong>特征 / Feature</strong>：{_escape_html(t['feature'] or '')}</p>
-        <p><strong>应用 / Application</strong>：{_escape_html(t['application'] or '')}</p>
-        <p><strong>盲点 / Blind Spots</strong>：{_escape_html(t['blind_spots'] or '')}</p>
+        {_bilingual_block('标准定义 / Standard Definition', t.get('definition_zh', ''), t.get('definition_en', ''))}
+        {_bilingual_block('特征 / Feature', t.get('feature_zh', ''), t.get('feature_en', ''))}
+        {_bilingual_block('应用 / Application', t.get('application_zh', ''), t.get('application_en', ''))}
+        {_bilingual_block('盲点 / Blind Spots', t.get('blind_spots_zh', ''), t.get('blind_spots_en', ''))}
         <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
         """
 
     domain_en = _domain_en(gallup_domain)
-    leading_count = sum(1 for t in top5_details if _domain_en(t['domain']) == domain_en) if gallup_domain else 0
+    leading_count = sum(1 for t in top10_details if _domain_en(t['domain']) == domain_en) if gallup_domain else 0
 
     return f"""
 <h2>附录：专业版解读 | Appendix: Professional Interpretation</h2>
@@ -1676,13 +2154,13 @@ def _build_appendix_html(
 </ul>
 
 <h3>B. 主题叙事 | Theme Narrative</h3>
-<div class="kz-warning">
-  <strong>说明 / Note</strong>：以下主题详细描述中的“标准定义”已提供中文，“特征 / Feature”“应用 / Application”“盲点 / Blind Spots” 目前仍为英文素材。我们已经为每个主题补充了双语一句话定义（见 Top 5 表格），并会在后续版本中完成全部 narrative 的标准化翻译。如果你现在需要中文解读，建议优先参考 Top 5 表格中的一句话定义。
-  <br><span class="kz-en">The "Standard Definition" below is in Chinese, while Feature / Application / Blind Spots remain in English source material. A bilingual one-liner has been added for each theme (see Top 5 table), and full narrative translation will be standardized in a future release. For Chinese interpretation now, prioritize the one-liner definitions in the Top 5 table.</span>
+<div class="kz-info">
+  <strong>说明 / Note</strong>：以下主题叙事已提供中英双语对照：中文翻译优先保留本土教练式表达，英文保留 Gallup CliftonStrengths 原有表述风格。每个主题依次列出标准定义、特征、应用建议与盲点。
+  <br><span class="kz-en">The theme narratives below are presented in bilingual format: Chinese translations retain a local coaching style, while English preserves the original Gallup CliftonStrengths tone. Each theme includes its standard definition, feature, application tips, and blind spots.</span>
 </div>
 {narrative}
-<p><strong>主导领域分析 / Leading Domain Analysis</strong>：Top 5 中 {_escape_html(gallup_domain or '未指定')} / {domain_en} 领域占 {leading_count} 项，说明该生在行动方式上偏向 <strong>{_strength_style(domain_en) if gallup_domain else '未指定 / Not specified'}</strong>。</p>
-<p class="kz-en"><em>In your Top 5, {domain_en} accounts for {leading_count} themes, indicating a natural tendency toward {_strength_style(domain_en).split(' / ')[1] if gallup_domain and ' / ' in _strength_style(domain_en) else domain_en}.</em></p>
+<p><strong>主导领域分析 / Leading Domain Analysis</strong>：Top 10 中 {_escape_html(gallup_domain or '未指定')} / {domain_en} 领域占 {leading_count} 项，说明该生在行动方式上偏向 <strong>{_strength_style(domain_en) if gallup_domain else '未指定 / Not specified'}</strong>。</p>
+<p class="kz-en"><em>In your Top 10, {domain_en} accounts for {leading_count} themes, indicating a natural tendency toward {_strength_style(domain_en).split(' / ')[1] if gallup_domain and ' / ' in _strength_style(domain_en) else domain_en}.</em></p>
 
 <h3>C. 伦理与边界声明 | Ethics & Boundaries</h3>
 <ul class="kz-list">

@@ -254,11 +254,16 @@ def import_theme_descriptions(db: Session):
             theme_name=theme_name,
             theme_name_en=THEME_EN.get(theme_name, item.get("name_en", "")),
             domain=item.get("domain", ""),
-            standard_definition=item.get("standard_definition", ""),
-            feature=item.get("feature", ""),
-            description=item.get("description", ""),
-            application=item.get("application", ""),
-            blind_spots=item.get("blind_spots", "")
+            standard_definition_zh=item.get("standard_definition_zh", ""),
+            standard_definition_en=item.get("standard_definition_en", ""),
+            feature_zh=item.get("feature_zh", ""),
+            feature_en=item.get("feature_en", ""),
+            description_zh=item.get("description_zh", ""),
+            description_en=item.get("description_en", ""),
+            application_zh=item.get("application_zh", ""),
+            application_en=item.get("application_en", ""),
+            blind_spots_zh=item.get("blind_spots_zh", ""),
+            blind_spots_en=item.get("blind_spots_en", "")
         )
         db.add(td)
     db.commit()

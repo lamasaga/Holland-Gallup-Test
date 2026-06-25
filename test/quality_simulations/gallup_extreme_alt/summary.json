@@ -1,0 +1,59 @@
+{
+  "profile": "Gallup 极端交替",
+  "username": "sim_quality_extreme",
+  "password": "Test@1234!",
+  "display_name": "极端交替者",
+  "user_id": "158c7d90-dcbd-461f-b797-a73810d5b968",
+  "holland_code": "RIA",
+  "holland_quality": {
+    "differentiation": 0,
+    "is_flat": true,
+    "response_quality": {
+      "score": 0.0,
+      "flags": [
+        "straight_line",
+        "low_variance",
+        "low_entropy",
+        "long_run"
+      ],
+      "risk_level": "high",
+      "message_zh": "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。",
+      "message_en": "Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+      "details": {
+        "variance": 0.0,
+        "entropy": 0.0,
+        "straight_line_ratio": 1.0,
+        "alternating_ratio": 0.0,
+        "max_run": 60
+      }
+    }
+  },
+  "gallup_domain": "执行力",
+  "gallup_quality": {
+    "response_quality": {
+      "score": 0.2,
+      "flags": [
+        "extreme_alternation",
+        "low_entropy",
+        "alternating_pattern"
+      ],
+      "risk_level": "high",
+      "message_zh": "检测到极端选项频繁交替，疑似乱答。",
+      "message_en": "Frequent alternation between extreme options detected; possible random responding.",
+      "details": {
+        "entropy": 1.0,
+        "neutral_rate": 0.0,
+        "one_side_ratio": 0.5,
+        "extreme_alternation_ratio": 1.0,
+        "alternating_ratio": 1.0,
+        "max_run": 1
+      }
+    }
+  },
+  "data_quality_notes": [
+    "你的 Holland 得分区分度较低（各类型分数接近），三码可能不能清晰代表你的兴趣偏好，建议结合日常经历进一步验证。/ Your Holland scores show low differentiation (types are close together), so the three-letter code may not clearly represent your interests. Validate against your daily experiences.",
+    "检测到大量相同答案，疑似直线作答或敷衍，建议重新认真测评。 / Many identical answers detected (possible straight-lining or rushing). Please retake carefully.",
+    "检测到极端选项频繁交替，疑似乱答。 / Frequent alternation between extreme options detected; possible random responding.",
+    "Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report."
+  ]
+}

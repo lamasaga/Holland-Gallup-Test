@@ -1,0 +1,917 @@
+
+<meta charset="UTF-8">
+<div class="kz-report">
+
+<style>
+.kz-report { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; color: #1f2937; line-height: 1.7; max-width: 960px; margin: 0 auto; }
+.kz-report h1 { font-size: 28px; font-weight: 700; color: #111827; margin: 0 0 12px 0; }
+.kz-report h2 { font-size: 22px; font-weight: 700; color: #1e40af; margin: 32px 0 14px 0; padding-bottom: 8px; border-bottom: 2px solid #dbeafe; }
+.kz-report h3 { font-size: 18px; font-weight: 700; color: #1f2937; margin: 24px 0 10px 0; }
+.kz-report h4 { font-size: 16px; font-weight: 700; color: #374151; margin: 18px 0 8px 0; }
+.kz-report p { margin: 8px 0; }
+.kz-report .kz-meta { background: #f8fafc; border-left: 4px solid #2563eb; padding: 14px 18px; margin: 16px 0; border-radius: 6px; }
+.kz-report .kz-meta p { margin: 4px 0; }
+.kz-report .kz-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-highlight { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 14px 18px; border-radius: 6px; margin: 14px 0; }
+.kz-report .kz-tip { background: #f0fdf4; border-left: 4px solid #22c55e; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #166534; }
+.kz-report .kz-warning { background: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #92400e; }
+.kz-report .kz-info { background: #eff6ff; border-left: 4px solid #3b82f6; padding: 12px 16px; border-radius: 6px; margin: 14px 0; color: #1e40af; }
+.kz-report table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+.kz-report th, .kz-report td { border: 1px solid #e5e7eb; padding: 10px 12px; text-align: left; vertical-align: top; }
+.kz-report th { background: #f3f4f6; font-weight: 600; color: #374151; }
+.kz-report tr:nth-child(even) { background: #f9fafb; }
+.kz-report .kz-tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 6px; }
+.kz-report .kz-tag-steady { background: #d1fae5; color: #065f46; }
+.kz-report .kz-tag-explore { background: #fef3c7; color: #92400e; }
+.kz-report .kz-tag-challenge { background: #fee2e2; color: #991b1b; }
+.kz-report .kz-matrix-dominant { background: #dbeafe; border: 3px solid #1d4ed8 !important; font-weight: 700; box-shadow: inset 0 0 0 1px #93c5fd; }
+.kz-report .kz-matrix-secondary { background: #fffbeb; border: 2px dashed #d97706 !important; }
+.kz-report .kz-matrix-tertiary { background: #f5f3ff; border: 2px dotted #7c3aed !important; }
+.kz-report .kz-matrix-header { background: #1e40af; color: #fff; font-weight: 600; }
+.kz-report .kz-matrix-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; margin-bottom: 6px; line-height: 1.3; }
+.kz-report .kz-matrix-badge-dominant { background: #1d4ed8; color: #fff; }
+.kz-report .kz-matrix-badge-secondary { background: #d97706; color: #fff; }
+.kz-report .kz-matrix-badge-tertiary { background: #7c3aed; color: #fff; }
+.kz-report .kz-matrix-legend { display: flex; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.kz-report .kz-matrix-legend-item { flex: 1; min-width: 200px; padding: 12px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; }
+.kz-report .kz-matrix-legend-dominant { border: 3px solid #1d4ed8; background: #eff6ff; }
+.kz-report .kz-matrix-legend-secondary { border: 2px dashed #d97706; background: #fffbeb; }
+.kz-report .kz-matrix-legend-tertiary { border: 2px dotted #7c3aed; background: #f5f3ff; }
+.kz-report .kz-matrix-legend-item strong { display: block; margin-bottom: 4px; font-size: 14px; }
+.kz-report .kz-matrix-domain-title { font-weight: 700; font-size: 13px; line-height: 1.4; }
+.kz-report .kz-matrix-table td { font-size: 12px; line-height: 1.35; padding: 8px 10px; }
+.kz-report .kz-matrix-table th { font-size: 12px; padding: 8px 10px; }
+.kz-report .kz-intersection-detail { margin-top: 28px; }
+.kz-report .kz-intersection-detail > h3 { font-size: 18px; color: #1e40af; margin: 0 0 8px 0; padding-bottom: 8px; border-bottom: 2px solid #dbeafe; }
+.kz-report .kz-intersection-intro { color: #4b5563; font-size: 14px; line-height: 1.65; margin: 0 0 20px 0; }
+.kz-report .kz-intersection-tier { margin-bottom: 24px; }
+.kz-report .kz-intersection-tier-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; padding: 14px 16px; border-radius: 10px; }
+.kz-report .kz-intersection-tier-primary .kz-intersection-tier-header { background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border: 1px solid #93c5fd; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-tier-header { background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fcd34d; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-tier-header { background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%); border: 1px solid #c4b5fd; }
+.kz-report .kz-intersection-tier-badge { flex-shrink: 0; display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 700; color: #fff; }
+.kz-report .kz-intersection-tier-primary .kz-intersection-tier-badge { background: #1d4ed8; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-tier-badge { background: #d97706; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-tier-badge { background: #7c3aed; }
+.kz-report .kz-intersection-tier-desc { margin: 0; font-size: 14px; line-height: 1.65; color: #374151; }
+.kz-report .kz-intersection-cards { display: grid; gap: 14px; }
+.kz-report .kz-intersection-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.kz-report .kz-intersection-tier-primary .kz-intersection-card { border-left: 4px solid #1d4ed8; }
+.kz-report .kz-intersection-tier-secondary .kz-intersection-card { border-left: 4px solid #d97706; }
+.kz-report .kz-intersection-tier-tertiary .kz-intersection-card { border-left: 4px solid #7c3aed; }
+.kz-report .kz-intersection-card-title { font-size: 16px; font-weight: 700; color: #111827; margin: 0 0 6px 0; }
+.kz-report .kz-intersection-card-tagline { font-size: 14px; color: #1e40af; font-style: italic; margin: 0 0 12px 0; line-height: 1.5; }
+.kz-report .kz-intersection-card-body { font-size: 14px; line-height: 1.7; color: #374151; margin: 0 0 14px 0; }
+.kz-report .kz-intersection-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px dashed #e5e7eb; }
+.kz-report .kz-intersection-meta-item { font-size: 12px; line-height: 1.5; }
+.kz-report .kz-intersection-meta-item strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: #6b7280; margin-bottom: 3px; font-weight: 600; }
+.kz-report .kz-intersection-prompt { margin-top: 12px; padding: 10px 14px; background: #f0fdf4; border-radius: 8px; font-size: 13px; color: #166534; line-height: 1.55; }
+.kz-report .kz-ethics { background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid #0284c7; padding: 14px 18px; border-radius: 8px; margin: 16px 0; color: #0c4a6e; }
+.kz-report .kz-synthesis { background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border: 1px solid #bfdbfe; border-radius: 10px; padding: 20px 24px; margin: 20px 0; }
+.kz-report .kz-synthesis h3 { margin-top: 0; color: #1e40af; }
+.kz-report .kz-synthesis-advice { background: #fff; border-radius: 8px; padding: 14px 18px; margin: 12px 0; border-left: 4px solid #22c55e; }
+.kz-report .kz-small { color: #6b7280; font-size: 13px; }
+.kz-report .kz-en { color: #6b7280; font-style: italic; }
+.kz-report ul.kz-list { padding-left: 22px; }
+.kz-report ul.kz-list li { margin: 8px 0; }
+.kz-report .kz-answer-line { display: inline-block; min-width: 160px; border-bottom: 1px solid #9ca3af; }
+.kz-report .kz-stage-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; background: #ede9fe; color: #5b21b6; font-size: 13px; font-weight: 600; }
+.kz-report .kz-print-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+.kz-report .kz-print-btn { background: #2563eb; color: #fff; padding: 8px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; border: none; }
+.kz-report .kz-print-btn:hover { background: #1d4ed8; }
+
+/* 学生版报告可视化 / Student report visuals */
+.kz-report .kz-type-card { background: #fff; border-radius: 12px; padding: 24px 28px; margin: 20px 0; box-shadow: 0 4px 12px rgba(0,0,0,0.06); text-align: center; }
+.kz-report .kz-type-badges { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.kz-report .kz-type-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 80px; padding: 10px 20px; border-radius: 10px; color: #fff; font-size: 22px; font-weight: 800; letter-spacing: 1px; box-shadow: 0 2px 6px rgba(0,0,0,0.12); }
+.kz-report .kz-type-plus { font-size: 24px; font-weight: 700; color: #9ca3af; }
+.kz-report .kz-type-summary { font-size: 16px; color: #374151; line-height: 1.6; }
+.kz-report .kz-type-summary .kz-en { font-size: 14px; }
+.kz-report .kz-chart-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 18px 22px; margin: 16px 0; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-chart-title { font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 14px 0; }
+.kz-report .kz-chart-subtitle { font-size: 13px; color: #6b7280; margin: -10px 0 14px 0; }
+.kz-report .kz-domain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 10px 0; }
+.kz-report .kz-domain-block { border-radius: 10px; padding: 16px 10px; text-align: center; position: relative; min-height: 90px; display: flex; flex-direction: column; justify-content: center; }
+.kz-report .kz-domain-name { font-size: 15px; font-weight: 700; color: #1f2937; }
+.kz-report .kz-domain-en { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.kz-report .kz-domain-badge { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 10px; }
+.kz-report .kz-domain-primary { background: #1f2937; color: #fff; }
+.kz-report .kz-domain-secondary { background: #fff; color: #1f2937; border: 1px solid #1f2937; }
+.kz-report .kz-top5-pills { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0; }
+.kz-report .kz-top5-pill { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; }
+.kz-report .kz-top5-rank { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: rgba(255,255,255,0.85); font-size: 11px; font-weight: 700; }
+.kz-report .kz-illustration-row { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+.kz-report .kz-illustration-card { flex: 1; min-width: 140px; max-width: 220px; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 16px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+.kz-report .kz-illustration-card svg { width: 100%; height: auto; display: block; }
+.kz-report .kz-illustration-label { font-size: 13px; font-weight: 600; color: #374151; margin-top: 10px; }
+.kz-report .kz-illustration-en { font-size: 11px; color: #6b7280; font-style: italic; }
+.kz-report .kz-hero-illustration { background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%); border: 1px solid #dbeafe; border-radius: 12px; padding: 20px; margin: 16px 0; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.kz-report .kz-hero-illustration svg { width: 160px; height: 120px; flex-shrink: 0; }
+.kz-report .kz-hero-text { flex: 1; min-width: 200px; }
+.kz-report .kz-hero-text p { margin: 6px 0; }
+@media (max-width: 640px) {
+  .kz-report .kz-domain-grid { grid-template-columns: repeat(2, 1fr); }
+  .kz-report .kz-type-badge { font-size: 18px; padding: 8px 14px; }
+  .kz-report .kz-hero-illustration { flex-direction: column; text-align: center; }
+  .kz-report .kz-hero-illustration svg { width: 140px; height: 105px; }
+}
+.kz-report { counter-reset: kz-section; }
+.kz-report h2.kz-section { counter-increment: kz-section; counter-reset: kz-subsection; }
+.kz-report h2.kz-section::before { content: counter(kz-section, simp-chinese-informal) "、"; font-weight: 700; color: inherit; }
+.kz-report h3.kz-subsection { counter-increment: kz-subsection; }
+.kz-report h3.kz-subsection::before { content: counter(kz-section) "." counter(kz-subsection) " "; font-weight: 700; color: inherit; }
+.kz-report .kz-screen-only { }
+@media print {
+  .kz-report .kz-print-btn { display: none; }
+  .kz-report { max-width: 100%; }
+  .kz-report h2 { page-break-after: avoid; }
+  .kz-report table { page-break-inside: avoid; }
+  .kz-report .kz-card, .kz-report .kz-highlight, .kz-report .kz-tip, .kz-report .kz-warning, .kz-report .kz-type-card, .kz-report .kz-chart-card, .kz-report .kz-domain-block, .kz-report .kz-illustration-card, .kz-report .kz-hero-illustration { page-break-inside: avoid; }
+  .kz-report .kz-screen-only { display: none !important; }
+  .kz-report .kz-screen-only h2.kz-section { counter-increment: none; counter-reset: none; }
+}
+</style>
+
+<div class="kz-print-header">
+  <h1>双维度测评报告（专业详细版）| Dual-Dimension Assessment Report (Professional Edition)</h1>
+  <button class="kz-print-btn" onclick="window.print()">🖨️ 打印 / Print</button>
+</div>
+<div class="kz-meta">
+  <p><strong>姓名 / Name</strong>：陈启思</p>
+  <p><strong>测评日期 / Date</strong>：以系统记录为准 / As recorded by system</p>
+  <p><strong>目标申请方向 / Target Region</strong>：未指定 / Not specified</p>
+</div>
+
+<div class="kz-warning kz-screen-only">
+  <strong>数据质量提示 / Data Quality Notes</strong>
+  <ul class="kz-list">
+    <li>Gallup 模拟量表 A/B 双侧映射已完整（双侧计分题 98.3%，34/34 个主题参与计分）。结果为探索性参考，非官方 CliftonStrengths 报告。/ Gallup simulation has full A/B mapping (dual-side 98.3%, 34/34 themes scored). Results are for exploration—not an official CliftonStrengths report.</li>
+  </ul>
+</div>
+
+
+<h2>报告概览 | Report at a Glance</h2>
+<div class="kz-highlight">
+  <p><strong>你是独一无二的存在。本报告基于你的 Holland RIASEC 兴趣测评与 Gallup CliftonStrengths 优势测评，帮助你了解自己的兴趣舞台、优势风格，以及两者交叉后的职业与专业探索方向。</strong></p>
+  <p class="kz-en"><em>You are uniquely wired. This report integrates your Holland RIASEC interest profile and Gallup CliftonStrengths talent profile to help you understand your preferred stage, natural strengths style, and intersecting career and major directions.</em></p>
+</div>
+<table>
+  <tr><th>维度 / Dimension</th><th>结果 / Result</th></tr>
+  <tr><td>Holland 三码 / Holland Code</td><td><strong>IAS</strong> — 研究型（Investigative）</td></tr>
+  <tr><td>主导兴趣舞台 / Dominant Stage</td><td>探索思考派 / Curious Investigator</td></tr>
+  <tr><td>CliftonStrengths 主导领域 / Leading Domain</td><td>战略思维 / Strategic Thinking</td></tr>
+  <tr><td>CliftonStrengths 次要领域 / Secondary Domain</td><td>影响力 / Influencing</td></tr>
+  <tr><td>优势风格 / Strengths Style</td><td>战略思考型 / Strategic Thinker</td></tr>
+</table>
+
+<h3>🎯 稳妥入口职业 | Safe Entry Points</h3>
+<p>如果你更关注就业稳定性和现实可行性，以下方向是不错的起点。这些岗位需求稳定、入行路径清晰，适合作为长期探索的「安全基地」。</p>
+<p class="kz-en">If you prioritize employment stability and practical entry paths, these roles are good starting points with clear demand and accessible entry routes.</p>
+<table>
+  <tr><th>职业 / Career</th><th>为何稳妥 / Why Steady</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>科学家</td>
+          <td>在高校、研究所或企业实验室围绕自然科学问题开展长期研究，发表学术论文并申请科研项目。</td>
+          <td>物理学、化学、生物学、数学、地球科学</td>
+        </tr>
+        <tr>
+          <td>研究员</td>
+          <td>针对特定课题查阅文献、设计实验、分析数据并撰写报告，为决策或学术发展提供依据。</td>
+          <td>各学科基础研究专业、统计学、研究方法学</td>
+        </tr>
+</table>
+<div class="kz-tip">
+  💡 <strong>提示 / Tip</strong>：即使你的高适配方向看起来偏创意或研究，也可以从「稳妥入口」开始积累经验，再逐步转向理想方向。
+  <br><span class="kz-en">Even if your best-fit directions seem creative or research-oriented, you can start from safe entry points and gradually move toward your ideal path.</span>
+</div>
+
+
+<h2 class="kz-section">我的兴趣舞台 | My Interest Stage</h2>
+<p>你的 Holland 三码是 <strong>IAS</strong>，三个字母分别代表你最感兴趣、次感兴趣和第三感兴趣的工作舞台。</p>
+<p class="kz-en">Your Holland code is <strong>IAS</strong>. The three letters represent your strongest, second-strongest, and third-strongest areas of work interest.</p>
+<table>
+  <tr><th>排名 / Rank</th><th>类型 / Type</th><th>舞台标签 / Stage Tag</th><th>含义 / Meaning</th></tr>
+  
+        <tr>
+          <td>1</td>
+          <td>I — 研究型（Investigative）</td>
+          <td><span class="kz-stage-badge">探索思考派 / Curious Investigator</span></td>
+          <td>喜欢观察、学习、研究、分析、评估和解决问题，重视独立思考和知识探索。<br><span class="kz-en">You enjoy observing, learning, researching, analyzing, evaluating, and solving problems.</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>A — 艺术型（Artistic）</td>
+          <td><span class="kz-stage-badge">创意表达派 / Creative Expresser</span></td>
+          <td>喜欢艺术、设计、音乐、写作或表演，重视自我表达、创造力和审美体验。<br><span class="kz-en">You enjoy art, design, music, writing, or performance, and value self-expression and creativity.</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>S — 社会型（Social）</td>
+          <td><span class="kz-stage-badge">人际关怀派 / People Helper</span></td>
+          <td>喜欢与人互动、帮助他人、教导或治疗，重视人际关系与社会贡献。<br><span class="kz-en">You enjoy interacting with, helping, teaching, or treating people, and value social contribution.</span></td>
+        </tr>
+</table>
+
+
+<h2 class="kz-section">我的优势风格 | My Strengths Style</h2>
+<p>你的 Gallup CliftonStrengths Top 10 主题按排名加权后，<strong>战略思维</strong> 领域得分最高，是最能代表你稳定工作方式的领域；<strong>影响力</strong> 为次要领域。这意味着你最自然的工作方式是 <strong>战略思考型 / Strategic Thinker</strong>。</p>
+<p class="kz-en">When your Gallup CliftonStrengths Top 10 themes are weighted by rank, <strong>Strategic Thinking</strong> scores highest as your leading domain and <strong>Influencing</strong> is your secondary domain. Your most natural way of working is as an <strong>Strategic Thinker</strong>.</p>
+<div class="kz-card">
+  <p><strong>战略思维 / Strategic Thinking</strong>：喜欢分析、想象、规划未来，善于在复杂信息中找到方向。/ You analyze, imagine, and plan, finding direction in complexity.</p>
+</div>
+<h3>Top 10 主题一览 | Top 10 Themes at a Glance</h3>
+<table>
+  <tr><th>排名 / Rank</th><th>主题 / Theme</th><th>领域 / Domain</th></tr>
+  
+        <tr>
+          <td>1</td>
+          <td>理念 / Ideation</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>学习 / Learner</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>搜集 / Input</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>竞争 / Competition</td>
+          <td>影响力 / Influencing</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>战略 / Strategic</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>思维 / Intellection</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>前瞻 / Futuristic</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>追求 / Significance</td>
+          <td>影响力 / Influencing</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>分析 / Analytical</td>
+          <td>战略思维 / Strategic Thinking</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>积极 / Positivity</td>
+          <td>关系建立 / Relationship Building</td>
+        </tr>
+</table>
+<h3>Top 5 才干主题详细解读 | Your Top 5 Themes in Detail</h3>
+<p>以下是对你最突出的 5 个才干主题的详细解读。第 6–10 名主题已列在上方一览表中，作为延伸线索。/ Detailed narratives are provided for your top 5 themes. Themes 6–10 are listed above as extended clues.</p>
+<table>
+  <tr><th>排名 / Rank</th><th>主题 / Theme</th><th>领域 / Domain</th><th>一句话定义 / One-Liner</th></tr>
+  
+        <tr>
+          <td>1</td>
+          <td>理念 / Ideation</td>
+          <td>战略思维 / Strategic Thinking</td>
+          <td>“理念”才干主题突出的人痴迷于各种奇思妙想。 他们能够从看似毫无关联的现象中找到彼此之间的联系。<br><span class='kz-en'>People exceptionally talented in the Ideation theme are fascinated by ideas. They are able to find connections between seemingly disparate phenomena.</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>学习 / Learner</td>
+          <td>战略思维 / Strategic Thinking</td>
+          <td>学习能力强的人有旺盛的求知欲，渴望不断提高自我。 令他们激动的是求知的过程而非结果。<br><span class='kz-en'>People exceptionally talented in the Learner theme have a great desire to learn and want to continuously improve. The process of learning, rather than the outcome, excites them.</span></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>搜集 / Input</td>
+          <td>战略思维 / Strategic Thinking</td>
+          <td>“搜集”才干主题突出的人喜欢搜集和整理。 他们可能会积累信息、观点、标志品，甚至是关系。<br><span class='kz-en'>People exceptionally talented in the Input theme have a craving to know more. Often they like to collect and archive all kinds of information.</span></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>竞争 / Competition</td>
+          <td>影响力 / Influencing</td>
+          <td>“竞争”才干主题突出的人通过与他人比较来衡量自己的进步。他们渴望获胜，享受竞争带来的刺激。<br><span class='kz-en'>People exceptionally talented in the Competition theme measure their progress against the performance of others. They strive to win first place and revel in contests.</span></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>战略 / Strategic</td>
+          <td>战略思维 / Strategic Thinking</td>
+          <td>“战略”才干主题突出的人足智多谋。任何情形下， 他们都能迅速找出相关的规律和要点。<br><span class='kz-en'>People exceptionally talented in the Strategic theme create alternative ways to proceed. Faced with any given scenario, they can quickly spot the relevant patterns and issues.</span></td>
+        </tr>
+</table>
+<p><strong>Top 10 领域分布 / Domain Distribution (Top 10)</strong>：</p>
+<ul class="kz-list">
+  <li>战略思维 / Strategic Thinking：7</li><li>影响力 / Influencing：2</li><li>关系建立 / Relationship Building：1</li>
+</ul>
+
+
+<h2 class="kz-section">兴趣 × 优势交叉矩阵 | Interest × Strengths Cross-Matrix</h2>
+
+<div class="kz-ethics">
+  <p><strong>关于本矩阵的说明 / About This Matrix</strong></p>
+  <p>本框架是一个<strong>辅助你探索兴趣与潜能交集</strong>的工具，而非对你下结论的标签。矩阵中的每一格代表一种<strong>职业范畴</strong>（方向层），是根据 Holland 兴趣舞台与 Gallup 工作方式的理论整合而定义；报告后文的「推荐职业路径」则提供具体岗位线索。请把结果当作<strong>对话与行动的起点</strong>，通过课程体验、实习、访谈和项目实践来验证。</p>
+  <p class="kz-en"><em>This matrix is an <strong>exploration aid</strong>, not a diagnostic label. Each cell represents an <strong>occupational domain</strong> (direction layer) defined by the integration of Holland interest stage and Gallup working style; specific job suggestions appear later in the career paths section. Use these insights as a starting point for conversation and action; validate them through real experiences, internships, interviews, and projects.</em></p>
+</div>
+
+<p>下方矩阵展示了 6 种 RIASEC 兴趣类型与 4 大 CliftonStrengths 优势领域交叉形成的 <strong>24 种职业范畴</strong>。表格中每格仅标注范畴名称；带色边框的格子与你结果相关——边框越实、颜色越深，关联越强。具体解读见矩阵下方。</p>
+<p class="kz-en"><em>The matrix shows <strong>24 occupational domains</strong>. Each cell lists only the domain name; colored borders mark relevance to your results. See detailed interpretation below the matrix.</em></p>
+
+<div class="kz-matrix-legend">
+  <div class="kz-matrix-legend-item kz-matrix-legend-dominant">
+    <strong>主导交叉 / Primary</strong>
+    当你最强烈的兴趣舞台，遇上最自然擅长的做事方式，一个特别值得率先投入的方向便会浮现——不妨从这里开始验证自己的热情与能力。
+    <br><span class="kz-en">Where your strongest interest stage meets your most natural working style — a direction worth exploring first.</span>
+  </div>
+  <div class="kz-matrix-legend-item kz-matrix-legend-secondary">
+    <strong>次要交叉 / Secondary</strong>
+    兴趣与才干以另一种配比相遇时，会照亮若干值得并行留意的拓展面——它们未必是主航道，却可能藏着你尚未充分尝试的潜能。
+    <br><span class="kz-en">Alternative pairings of interest and strength that reveal expansion paths and untapped potential.</span>
+  </div>
+  <div class="kz-matrix-legend-item kz-matrix-legend-tertiary">
+    <strong>第三交叉 / Third</strong>
+    在三码与双领域的交汇处，还有一些更轻柔、更长期的线索——适合作为背景关注，在主业之外慢慢积累体验与见识。
+    <br><span class="kz-en">Gentler, longer-term clues at the edges of your profile — worth keeping on your radar over time.</span>
+  </div>
+</div>
+
+<table class="kz-matrix-table"><tr><th class="kz-matrix-header">RIASEC \ 领域 / Domain</th><th class="kz-matrix-header">战略思维 / Strategic Thinking</th><th class="kz-matrix-header">执行力 / Executing</th><th class="kz-matrix-header">影响力 / Influencing</th><th class="kz-matrix-header">关系建立 / Relationship Building</th></tr><tr><th>R / Realistic</th><td class=""><div class="kz-matrix-domain-title">实操技术研究与工程应用范畴</div></td><td class=""><div class="kz-matrix-domain-title">建造运维与现场执行范畴</div></td><td class=""><div class="kz-matrix-domain-title">竞技表现与技术影响范畴</div></td><td class=""><div class="kz-matrix-domain-title">动手教学与体能指导范畴</div></td></tr><tr><th>I / Investigative</th><td class="kz-matrix-dominant"><div class="kz-matrix-domain-title">科学研究与战略探索范畴</div></td><td class=""><div class="kz-matrix-domain-title">实验研究与规范执行范畴</div></td><td class="kz-matrix-secondary"><div class="kz-matrix-domain-title">科学传播与知识转化范畴</div></td><td class=""><div class="kz-matrix-domain-title">学术教育与科研传承范畴</div></td></tr><tr><th>A / Artistic</th><td class="kz-matrix-secondary"><div class="kz-matrix-domain-title">创意概念与美学策略范畴</div></td><td class=""><div class="kz-matrix-domain-title">创作落地与展演执行范畴</div></td><td class="kz-matrix-tertiary"><div class="kz-matrix-domain-title">创意表达与公众影响范畴</div></td><td class=""><div class="kz-matrix-domain-title">艺术疗愈与社区文化范畴</div></td></tr><tr><th>S / Social</th><td class="kz-matrix-tertiary"><div class="kz-matrix-domain-title">教育研究与用户体验范畴</div></td><td class=""><div class="kz-matrix-domain-title">社会服务与照护执行范畴</div></td><td class=""><div class="kz-matrix-domain-title">教育培训与公益领导范畴</div></td><td class=""><div class="kz-matrix-domain-title">人际关怀与关系支持范畴</div></td></tr><tr><th>E / Enterprising</th><td class=""><div class="kz-matrix-domain-title">商业战略与决策分析范畴</div></td><td class=""><div class="kz-matrix-domain-title">组织运营与目标达成范畴</div></td><td class=""><div class="kz-matrix-domain-title">创业影响与市场竞争范畴</div></td><td class=""><div class="kz-matrix-domain-title">组织发展与关系经营范畴</div></td></tr><tr><th>C / Conventional</th><td class=""><div class="kz-matrix-domain-title">数据分析与财务规划范畴</div></td><td class=""><div class="kz-matrix-domain-title">财务行政与流程执行范畴</div></td><td class=""><div class="kz-matrix-domain-title">商务流程与市场运作范畴</div></td><td class=""><div class="kz-matrix-domain-title">客户服务与人力事务范畴</div></td></tr></table>
+
+<div class="kz-intersection-detail">
+  <h3>你的交叉解读 | Your Intersection Profile</h3>
+  <p class="kz-intersection-intro">矩阵中标色边框的格子，对应你测评结果中兴趣与优势的不同交汇方式。下方按层级展开具体范畴——帮助你从「方向感」走向「可尝试的行动线索」。</p>
+  <p class="kz-intersection-intro kz-en"><em>Colored cells in the matrix mark how your interests and strengths intersect. The sections below expand each domain — moving from direction to actionable exploration clues.</em></p>
+  
+<div class="kz-intersection-tier kz-intersection-tier-primary">
+  <div class="kz-intersection-tier-header">
+    <span class="kz-intersection-tier-badge">主导交叉</span>
+    <p class="kz-intersection-tier-desc">这是你当前最值得优先投入精力的方向。不妨问自己：在这个范畴里，哪些具体活动曾让你忘记时间？哪些经历让你感到「这就是我擅长的事」？<br><span class="kz-en">Your top-priority direction. Ask yourself: which activities in this domain made you lose track of time? When did you feel 'this is what I'm good at'?</span></p>
+  </div>
+  <div class="kz-intersection-cards">
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">科学研究与战略探索范畴</p>
+  <p class="kz-intersection-card-tagline">追根究底、构建模型——用思考拓展人类知识边界</p>
+  <p class="kz-intersection-card-body">研究型兴趣提供探索与求知舞台，战略思维优势提供深度分析与模式识别；交叉指向基础科学、医学研究、数理研究等纯探索活动。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>物理科学、生命科学、医学科学、数学/统计、人文学科、社会科学</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>科学家/研究员、数据科学家、战略顾问</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Analytical、Learner、Intellection、Input、Strategic</div></div>
+  <div class="kz-intersection-prompt">💡 试着找一个与此范畴相关的小项目或体验，记录你在其中的能量变化。<br><span class="kz-en">💡 Try a small project in this domain and note how your energy shifts.</span></div>
+</div></div>
+</div>
+<div class="kz-intersection-tier kz-intersection-tier-secondary">
+  <div class="kz-intersection-tier-header">
+    <span class="kz-intersection-tier-badge">次要交叉</span>
+    <p class="kz-intersection-tier-desc">这些交叉为你打开了另一种可能的组合方式。它们适合作为并行探索的支线——不必立刻做出选择，但值得在课程、社团或短期项目中轻轻试探。<br><span class="kz-en">These intersections open alternative combinations worth exploring in parallel — try them lightly through courses, clubs, or short projects.</span></p>
+  </div>
+  <div class="kz-intersection-cards">
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">科学传播与知识转化范畴</p>
+  <p class="kz-intersection-card-tagline">把复杂知识讲清楚、推到决策桌前</p>
+  <p class="kz-intersection-card-body">研究型提供知识深度，影响力优势提供表达、说服与推动；交叉指向科学传播、技术产品、行业分析等「用知识影响他人」的方向。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>社会科学、医学科学、数学/统计、信息技术、媒体</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>科学传播者、技术产品经理、行业分析师</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Communication、Maximizer、Strategic、Significance</div></div>
+  <div class="kz-intersection-prompt">💡 可以把它当作「第二战场」——在主业之外，每周留出一小块时间做相关尝试。<br><span class="kz-en">💡 Treat this as a 'second front' — set aside a small weekly slice for related experiments.</span></div>
+</div>
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">创意概念与美学策略范畴</p>
+  <p class="kz-intersection-card-tagline">从灵感到概念、从概念到视觉叙事——创意之前先有策略</p>
+  <p class="kz-intersection-card-body">艺术型兴趣提供审美与表达舞台，战略思维优势提供概念化与远景规划；交叉指向概念设计、品牌策略、艺术研究等「有策略的创意」方向。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>视觉艺术、应用艺术与设计、人文学科、创意写作、营销/广告</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>概念设计师、品牌策略师、艺术研究员</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Ideation、Futuristic、Intellection、Strategic</div></div>
+  <div class="kz-intersection-prompt">💡 可以把它当作「第二战场」——在主业之外，每周留出一小块时间做相关尝试。<br><span class="kz-en">💡 Treat this as a 'second front' — set aside a small weekly slice for related experiments.</span></div>
+</div></div>
+</div>
+<div class="kz-intersection-tier kz-intersection-tier-tertiary">
+  <div class="kz-intersection-tier-header">
+    <span class="kz-intersection-tier-badge">第三交叉</span>
+    <p class="kz-intersection-tier-desc">这些线索处于你兴趣与优势谱系的边缘地带，不必急于定义，却值得长期留意。随着阅历增长，它们有时会意外成为新的突破口。<br><span class="kz-en">These clues sit at the edges of your profile — no rush to define them, but worth tracking as experience grows; they may become unexpected breakthroughs.</span></p>
+  </div>
+  <div class="kz-intersection-cards">
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">创意表达与公众影响范畴</p>
+  <p class="kz-intersection-card-tagline">让作品被看见、让美学成为话语权</p>
+  <p class="kz-intersection-card-body">艺术型提供表达载体，影响力优势提供展示、说服与公众动员；交叉指向创意总监、品牌公关、艺术经纪、媒体传播等。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>营销/广告、媒体、表演艺术、视觉艺术、创意写作</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>创意总监、品牌公关、艺术经纪人</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Communication、Significance、Woo、Maximizer</div></div>
+  <div class="kz-intersection-prompt">💡 不必立刻行动，但可以把相关领域加入你的阅读清单或关注列表，保持开放。<br><span class="kz-en">💡 No immediate action needed — add related topics to your reading list and stay open.</span></div>
+</div>
+<div class="kz-intersection-card">
+  <p class="kz-intersection-card-title">教育研究与用户体验范畴</p>
+  <p class="kz-intersection-card-tagline">理解人的需求、设计更好的学习与体验</p>
+  <p class="kz-intersection-card-body">社会型兴趣提供助人舞台，战略思维优势提供需求分析与方案设计；交叉指向教育心理学、用户研究、课程设计等。</p>
+  <div class="kz-intersection-meta"><div class="kz-intersection-meta-item"><strong>兴趣线索 / Interests</strong>教学/教育、社会科学、医疗保健服务、人力资源</div><div class="kz-intersection-meta-item"><strong>方向集群 / Clusters</strong>教育心理学家、用户研究员、课程设计师</div><div class="kz-intersection-meta-item"><strong>才干主题 / Themes</strong>Analytical、Individualization、Learner、Connectedness</div></div>
+  <div class="kz-intersection-prompt">💡 不必立刻行动，但可以把相关领域加入你的阅读清单或关注列表，保持开放。<br><span class="kz-en">💡 No immediate action needed — add related topics to your reading list and stay open.</span></div>
+</div></div>
+</div>
+</div>
+
+
+<h2 class="kz-section">推荐申请专业 | Recommended Majors</h2>
+<p>以下专业根据推荐职业路径分层整理。<strong>核心专业</strong>建议优先了解；<strong>拓展专业</strong>可作为备选或第二专业方向；<strong>可关注专业</strong>适合作为长期兴趣跟踪。</p>
+<p class="kz-en"><em>Majors are organized by priority. <strong>Core</strong> majors are the top priorities; <strong>Expand</strong> majors are alternatives or second-field options; <strong>Watch</strong> majors are for long-term interest tracking.</em></p>
+
+<h3 class="kz-subsection">核心专业 | Core Majors</h3>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>物理学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>化学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>生物学</td>
+          <td>医学/理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>数学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>地球科学</td>
+          <td>理学/工学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>各学科基础研究专业</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>统计学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>研究方法学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">拓展专业 | Expand Majors</h3>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>管理学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>经济学</td>
+          <td>经济学/管理学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>运筹学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>商业分析</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>政治学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>工业设计</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>概念艺术</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>视觉传达</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">可关注专业 | Watch Majors</h3>
+<table>
+  <tr><th>专业 / Major</th><th>国内可报说明 / Domestic Note</th><th>海外方向（以英国为例）/ Overseas Example (UK)</th></tr>
+  
+        <tr>
+          <td>数字媒体艺术</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>市场营销</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>广告学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>设计管理</td>
+          <td>艺术学</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>传播学</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+        <tr>
+          <td>品牌管理</td>
+          <td>按具体院校招生目录查询</td>
+          <td>建议按具体院校查询 / Check programme titles</td>
+        </tr>
+</table>
+
+<div class="kz-warning">
+  ⚠️ <strong>提醒 / Reminder</strong>：推荐专业仅为参考路径。国内路径需对照教育部本科专业目录与各省招生计划；海外路径需以目标院校官网 Programme/Course 名称为准。
+  <br><span class="kz-en">Recommended majors are reference paths. For domestic applications, verify against the Ministry of Education catalog and provincial enrollment plans. For overseas applications, confirm programme titles on target university websites.</span>
+</div>
+
+
+<h2 class="kz-section">推荐职业路径 | Recommended Career Paths</h2>
+<p>以下推荐分为三个层级：</p>
+<ol class="kz-list">
+  <li><strong>高适配路径 / High Fit</strong>：与你的主导兴趣和主导优势精确匹配。</li>
+  <li><strong>中适配路径 / Moderate Fit</strong>：与你的主导兴趣或主导优势部分匹配，可作为拓展方向。</li>
+  <li><strong>就业友好备选 / Employment-Friendly Alternatives</strong>：即使你对某些高适配方向存有顾虑，这些方向也能让你在现实就业市场中找到稳定入口。</li>
+</ol>
+<p class="kz-en"><em>Recommendations are divided into three tiers. Each career is tagged with <strong>Steady Employment</strong>, <strong>Explore-oriented</strong>, or <strong>High Challenge</strong> to help you choose.</em></p>
+
+<div class="kz-card">
+  <p><strong>标签说明 / Tag Guide</strong>：</p>
+  <ul class="kz-list">
+    <li><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span>：岗位需求稳定，入行路径清晰。</li>
+    <li><span class="kz-tag kz-tag-explore">探索型 / Explore-oriented</span>：需要更多尝试和积累，适合作为长期方向。</li>
+    <li><span class="kz-tag kz-tag-challenge">高挑战型 / High Challenge</span>：竞争激烈或需要长期资源积累，适合有强烈动机的人。</li>
+  </ul>
+</div>
+
+<h3 class="kz-subsection">高适配路径 | High Fit</h3>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>主要工作 / What They Do</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>科学家</td>
+          <td><span class="kz-tag kz-tag-explore">探索型 / Explore-oriented</span></td>
+          <td>在高校、研究所或企业实验室围绕自然科学问题开展长期研究，发表学术论文并申请科研项目。</td>
+          <td>物理学、化学、生物学、数学、地球科学</td>
+        </tr>
+        <tr>
+          <td>研究员</td>
+          <td><span class="kz-tag kz-tag-explore">探索型 / Explore-oriented</span></td>
+          <td>针对特定课题查阅文献、设计实验、分析数据并撰写报告，为决策或学术发展提供依据。</td>
+          <td>各学科基础研究专业、统计学、研究方法学</td>
+        </tr>
+        <tr>
+          <td>战略顾问</td>
+          <td><span class="kz-tag kz-tag-challenge">高挑战型 / High Challenge</span></td>
+          <td>分析企业或机构的竞争环境与发展瓶颈，提出业务模式、市场进入或组织调整建议。</td>
+          <td>管理学、经济学、运筹学、商业分析、政治学</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">中适配路径 | Moderate Fit</h3>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>主要工作 / What They Do</th><th>相关专业 / Related Majors</th></tr>
+  
+        <tr>
+          <td>概念设计师</td>
+          <td><span class="kz-tag kz-tag-explore">探索型 / Explore-oriented</span></td>
+          <td>根据项目需求绘制角色、场景或产品的初步视觉方案，为后续制作团队确定美术方向。</td>
+          <td>工业设计、概念艺术、视觉传达、数字媒体艺术</td>
+        </tr>
+        <tr>
+          <td>品牌策略师</td>
+          <td><span class="kz-tag kz-tag-challenge">高挑战型 / High Challenge</span></td>
+          <td>分析目标用户与竞争品牌，制定品牌定位、视觉调性与传播策略，提升品牌认知度。</td>
+          <td>市场营销、广告学、设计管理、传播学、品牌管理</td>
+        </tr>
+        <tr>
+          <td>教育心理学家</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>运用心理学理论评估学生的学习困难、情绪问题或发展障碍，提供干预建议。</td>
+          <td>心理学、教育心理学、应用心理学、特殊教育</td>
+        </tr>
+        <tr>
+          <td>用户研究员</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>通过访谈、问卷、可用性测试等方法了解用户需求，为产品设计提供依据。</td>
+          <td>人机交互、心理学、社会学、设计学、信息科学</td>
+        </tr>
+        <tr>
+          <td>艺术研究员</td>
+          <td><span class="kz-tag kz-tag-steady">稳就业型 / Steady Employment</span></td>
+          <td>研究艺术作品的历史背景、风格流派与社会影响，撰写论文并参与展览策划。</td>
+          <td>艺术史、艺术理论、文化遗产、博物馆学、美术学</td>
+        </tr>
+</table>
+
+<h3 class="kz-subsection">就业友好备选 | Employment-Friendly Alternatives</h3>
+<table>
+  <tr><th>职业 / Career</th><th>标签 / Tag</th><th>为何作为备选 / Why This Alternative</th><th>相关专业 / Related Majors</th></tr>
+  <tr><td colspan="4">暂无 / None</td></tr>
+</table>
+
+
+<h2 class="kz-section">兴趣-优势整合分析 | Interest-Strengths Integration</h2>
+<ul class="kz-list">
+  <li><strong>主导兴趣 / Dominant Interest</strong>：研究型（Investigative）</li>
+  <li><strong>主导优势 / Dominant Strength</strong>：战略思维 / Strategic Thinking</li>
+  <li><strong>整体契合度 / Overall Fit</strong>：兴趣与优势高度一致 / High alignment</li>
+</ul>
+<div class="kz-card">
+  <p><strong>张力分析 / Tension Analysis</strong>：你的 Gallup 主导领域（战略思维）与 Holland 三码中的 I 型高度一致，说明你在相关方向上拥有内外双重能量支撑。 / Your leading Gallup domain (战略思维) aligns strongly with the I type in your Holland code, giving you both internal motivation and natural ability in related directions.</p>
+</div>
+<div class="kz-tip">
+  <strong>一致性提示 / Consistency</strong>：三码在六边形上相对集中，兴趣轮廓较为清晰。/ Your three-letter code is relatively consistent on the hexagon.
+</div>
+
+<div class="kz-screen-only">
+
+<h2 class="kz-section">就业市场参考 | Employment Market Reference</h2>
+<div class="kz-tip">
+  <strong>数据建设中 / Data Under Construction</strong>：本模块计划接入第三方就业数据源（招聘平台、行业报告、校友追踪），为每个推荐职业补充平均起薪、岗位需求、学历要求、热门城市与发展路径。当前版本暂以框架形式呈现，具体数值请以目标院校就业报告和招聘平台实时数据为准。
+  <br><span class="kz-en">This module will integrate third-party employment data (job platforms, industry reports, alumni tracking) to add entry salary, job demand, education requirements, top cities, and career paths for each recommended role. Current version shows the framework only; please verify specific figures against university employment reports and live job platforms.</span>
+</div>
+<table>
+  <tr><th>数据项 / Data Item</th><th>说明 / Description</th><th>参考来源 / Potential Source</th></tr>
+  <tr><td>平均起薪 / Entry Salary</td><td>应届生或初级岗位的中位数起薪</td><td>麦可思、智联招聘、BOSS直聘</td></tr>
+  <tr><td>岗位需求量 / Job Demand</td><td>近一年招聘发布数量与增长趋势</td><td>智联招聘、前程无忧、猎聘</td></tr>
+  <tr><td>学历要求 / Education Requirement</td><td>本科/硕士/博士占比</td><td>教育部就业质量报告、招聘平台</td></tr>
+  <tr><td>热门城市 / Top Cities</td><td>岗位分布集中的城市或地区</td><td>BOSS直聘、猎聘城市报告</td></tr>
+  <tr><td>发展路径 / Career Path</td><td>3-5 年、5-10 年的典型晋升方向</td><td>行业报告、校友访谈</td></tr>
+</table>
+
+
+<h2 class="kz-section">证据等级说明与科学性建设 | Evidence Levels & Scientific Roadmap</h2>
+<h3 class="kz-subsection">当前证据等级定义 | Current Evidence Level Definitions</h3>
+<table>
+  <tr><th>等级 / Level</th><th>含义 / Meaning</th><th>当前应用情况 / Current Application</th></tr>
+  <tr><td><strong>A</strong></td><td>大样本实证研究或长期追踪数据支持</td><td>当前暂无，需通过用户毕业去向追踪积累</td></tr>
+  <tr><td><strong>B</strong></td><td>小样本研究、专家评审或行业调研支持</td><td>当前暂无，可通过行业专家访谈与毕业生反馈逐步建立</td></tr>
+  <tr><td><strong>C</strong></td><td>理论推导与现有文献综述支持</td><td>当前大部分职业-专业映射属于此等级</td></tr>
+  <tr><td><strong>D</strong></td><td>基于个案经验或初步假设</td><td>少量映射属于此等级</td></tr>
+</table>
+
+<h3 class="kz-subsection">如何积累 A/B 级证据 | How to Build A/B-Level Evidence</h3>
+<ol class="kz-list">
+  <li><strong>毕业生追踪研究 / Graduate tracking studies</strong>：对使用本工具的用户进行 1 年、3 年、5 年跟踪，记录其专业选择与职业满意度。
+    <br><span class="kz-en">Follow users at 1, 3, and 5 years to record major choices and career satisfaction.</span></li>
+  <li><strong>行业专家评议 / Expert review</strong>：邀请各职业领域的资深从业者对推荐匹配度进行 1-5 分评分。
+    <br><span class="kz-en">Invite senior practitioners to rate the fit of recommendations.</span></li>
+  <li><strong>用人单位调研 / Employer surveys</strong>：收集招聘方对相关专业毕业生的能力匹配评价。
+    <br><span class="kz-en">Collect hiring managers' assessments of graduates from related majors.</span></li>
+  <li><strong>纵向对照实验 / Longitudinal controlled experiments</strong>：对比使用本工具与未使用本工具的学生在专业选择清晰度、就业对口率上的差异。
+    <br><span class="kz-en">Compare students who used the tool versus those who did not.</span></li>
+</ol>
+
+
+<h2 class="kz-section">行动跟踪模块 | Action Tracking Module</h2>
+<p>本模块帮助你把报告结论转化为具体行动并记录进展。若使用在线版工具，可自动保存打卡与复盘。</p>
+<p class="kz-en">This module helps turn report insights into concrete actions and track progress. The online version can automatically save check-ins and reflections.</p>
+
+<h3>行动 1：职业访谈记录 | Career Interview Log</h3>
+<table>
+  <tr><th>项目 / Item</th><th>内容 / Content</th></tr>
+  <tr><td>访谈对象 / Interviewee</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>职业 / Career</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>访谈日期 / Date</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>三个关键发现 / Key Insights</td><td>1. <span class="kz-answer-line"></span><br>2. <span class="kz-answer-line"></span><br>3. <span class="kz-answer-line"></span></td></tr>
+  <tr><td>我喜欢 / What I Liked</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>我担心 / What Concerned Me</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>下一步 / Next Step</td><td><span class="kz-answer-line"></span></td></tr>
+</table>
+
+<h3>行动 2：专业体验记录 | Major Exploration Log</h3>
+<table>
+  <tr><th>项目 / Item</th><th>内容 / Content</th></tr>
+  <tr><td>体验专业 / Major</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>体验方式 / Activity</td><td>□ 线上课程 / Online course &nbsp; □ 校园开放日 / Open day &nbsp; □ 旁听课程 / Audit &nbsp; □ 实习 / Internship</td></tr>
+  <tr><td>体验时间 / Date</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>感受 / Reflection</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>是否愿意继续探索 / Continue?</td><td>□ 是 / Yes &nbsp; □ 否 / No &nbsp; □ 再试试 / Maybe</td></tr>
+</table>
+
+<h3>行动 3：月度复盘 | Monthly Review</h3>
+<table>
+  <tr><th>问题 / Question</th><th>我的回答 / My Answer</th></tr>
+  <tr><td>这个月我尝试了哪些方向？ / What did I try this month?</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>哪些方向让我更有能量？ / What energized me?</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>哪些方向让我感觉不适合？ / What felt like a poor fit?</td><td><span class="kz-answer-line"></span></td></tr>
+  <tr><td>下个月我要聚焦什么？ / What will I focus on next month?</td><td><span class="kz-answer-line"></span></td></tr>
+</table>
+
+
+<h2 class="kz-section">下一步行动 | Next Steps</h2>
+<ol class="kz-list">
+  <li><strong>阅读学生一页纸摘要 / Read student one-pager</strong>：快速抓住核心结论。</li>
+  <li><strong>选择 1-2 个稳妥入口职业 / Pick 1-2 safe entry points</strong>：在招聘网站查找真实岗位描述。</li>
+  <li><strong>了解 2-3 个核心专业 / Explore 2-3 core majors</strong>：查看目标院校的国内招生目录或海外 Programme 页面。</li>
+  <li><strong>完成一次职业访谈 / Do one career interview</strong>：记录到「行动跟踪模块」。</li>
+  <li><strong>与测评师讨论 / Discuss with a counselor</strong>：带着报告参加一对一职业咨询。</li>
+</ol>
+
+</div>
+
+<h2>附录：专业版解读 | Appendix: Professional Interpretation</h2>
+<h3>A. RIASEC 剖面 | RIASEC Profile</h3>
+<table>
+  <tr><th>类型 / Type</th><th>得分 / Score</th><th>类型 / Type</th><th>得分 / Score</th></tr>
+  
+        <tr>
+          <td>R 现实型 / Realistic</td><td>23</td>
+          <td>I 研究型 / Investigative</td><td>43</td>
+        </tr>
+        <tr>
+          <td>A 艺术型 / Artistic</td><td>42</td>
+          <td>S 社会型 / Social</td><td>32</td>
+        </tr>
+        <tr>
+          <td>E 企业型 / Enterprising</td><td>23</td>
+          <td>C 常规型 / Conventional</td><td>18</td>
+        </tr>
+</table>
+<ul class="kz-list">
+  <li><strong>三码 / Code</strong>：IAS</li>
+  <li><strong>区分度提示 / Differentiation Note</strong>：最高与最低分相差 25 分，兴趣轮廓较为平缓。</li>
+  <li><span class="kz-en"><strong>Differentiation Note</strong>：The gap between highest and lowest scores is 25; your interest profile is relatively flat.</span></li>
+</ul>
+
+<h3>B. 主题叙事 | Theme Narrative</h3>
+<div class="kz-info">
+  <strong>说明 / Note</strong>：以下主题叙事已提供中英双语对照：中文翻译优先保留本土教练式表达，英文保留 Gallup CliftonStrengths 原有表述风格。每个主题依次列出标准定义、特征、应用建议与盲点。
+  <br><span class="kz-en">The theme narratives below are presented in bilingual format: Chinese translations retain a local coaching style, while English preserves the original Gallup CliftonStrengths tone. Each theme includes its standard definition, feature, application tips, and blind spots.</span>
+</div>
+
+        <h4>理念 / Ideation（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“理念”才干主题突出的人痴迷于各种奇思妙想。 他们能够从看似毫无关联的现象中找到彼此之间的联系。<br><span class='kz-en'>People exceptionally talented in the Ideation theme are fascinated by ideas. They are able to find connections between seemingly disparate phenomena.</span></p>
+        <p><strong>特征 / Feature</strong>：他们对各种理念着迷，能够从看似毫无关联的现象中发现它们之间的相互关系。<br><span class='kz-en'>They are fascinated by ideas and can discover connections between seemingly unrelated phenomena.</span></p>
+        <p><strong>应用 / Application</strong>：花时间思考和定义自己的核心价值观和人生目标。这将帮助您在工作和生活中保持一致性，并使决策更 加有针对性和有意义。 寻找与自己价值观和理念相符的工作，或者在现有工作中找到与之相关的方面。将自己的使命融入到工 作中，让工作成为实现个人理念的途径。 与他人分享您的观点和见解，通过演讲、写作、教育等方式传播您的理念，争取更大的影响力。 如果您是团队的一员或领导者，努力营造一个共同理念和目标的团队文化，激发团队的凝聚力和合作精 神。<br><span class='kz-en'>Spend time thinking about and defining your core values and life goals. This will help you maintain consistency in work and life and make your decisions more purposeful and meaningful.
+Seek work that aligns with your values and ideas, or find aspects of your current work that connect with them. Integrate your mission into your work so that it becomes a pathway to realising your personal ideals.
+Share your views and insights with others through speaking, writing, teaching, and other means to expand your influence.
+If you are a team member or leader, work to build a team culture with shared ideals and goals, inspiring cohesion and a spirit of cooperation.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 陷入过于理想化的情境和理论框架中，而忽视现实的限制和挑战。可能追求完美的理念，但忽略了实际可行 性和可实施性。 · 如果倾向于简化和抽象化理念，而忽视了其中的多元性和复杂性，这种简化可能导致理念的不完整性和误导 性。 · 忽视不同文化和价值观之间的差异，将自己的理念强加于他人，导致理念的冲突和难以接受。<br><span class='kz-en'>You may become trapped in overly idealised scenarios and theoretical frameworks, ignoring real-world limitations and challenges. You may pursue a perfect idea while overlooking practical feasibility and implementability.
+If you tend to simplify and abstract ideas, you may neglect their diversity and complexity. This simplification can lead to incomplete and misleading ideas.
+You may ignore differences in culture and values, imposing your ideas on others and causing conflict and resistance.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>学习 / Learner（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：学习能力强的人有旺盛的求知欲，渴望不断提高自我。 令他们激动的是求知的过程而非结果。<br><span class='kz-en'>People exceptionally talented in the Learner theme have a great desire to learn and want to continuously improve. The process of learning, rather than the outcome, excites them.</span></p>
+        <p><strong>特征 / Feature</strong>：学习能力强的人具备强烈求知欲望，对知识的获取过程更加激动人心，而非仅关注结果。<br><span class='kz-en'>People with strong Learner talents have a strong desire to learn. They are more excited by the process of gaining knowledge than by the result alone.</span></p>
+        <p><strong>应用 / Application</strong>：将学到的知识和技能应用于工作和生活中，将学习转化为实际行动。找到机会将学习成果展示和分享， 为团队和组织带来积极影响。 保持好奇心和开放心态，积极主动地探索新的领域和知识。参与跨部门项目、交叉学科的讨论和合作， 拓宽自己的视野和经验。 掌握有效的学习方法和技巧，如提取关键信息、整理笔记、积极参与讨论、反思和总结等。寻找适合自 己的学习方式，提高学习效率和成果。<br><span class='kz-en'>Apply the knowledge and skills you learn to your work and life. Turn learning into action. Find opportunities to demonstrate and share your learning outcomes, creating a positive impact for your team and organisation.
+Maintain curiosity and an open mind. Actively explore new fields and knowledge. Participate in cross-departmental projects and interdisciplinary discussions and collaborations to broaden your horizons and experience.
+Master effective learning methods and techniques, such as extracting key information, organising notes, actively participating in discussions, reflecting, and summarising. Find the learning style that suits you best to improve efficiency and results.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 忽视学习和掌握基础知识的重要性，直接进入高级概念和技能，导致学习的薄弱环节和不牢固的基础。 · 选择不适合自己的学习方法，导致学习效率低下或学习成果不理想。 · 只停留在理论层面，不进行实践和应用，无法将所学知识转化为实际能力和技能。<br><span class='kz-en'>You may neglect the importance of learning and mastering foundational knowledge, jumping straight into advanced concepts and skills. This can lead to weak links and an insecure foundation in your learning.
+You may choose learning methods that do not suit you, resulting in low efficiency or unsatisfactory outcomes.
+You may stay at the theoretical level without practising or applying what you have learned, preventing your knowledge from being turned into real ability and skill.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>搜集 / Input（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“搜集”才干主题突出的人喜欢搜集和整理。 他们可能会积累信息、观点、标志品，甚至是关系。<br><span class='kz-en'>People exceptionally talented in the Input theme have a craving to know more. Often they like to collect and archive all kinds of information.</span></p>
+        <p><strong>特征 / Feature</strong>：搜集主题的人充满好奇心，他们热衷于搜集、整理各种信息，以增长知识和深化理解。<br><span class='kz-en'>People with strong Input talents are naturally curious. They love gathering, organising, and storing all kinds of information to grow knowledge and deepen understanding.</span></p>
+        <p><strong>应用 / Application</strong>：参与培训课程、研讨会和工作坊，阅读相关的书籍、文章和研究报告。保持对行业趋势和最新发展的关 注，并持续扩大自己的知识领域。 使用合适的工具，如笔记本、电子表格或知识管理软件，记录和整理重要的观点、事实和数据。建立自 己的信息库，方便日后查阅和回顾。 验证信息的可靠性和准确性，辨别真正有价值的内容。将信息与自己的目标和需求进行关联，筛选出对 工作和生活最有意义的部分。 与他人分享所掌握的知识，可以通过组织内部的培训、团队会议或社交媒体平台等方式进行分享和交 流。 保持对新知识和信息的持续学习。行业和技术的发展日新月异，持续学习是保持竞争力的关键。 将搜集优势主题应用于个人成长和发展。了解自己的兴趣和职业发展目标，有针对性地搜集与之相关的 信息和资源。<br><span class='kz-en'>Take part in training courses, seminars, and workshops. Read relevant books, articles, and research reports. Stay informed about industry trends and latest developments, and continuously expand your areas of knowledge.
+Use appropriate tools such as notebooks, spreadsheets, or knowledge management software to record and organise important viewpoints, facts, and data. Build your own information library for easy future reference and review.
+Verify the reliability and accuracy of information, distinguishing what is truly valuable. Connect information with your own goals and needs, filtering out the parts most meaningful to your work and life.
+Share the knowledge you have with others through internal training, team meetings, or social media platforms.
+Keep learning about new knowledge and information. Industries and technologies change rapidly, and continuous learning is key to staying competitive.
+Apply your Input talents to personal growth and development. Understand your interests and career goals, and purposefully collect relevant information and resources.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 收集信息时存在偏见或主观判断，导致选择性地获取或过滤信息，影响对问题的客观认知。 · 面对大量信息时无法有效筛选和处理，导致信息过载，影响决策的效率和准确性。 · 由于时间压力，急于搜集信息并做出决策，导致未能充分考虑和评估信息的质量和可行性。<br><span class='kz-en'>When collecting information, you may have biases or subjective judgments, selectively acquiring or filtering information and affecting your objective understanding of problems.
+When faced with large amounts of information, you may be unable to filter and process it effectively, leading to information overload and affecting the efficiency and accuracy of your decisions.
+Because of time pressure, you may rush to gather information and make decisions, failing to fully consider and evaluate the quality and feasibility of the information.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>竞争 / Competition（影响力 / Influencing）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“竞争”才干主题突出的人通过与他人比较来衡量自己的进步。他们渴望获胜，享受竞争带来的刺激。<br><span class='kz-en'>People exceptionally talented in the Competition theme measure their progress against the performance of others. They strive to win first place and revel in contests.</span></p>
+        <p><strong>特征 / Feature</strong>：以他人的表现作为衡量自己进步的标准。他们力争第一，沉醉于竞赛之中。<br><span class='kz-en'>measure their progress against the performance of others. They strive to win first place and revel in contests.</span></p>
+        <p><strong>应用 / Application</strong>：你会为成功建立每日、每月和每年的指标，用来追踪自己的表现分数。这为团队注入能量，推动他们达到更高的成就。
+
+你超越他人的动力可以激发创新和创造力。你天生善于把握衡量成就的现实指标，能够清晰地描述卓越表现是什么样子。
+
+你获胜的动力以及对明确成功指标的需求，能够激励他人，让他们愿意加入你的团队。<br><span class='kz-en'>You create daily, monthly and yearly metrics for success to track your performance scores. This creates an energy for your team that pushes them to reach higher levels of achievement. Your drive to outperform others can stimulate innovation and creativity. You are naturally attuned to real-world measures that assess achievement, leading you to describe what outstanding performance looks like. Your drive to win and your need for clear metrics that define success can inspire others and cause them to want to be on your team.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：如果你是团队领导，和团队成员竞争只会适得其反。相反，找到方法用“竞争”才干来定义并庆祝团队的胜利。
+
+你的“竞争”才干推动你，也可能让你推动别人——有时力度过大。记住，不惜一切代价的胜利不是胜利，而是自我挫败。在鞭策自己和团队取胜时，要确保自己的正直品格不受影响。
+
+不要让竞争精神影响你与团队成员和同事的关系。找到每个人的强项，把他们放在最能发挥作用的位置，形成获胜的组合。
+
+不是每个人都有你这样的求胜动力，不断把自己的表现和别人比较，可能会冒犯或伤害他们。记住，取胜不能以牺牲原则为代价。<br><span class='kz-en'>If you lead a team, competing to win against your team is counter-productive. Instead, find a way to use your Competition to define and celebrate team wins. Your Competition talents push you, so you might tend to push others — sometimes too hard. Remember that winning at all costs isn't winning; it's defeating yourself. Make sure your integrity remains intact when you push yourself and your team to victory. Don't let your competitive spirit cloud your relationships with your team members and peers. Find ways to unite your team members by finding what each does best and positioning them for maximum effectiveness to create a winning combination. Be careful not to let your competitive spirit get in the way of your relationships. Not everyone has your drive to win, and constantly comparing your performance to theirs might offend them or hurt their feelings. Winning at all costs isn’t winning; it’s self-defeating. Make sure you maintain your principles when you push yourself toward ultimate victory.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>战略 / Strategic（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“战略”才干主题突出的人足智多谋。任何情形下， 他们都能迅速找出相关的规律和要点。<br><span class='kz-en'>People exceptionally talented in the Strategic theme create alternative ways to proceed. Faced with any given scenario, they can quickly spot the relevant patterns and issues.</span></p>
+        <p><strong>特征 / Feature</strong>：战略主题突出的人具备卓越的智慧和谋略，能快速识别各种方案的模式和结果。<br><span class='kz-en'>People with strong Strategic talents are resourceful. They can quickly identify patterns and outcomes among various options.</span></p>
+        <p><strong>应用 / Application</strong>：制定长期和短期的目标，并确保它们与您的价值观和职业发展路径相符，以实现自己的愿景。 运用战略思维和分析能力，评估当前的工作和生活状况，找到达成目标的最佳途径。 基于您的目标和分析结果，制定战略计划，并为每个步骤制定时间表和资源分配。 执行战略需要坚定的决心和毅力，保持积极的心态和专注力，持之以恒地执行战略计划。<br><span class='kz-en'>Set long-term and short-term goals that align with your values and career path, so you can realise your vision.
+Use strategic thinking and analytical skills to assess your current work and life situation and find the best path to your goals.
+Based on your goals and analysis, develop strategic plans, including timelines and resource allocation for each step.
+Executing strategy requires determination and perseverance. Maintain a positive mindset and focus, persistently carrying out your strategic plans.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 未能及时感知和适应外部环境的变化，导致战略的失效和跟不上市场的发展。 · 过度自信导致高估自身实力和低估竞争对手，容易陷入盲目行动和错误判断。 · 忽视竞争对手的动态和策略，无法有效应对竞争挑战和制定有效对策。<br><span class='kz-en'>You may fail to perceive and adapt to changes in the external environment in time, causing your strategy to become ineffective and fall behind market developments.
+Overconfidence may lead you to overestimate your own strengths and underestimate competitors, easily falling into blind action and misjudgment.
+You may neglect competitors' movements and strategies, leaving you unable to respond effectively to competitive challenges or develop effective countermeasures.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>思维 / Intellection（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：思维能力较强的人最大的特点是他们善于思考。 他们勤于自省，敏于探讨。<br><span class='kz-en'>People exceptionally talented in the Intellection theme are characterized by their intellectual activity. They are introspective and appreciate intellectual discussions.</span></p>
+        <p><strong>特征 / Feature</strong>：思维能力突出的人善于思考，勤于自我反省和积极探讨问题。<br><span class='kz-en'>People with strong Intellection talents enjoy thinking deeply. They are naturally reflective and love engaging in thoughtful discussions.</span></p>
+        <p><strong>应用 / Application</strong>：采用多种思维方式和角度来看待问题。如逆向思维、横向思维和系统思维，以获得全面的洞察和创新的 解决方案。 培养创造性思维能力，发掘新的想法和解决方案。鼓励思维的自由流动，尝试新的方法和观点，勇于提 出新的想法并将其付诸实践。 培养批判性思维能力，对问题进行深入分析和评估。质疑和审查现有的假设和观点，挑战常规思维，并 提出合理的质疑和反驳。 运用系统思维的能力，将问题放置在更广阔的背景中考虑，并理解各个因素之间的相互关系和影响，并 思考长期和综合的影响。 运用思维优势主题来解决问题，包括定义问题、收集信息、分析和评估选项，，找到切实可行的解决方 案并实施。<br><span class='kz-en'>Use a variety of thinking approaches and perspectives to look at problems — such as reverse thinking, lateral thinking, and systems thinking — to gain comprehensive insight and innovative solutions.
+Cultivate creative thinking skills to discover new ideas and solutions. Encourage the free flow of thought, try new methods and viewpoints, and be bold in proposing and putting new ideas into practice.
+Develop critical thinking skills to analyse and evaluate problems in depth. Question existing assumptions and viewpoints, challenge conventional thinking, and put forward reasonable doubts and counter-arguments.
+Use systems thinking to place problems in a broader context, understand the interrelationships and influences among factors, and consider long-term and comprehensive effects.
+Apply your Intellection talents to problem-solving: define the problem, gather information, analyse and evaluate options, find practical solutions, and implement them.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 陷入一成不变的思维模式，难以开拓新的思路和解决问题的方法。 · 无法将问题放在更广阔的系统和整体的背景中考虑，忽视了问题的相互关联和综合性。 · 过于自信和确定自己的观点是正确的，而不愿意接受其他可能的解释或观点。<br><span class='kz-en'>You may fall into fixed patterns of thinking and find it hard to open up new ideas or problem-solving methods.
+You may fail to place problems in a broader systems context, neglecting their interconnections and complexity.
+You may be overconfident and certain that your viewpoint is correct, unwilling to accept other possible explanations or perspectives.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>前瞻 / Futuristic（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：对于有较强前瞻力的人而言，未来令他们心潮澎湃。 他们对未来的憧憬激励着周围的人。<br><span class='kz-en'>People exceptionally talented in the Futuristic theme are inspired by the future and what could be. They energize others with their visions of the future.</span></p>
+        <p><strong>特征 / Feature</strong>：对于具有强烈前瞻力的人而言，未来是充满魅力和激情的。他们通过对未来的憧憬来激励和启发身边的 人。<br><span class='kz-en'>For people with strong Futuristic talents, the future is captivating and energising. They inspire and motivate those around them through their vision of the future.</span></p>
+        <p><strong>应用 / Application</strong>：制定具体、可衡量和有挑战性的目标，为自己和团队设定远大的目标。确保目标与您的价值观和长远愿 景相一致，并将其分解成可行的里程碑和行动步骤。 不仅要关注当前的任务和挑战，还要考虑长远的影响和趋势。预测未来的变化和机会，并制定相应的计 划和策略。 关注行业趋势和新兴技术，探索新的业务模式和市场机会。勇于尝试新的想法和方法，以推动个人和组 织的发展。 将挑战视为学习和成长的机会，灵活适应变化的环境。寻找解决问题的创新方法，勇于采取行动并快速 调整策略。<br><span class='kz-en'>Set specific, measurable, and challenging goals for yourself and your team. Make sure your goals align with your values and long-term vision, and break them down into feasible milestones and action steps.
+Look beyond current tasks and challenges to consider long-term impact and trends. Anticipate future changes and opportunities, and develop corresponding plans and strategies.
+Pay attention to industry trends and emerging technologies, exploring new business models and market opportunities. Be willing to try new ideas and methods to drive personal and organisational development.
+View challenges as opportunities for learning and growth. Adapt flexibly to a changing environment. Look for innovative ways to solve problems, be willing to take action, and adjust your strategy quickly.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 过度强调未来的机遇和积极面，可能忽视潜在的风险和困难，导致决策和规划不够全面和谨慎。 · 专注于长远目标和远景，可能忽视了短期内的重要里程碑和目标，影响绩效和工作满意度。 · 过于关注决策的成本和风险，而忽视机遇的成本。他们可能过分考虑可能的损失，而忽视了不行动所带来的 机遇损失。<br><span class='kz-en'>Overemphasising future opportunities and positives may cause you to overlook potential risks and difficulties, leading to decisions and plans that are not comprehensive or cautious enough.
+Focusing on long-term goals and vision may cause you to neglect important short-term milestones and goals, affecting performance and job satisfaction.
+You may focus too much on the costs and risks of decisions while neglecting the cost of missed opportunities. You may overconsider possible losses while ignoring the opportunity cost of inaction.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>追求 / Significance（影响力 / Influencing）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：“追求”才干主题突出的人希望产生巨大影响。他们独立行事，渴望得到认可。<br><span class='kz-en'>People exceptionally talented in the Significance theme want to make a big impact. They are independent and prioritize projects based on how much influence they will have on their organization or people around them.</span></p>
+        <p><strong>特征 / Feature</strong>：希望产生重大影响。他们独立自主，会根据对组织或周围人的影响力来优先安排项目。<br><span class='kz-en'>want to make a big impact. They are independent and prioritise projects based on how much influence they will have on their organisation or people around them.</span></p>
+        <p><strong>应用 / Application</strong>：你想要有所作为，这促使你确保自己的工作和贡献都有价值。你知道努力付出后被别人抢走功劳是什么滋味，所以你会确保团队成员不会发生这种情况——你会让他们的成就被看见。
+
+你愿意站在公众视野中，这让你敢于在关键时刻站出来发声，成为那些不愿抛头露面的人的代言人。
+
+你希望在别人眼中重要的愿望，也能让你成为一名有力的导师——投入于他人、产生影响。<br><span class='kz-en'>You want to make a difference. This drives you to make sure your work and your contributions count. You know what it feels like to do the work and then have someone else take the credit. You make sure this doesn't happen for your team — you shine a light on their accomplishments. Your willingness to be in the public eye enables you to stand up and be recognised — to take a stand when it matters and to be the voice for others who shy away from the spotlight. Your desire to be seen as significant in others' eyes can lead you to be a powerful mentor — investing in others and making a difference.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：以自我为中心的“追求”可能听起来像：“看我——我多厉害！”运用你的“追求”才干，把最好的自己投入到团队成功中。
+
+别人可能觉得你在自吹自擂。记住，如果你真的在产生影响，你不必自己唱赞歌，你的行动会为你发声。
+
+如果一切都只围绕你，你的狭隘视野会让你忽略别人的重要贡献。让别人感到重要，才是真正重要的可靠途径之一。
+
+你喜欢聚光灯，这没问题。但不要独占光芒——与那些做出贡献的人分享它。
+
+因为你强烈的“追求”才干，别人可能认为你过于在意自己的名声和成功。要承认，你需要通过行动和贡献来赢得别人的尊重。
+
+有时你可能掩饰自己的脆弱，或显得过于克制，这会让别人不知道如何支持你。考虑让别人知道你需要帮助，这能让他们感到自己也很重要。<br><span class='kz-en'>Self-centred Significance can sound like this: &quot;Look at me — see how great I am!&quot; Use your Significance talents to focus the best of who you are toward team success. Others can experience you as an egotistical braggart. Remember that if you are truly making a difference, you don't have to sing your own praises; your actions will do the singing for you. If it's all about you, your tunnel-vision will cause you to miss the important contributions of others. Ensuring that others feel significant is one of the surest ways to be truly significant. You like the spotlight, and that's OK. But don't dominate the limelight — share it with others who have made a contribution. Because of your strong Significance talents, people might perceive you as overly concerned about your reputation and success. Acknowledge that you will need to earn the respect of others through your actions and contributions. Sometimes you might mask your vulnerability or come across as overly controlled, and this can make it difficult for others to know how to support you. Consider the value of making others feel important by letting them know when you need help.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>分析 / Analytical（战略思维 / Strategic Thinking）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：分析能力强的人喜欢探究事物的来龙去脉。 他们有能力思考可能影响局面的诸多因素。<br><span class='kz-en'>People exceptionally talented in the Analytical theme search for reasons and causes. They have the ability to think about all of the factors that might affect a situation.</span></p>
+        <p><strong>特征 / Feature</strong>：具有强大分析能力的人喜欢深入探究事物的来龙去脉，能够综合考虑各种因素对局势的影响。<br><span class='kz-en'>People with strong Analytical talents enjoy exploring the reasons behind things. They are able to consider many factors that affect a situation.</span></p>
+        <p><strong>应用 / Application</strong>：积极收集相关的信息和数据，利用各种资源，包括书籍、报告、研究和互联网，收集全面的信息。 运用逻辑思维和分析能力，对收集到的数据进行分析和解读，从中获取有价值的见解。 基于分析的结果，提出假设和推理，推导出合理的结论和预测。 在做出决策之前，评估潜在的风险和机会，制定相应的应对策略。 根据分析的结果，制定决策和行动计划。将决策细化为具体的步骤和时间表，确保执行的可行性和有效 性。 实施决策后，密切监测执行的结果 ,定期评估决策的效果，并根据反馈进行调整和改进。<br><span class='kz-en'>Actively collect relevant information and data. Use a variety of resources, including books, reports, research, and the internet, to gather comprehensive information.
+Use logical thinking and analytical skills to analyse and interpret the data you collect, deriving valuable insights from it.
+Based on your analysis, put forward hypotheses and inferences, deriving reasonable conclusions and predictions.
+Before making decisions, assess potential risks and opportunities and develop corresponding response strategies.
+Based on your analysis, make decisions and action plans. Break decisions down into concrete steps and timelines to ensure feasible and effective execution.
+After implementation, closely monitor the results and regularly evaluate the effectiveness of your decisions, making adjustments and improvements based on feedback.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 选择性地采集和使用数据，忽视或排除了其他重要的信息和数据源。 · 基于错误或不准确的假设进行分析，导致结论的不准确性和误导性。 · 只关注单一的因素或变量，忽略了问题的复杂性和与其他因素的相互影响。<br><span class='kz-en'>You may selectively collect and use data, ignoring or excluding other important information and data sources.
+You may base your analysis on incorrect or inaccurate assumptions, leading to inaccurate and misleading conclusions.
+You may focus on only a single factor or variable, ignoring the complexity of the problem and its interactions with other factors.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+        <h4>积极 / Positivity（关系建立 / Relationship Building）</h4>
+        <p><strong>标准定义 / Standard Definition</strong>：积极的人浑身充满了富有感染力的热情。 他们乐观向上，并能感召周围的人。<br><span class='kz-en'>People exceptionally talented in the Positivity theme have an enthusiasm that is contagious. They are upbeat and can get others excited about what they are going to do.</span></p>
+        <p><strong>特征 / Feature</strong>：积极的人散发着富有感染力的热情，以快乐和积极向上的态度激励周围的人。<br><span class='kz-en'>You radiate contagious enthusiasm, inspiring those around you with joy and a positive, forward-looking attitude.</span></p>
+        <p><strong>应用 / Application</strong>：关注自己内心的对话，并将其转化为积极的、励志的声音。培养自信和自尊，相信自己的能力和潜力。 以积极的心态对待工作中的挑战和困难。寻找解决问题的方法和机会，抱有成长的心态，相信自己能够 克服困难并取得成功。 与积极向上的人为伍，建立支持和积极的人际关系。分享积极的经历和观点，与他人共享快乐和成功， 鼓励和激励他人。 注重自己的身心健康，保持良好的生活习惯。合理安排工作和休息时间，参与锻炼、放松和充电的活 动，保持积极的生活态度。<br><span class='kz-en'>Pay attention to your inner dialogue and turn it into a positive, encouraging voice. Build confidence and self-respect by believing in your abilities and potential.
+Approach challenges and difficulties with a positive mindset. Look for ways to solve problems and seize opportunities. Adopt a growth mindset and believe you can overcome obstacles and succeed.
+Surround yourself with positive people and build supportive, uplifting relationships. Share positive experiences and perspectives, spread joy and success with others, and encourage and inspire them.
+Take care of your physical and mental health and maintain good habits. Balance work and rest, exercise, relax, and recharge so you can keep a positive attitude toward life.</span></p>
+        <p><strong>盲点 / Blind Spots</strong>：· 过于积极的人可能忽视现实中的问题和困难，对挑战和障碍持过于乐观的态度，导致缺乏实际的解决方案。 · 有时候，过于强调积极的态度可能导致表面上的积极，而忽视真实的情感和需求，造成内心的不满和不适。 · 积极主题的人可能过于追求成功和进步，过度竞争和自我比较，导致焦虑和不满足感。<br><span class='kz-en'>· Being overly positive may cause you to overlook real problems and difficulties, approach challenges with excessive optimism, and fail to develop practical solutions.
+· Sometimes emphasizing a positive attitude too strongly can create a surface-level positivity that ignores real emotions and needs, causing inner dissatisfaction and discomfort.
+· People with strong Positivity may pursue success and progress so intensely that they become overly competitive and compare themselves too much with others, leading to anxiety and a sense of inadequacy.</span></p>
+        <hr style="border:0;border-top:1px solid #e5e7eb;margin:16px 0;">
+        
+<p><strong>主导领域分析 / Leading Domain Analysis</strong>：Top 10 中 战略思维 / Strategic Thinking 领域占 7 项，说明该生在行动方式上偏向 <strong>战略思考型 / Strategic Thinker</strong>。</p>
+<p class="kz-en"><em>In your Top 10, Strategic Thinking accounts for 7 themes, indicating a natural tendency toward Strategic Thinker.</em></p>
+
+<h3>C. 伦理与边界声明 | Ethics & Boundaries</h3>
+<ul class="kz-list">
+  <li>本报告基于理论推导与模拟数据，未经过实证验证，仅用于职业探索参考。/ <span class="kz-en">This report is based on theoretical integration and simulated data, not empirically validated. It is for career exploration reference only.</span></li>
+  <li>不用于选拔、分班、评奖等高利害决策。/ <span class="kz-en">Not for high-stakes decisions such as selection, placement, or awards.</span></li>
+  <li>不替代专业心理咨询或临床评估。/ <span class="kz-en">Not a substitute for professional psychological counseling or clinical assessment.</span></li>
+  <li>职业建议仅为可能性探索，需结合能力、价值观、市场需求综合判断。/ <span class="kz-en">Career suggestions are possibilities to explore; final decisions require integrating ability, values, and market demand.</span></li>
+</ul>
+
+</div>
