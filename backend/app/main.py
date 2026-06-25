@@ -70,6 +70,60 @@ app.include_router(admin.router)
 
 
 
+@app.on_event("startup")
+
+def seed_data_on_startup():
+
+    """
+
+    启动时自动导入题库、职业映射和 34 项才干主题描述。
+
+    这些导入都是幂等的，不会重复写入；默认演示账号只在用户表为空时创建。
+
+    避免把本地 SQLite 数据库提交到仓库，同时保证线上部署后报告与本地一致。
+
+    """
+
+    from app.import_data import (
+
+        import_holland_questions,
+
+        import_gallup_questions,
+
+        import_career_mapping,
+
+        import_theme_descriptions,
+
+        create_default_users,
+
+    )
+
+    from app.database import SessionLocal
+
+    from app import models
+
+
+
+    db = SessionLocal()
+
+    try:
+
+        import_holland_questions(db)
+
+        import_gallup_questions(db)
+
+        import_career_mapping(db)
+
+        import_theme_descriptions(db)
+
+        if db.query(models.User).first() is None:
+
+            create_default_users(db)
+
+    finally:
+
+        db.close()
+
 
 
 @app.get("/")
